@@ -63,7 +63,7 @@ module.exports = async (destinationDevice = null) => {
         let matchingRoute = mappedRoutes?.[eachDestination.index];
         // if sourcedevice is set, but sourceindex isn't, then the source is missing - mark as MISSING
         if (matchingRoute?.sourceDevice && matchingRoute?.sourceIndex === null) {
-            status = "MISSING";
+            status = "UNRESOLVED";
         }
 
         outputArray["destinations"].push({

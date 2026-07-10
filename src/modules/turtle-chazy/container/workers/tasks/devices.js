@@ -53,15 +53,16 @@ module.exports = async ({ workerData }) => {
             return {
                 "name": c.name,
                 "index": c.id,
+                "status": c.status,
             };
         });
         await destinationsCollection.replaceOne(
             { "deviceId": eachDevice.name }, { deviceId: eachDevice.name, "labels": destinations, "timestamp": new Date() }, { "upsert": true }
         );
 
-        const routes = eachDevice.rxchn.filter((rxc) => rxc.status === "DYNAMIC").map((c) => {
+        const routes = eachDevice.rxchn.filter((rxc) => rxc.status !== "NONE").map((c) => {
             const sourceDevice = devices.find((d) => d.name === c.subdev);
-            const sourceChannel = sourceDevice.txchn.find((txc) => txc.name === c.subchn);
+            const sourceChannel = sourceDevice?.txchn.find((txc) => txc.name === c.subchn);
 
             return {
                 "destinationChannel": c.name,
@@ -69,6 +70,7 @@ module.exports = async ({ workerData }) => {
                 "sourceDevice": sourceDevice?.name,
                 "sourceChannel": sourceChannel?.name,
                 "sourceIndex": sourceChannel?.id,
+                "status": c.status,
             };
         });
         await routesCollection.replaceOne(
