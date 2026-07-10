@@ -1,9 +1,10 @@
 import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import BugRouterButton from "@core/BugRouterButton";
-import GridViewIcon from "@mui/icons-material/GridView";
+import WarningIcon from "@mui/icons-material/Warning";
 import { Box, Typography } from "@mui/material";
 import { useAlert } from "@utils/Snackbar";
+
 export default function RouterButton({
     panelId,
     buttonType,
@@ -89,11 +90,44 @@ export default function RouterButton({
             return null;
         }
 
+        if (button.status === "UNRESOLVED") {
+            return (
+                <Typography
+                    sx={{
+                        fontWeight: 700,
+                        fontSize: "0.7rem",
+                        opacity: 0.9,
+                        padding: "8px 0px",
+                        color: "warning.main",
+                    }}
+                >
+                    DEVICE UNAVAILABLE
+                </Typography>
+            );
+        }
+
+        if (button.status === "UNSUPPORTED") {
+            return (
+                <Typography
+                    sx={{
+                        fontWeight: 700,
+                        fontSize: "0.7rem",
+                        opacity: 0.9,
+                        padding: "8px 0px",
+                        color: "warning.main",
+                    }}
+                >
+                    ROUTE NOT SUPPORTED
+                </Typography>
+            );
+        }
+
         const faultyRoute = button.sourceDevice && !button.sourceChannel;
         return (
             <Box
                 sx={{
-                    width: "118px",
+                    width: "100%",
+                    padding: "0px 4px",
                     overflow: "hidden",
                     alignItems: "center",
                     justifyContent: "center",
@@ -107,6 +141,7 @@ export default function RouterButton({
                         fontSize: "0.7rem",
                         opacity: 0.6,
                         textOverflow: "ellipsis",
+                        textAlign: "center",
                         color: faultyRoute ? "warning.main" : "text.primary",
                     }}
                 >
@@ -119,6 +154,7 @@ export default function RouterButton({
                         fontWeight: 300,
                         fontSize: "0.7rem",
                         opacity: 0.6,
+                        textAlign: "center",
                         textOverflow: "ellipsis",
                     }}
                 >
@@ -127,6 +163,19 @@ export default function RouterButton({
             </Box>
         );
     };
+
+    let statusIcon;
+    if (buttonType === "destination") {
+        if (button.status === "UNRESOLVED") {
+            statusIcon = <WarningIcon color="warning" />;
+        } else if (button.status === "UNSUPPORTED") {
+            statusIcon = <WarningIcon color="warning" />;
+        } else if (button.status === "MISSING") {
+            statusIcon = <WarningIcon color="error" />;
+        } else if (button.status === "OK") {
+            statusIcon = <WarningIcon color="success" />;
+        }
+    }
 
     return (
         <BugRouterButton
@@ -145,15 +194,7 @@ export default function RouterButton({
             locked={button.isLocked}
             wide
             iconSize={buttonType === "source" ? "normal" : "small"}
-            leftIcon={
-                button.isQuad ? (
-                    <GridViewIcon
-                        sx={{
-                            fontSize: "14px !important",
-                        }}
-                    />
-                ) : null
-            }
+            leftIcon={statusIcon}
             menuItems={
                 [
                     // {
