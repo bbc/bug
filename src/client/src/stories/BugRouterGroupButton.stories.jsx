@@ -50,6 +50,7 @@ import { BallotIcon, EditIcon, DeleteIcon } from "@mui/icons-material";
         selected: false,
         editMode: false,
         draggable: false,
+        buttonColor: null,
         sx: {},
         menuItems: [
             { title: "Edit Sources", icon: <BallotIcon fontSize="small" />, onClick: () => {} },
@@ -85,6 +86,12 @@ import { BallotIcon, EditIcon, DeleteIcon } from "@mui/icons-material";
             description: "Data object passed back to menu item event handlers.",
             table: { category: "Data", type: { summary: "object" } },
         },
+        buttonColor: {
+            description:
+                "MUI color key to override the button background (e.g. `'warning'`). Uses `<color>.main` at rest and `<color>.dark` on hover. Falls back to `selected`/`tertiary` colours when null.",
+            control: { type: "select", options: [null, "warning", "error", "success", "info"] },
+            table: { type: { summary: "string | null" }, defaultValue: { summary: null } },
+        },
         sx: {
             description: "MUI style overrides.",
             table: { type: { summary: "object" } },
@@ -93,6 +100,20 @@ import { BallotIcon, EditIcon, DeleteIcon } from "@mui/icons-material";
 };
 
 export const Default = {
+    render: (args) => (
+        <div style={{ padding: "40px", display: "flex", justifyContent: "center", background: "#262626" }}>
+            <div style={{ width: "160px" }}>
+                <BugRouterGroupButton {...args} />
+            </div>
+        </div>
+    ),
+};
+
+export const Warning = {
+    args: {
+        buttonColor: "warning",
+        primaryLabel: "Inactive Device",
+    },
     render: (args) => (
         <div style={{ padding: "40px", display: "flex", justifyContent: "center", background: "#262626" }}>
             <div style={{ width: "160px" }}>

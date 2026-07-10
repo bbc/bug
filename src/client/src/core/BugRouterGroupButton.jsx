@@ -2,6 +2,7 @@ import BugItemMenu from "@components/BugItemMenu";
 import { useSortable } from "@dnd-kit/sortable";
 import { Box, Button } from "@mui/material";
 export default function BugRouterGroupButton({
+    buttonColor = null,
     draggable = false,
     editMode = false,
     id,
@@ -42,7 +43,13 @@ export default function BugRouterGroupButton({
                 ref={setNodeRef}
                 {...extraProps}
                 sx={{
-                    backgroundColor: editMode ? "none" : selected ? "primary.main" : "tertiary.main",
+                    backgroundColor: editMode
+                        ? "none"
+                        : buttonColor
+                          ? `${buttonColor}.main`
+                          : selected
+                            ? "primary.main"
+                            : "tertiary.main",
                     margin: "4px",
                     flexDirection: "row",
                     justifyContent: editMode ? "space-between" : "center",
@@ -58,7 +65,13 @@ export default function BugRouterGroupButton({
                     color: "#fff",
                     cursor: editMode ? (draggable ? "move" : "default") : "pointer",
                     "&:hover": {
-                        backgroundColor: editMode ? "inherit" : selected ? "primary.hover" : "tertiary.hover",
+                        backgroundColor: editMode
+                            ? "inherit"
+                            : buttonColor
+                              ? `${buttonColor}.dark`
+                              : selected
+                                ? "primary.hover"
+                                : "tertiary.hover",
                     },
                     ...sx,
                 }}
