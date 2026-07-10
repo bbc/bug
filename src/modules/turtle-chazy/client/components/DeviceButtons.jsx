@@ -7,11 +7,12 @@ import { useNavigate } from "react-router-dom";
 import DeviceButton from "./DeviceButton";
 export default function DeviceButtons({
     panelId,
+    editMode = false,
     groupType,
     buttons,
     onChange,
-    destinationGroup = 0,
-    sourceGroup = 0,
+    destinationGroup = "",
+    sourceGroup = "",
 }) {
     const sendAlert = useAlert();
     const navigate = useNavigate();
@@ -23,27 +24,19 @@ export default function DeviceButtons({
     }, [buttons]);
 
     const handleDeviceButtonClicked = (groupName) => {
+        const actionText = editMode ? "/edit" : "/route";
+
         if (groupType === "source") {
             navigate(
-                `/panel/${panelId}/route/${encodeURIComponent(groupName)}/${encodeURIComponent(destinationGroup)}`
+                `/panel/${panelId}/${actionText}/${encodeURIComponent(groupName)}/${encodeURIComponent(destinationGroup)}`
             );
         } else {
             navigate(
-                `/panel/${panelId}/route/${encodeURIComponent(sourceGroup ? sourceGroup : "-")}/${encodeURIComponent(
+                `/panel/${panelId}/${actionText}/${encodeURIComponent(sourceGroup ? sourceGroup : "-")}/${encodeURIComponent(
                     groupName
                 )}`
             );
         }
-    };
-
-    const handleEditButtonsClicked = async (event, item) => {
-        // const result = await customDialog({
-        //     dialog: <EditButtonsDialog panelId={panelId} groupType={groupType} groupIndex={item.index} />,
-        // });
-        // if (result !== false) {
-        //     sendAlert(`Updated buttons for group: ${item.label}`, { variant: "success" });
-        //     onChange();
-        // }
     };
 
     const DeviceButtons = () => (
@@ -52,11 +45,11 @@ export default function DeviceButtons({
                 <DeviceButton
                     key={group.index}
                     group={group}
+                    editMode={editMode}
                     onClick={() => handleDeviceButtonClicked(group.label)}
                     panelId={panelId}
                     groupType={groupType}
                     onChange={onChange}
-                    onEditButtons={handleEditButtonsClicked}
                 />
             ))}
         </>

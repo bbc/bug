@@ -1,52 +1,42 @@
+import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import BugRouterGroupButton from "@core/BugRouterGroupButton";
-import BallotIcon from "@mui/icons-material/Ballot";
-import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import AxiosCommand from "@utils/AxiosCommand";
-import AxiosDelete from "@utils/AxiosDelete";
+import AxiosPost from "@utils/AxiosPost";
 import { useAlert } from "@utils/Snackbar";
 
-export default function DeviceButton({
-    panelId,
-    group,
-    onClick,
-    groupType,
-    editMode = false,
-    onChange,
-    onEditButtons,
-}) {
+export default function DeviceButton({ panelId, group, onClick, groupType, editMode = false, onChange }) {
     const sendAlert = useAlert();
     const { renameDialog } = useBugRenameDialog();
+    const { confirmDialog } = useBugConfirmDialog();
 
     const handleRenameClicked = async (event, item) => {
         const result = await renameDialog({
-            title: "Rename group",
+            title: "Rename device",
             defaultValue: group.label,
         });
         if (result !== false) {
+            const confirmResult = await confirmDialog({
+                title: "Rename Device",
+                message: "This will clear all routes for this device. Are you sure?",
+                confirmButtonText: "Rename",
+            });
+            if (!confirmResult) {
+                // they've changed their mind ...
+                return false;
+            }
+
             if (
-                await AxiosCommand(
-                    `/container/${panelId}/groups/rename/${encodeURIComponent(groupType)}/${encodeURIComponent(
-                        group.label
-                    )}/${encodeURIComponent(result)}`
-                )
+                await AxiosPost(`/container/${panelId}/device/rename/${encodeURIComponent(group.label)}`, {
+                    name: result,
+                })
             ) {
-                sendAlert(`Renamed group: ${group.label} -> ${result}`, { variant: "success" });
+                sendAlert(`Renamed device: ${group.label} -> ${result}`, { variant: "success" });
             } else {
-                sendAlert(`Failed to rename group: ${group.label}`, { variant: "error" });
+                sendAlert(`Failed to rename device: ${group.label}`, { variant: "error" });
             }
             onChange();
         }
-    };
-
-    const handleDeleteClicked = async (event, item) => {
-        if (await AxiosDelete(`/container/${panelId}/groups/${groupType}/${group.label}`)) {
-            sendAlert(`Deleted group: ${group.label}`, { variant: "success" });
-        } else {
-            sendAlert(`Failed to delete group: ${group.label}`, { variant: "error" });
-        }
-        onChange();
     };
 
     return (
@@ -61,22 +51,9 @@ export default function DeviceButton({
             wide
             menuItems={[
                 {
-                    title: groupType === "destination" ? `Edit Destinations` : `Edit Sources`,
-                    icon: <BallotIcon fontSize="small" />,
-                    onClick: onEditButtons,
-                },
-                {
-                    title: "-",
-                },
-                {
                     title: "Rename",
                     icon: <EditIcon fontSize="small" />,
                     onClick: handleRenameClicked,
-                },
-                {
-                    title: "Delete",
-                    icon: <DeleteIcon fontSize="small" />,
-                    onClick: handleDeleteClicked,
                 },
             ]}
         />

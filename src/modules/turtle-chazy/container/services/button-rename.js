@@ -43,7 +43,6 @@ module.exports = async (buttonType, device, index, newName) => {
                 "labels.$.name": newName,
                 timestamp: lastUpdated,
                 lastUpdated,
-                skipNextWorkerUpdate: true,
             },
         });
 
