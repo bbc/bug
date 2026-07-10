@@ -3,5 +3,4 @@
 - add edit/rename
 - add clear route
 - add screenshot
-- add panel status (default/success etc)
 - add tests
