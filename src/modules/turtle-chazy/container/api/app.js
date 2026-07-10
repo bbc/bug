@@ -10,6 +10,7 @@ const statusRouter = require("@routes/status");
 const sourcesRouter = require("@routes/sources");
 const destinationsRouter = require("@routes/destinations");
 const routeRouter = require("@routes/route");
+const validateRouter = require("@routes/validate");
 
 const heapInfo = require("@core/heap-info");
 
@@ -34,6 +35,7 @@ app.use("/api/status", statusRouter);
 app.use("/api/sources", sourcesRouter);
 app.use("/api/destinations", destinationsRouter);
 app.use("/api/route", routeRouter);
+app.use("/api/validate", validateRouter);
 
 app.use("*", defaultRouter);
 
