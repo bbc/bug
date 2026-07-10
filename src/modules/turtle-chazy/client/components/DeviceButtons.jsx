@@ -24,7 +24,7 @@ export default function DeviceButtons({
     }, [buttons]);
 
     const handleDeviceButtonClicked = (groupName) => {
-        const actionText = editMode ? "/edit" : "/route";
+        const actionText = editMode ? "edit" : "route";
 
         if (groupType === "source") {
             navigate(
