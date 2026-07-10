@@ -4,3 +4,4 @@
 - limitations - only supports first audio stream
 - check status block goes red when input is unplugged
 - check status warning when input is unplugged and outputs are enabled
+- add validation
