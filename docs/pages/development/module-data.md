@@ -21,6 +21,8 @@ Modules use **workers** to fetch data from external devices or services. Example
 
 Data is fetched by the worker and written to the database. The user interface then reads data from the database. Modules should **never fetch data directly in response to UI requests**, as this is not scalable.
 
+If a service can also update the same database records as a worker, guard against stale poll results overwriting fresh manual changes. A reliable pattern is to set a `lastUpdated` field during the service write, capture `pollStartedAt` before the worker fetch begins, and only apply the worker update when `lastUpdated` is missing or older than that poll start time.
+
 When designing workers:
 
 - Consider how often you poll each device. Polling too frequently wastes resources; polling too infrequently may make the UI feel stale.

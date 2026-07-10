@@ -33,6 +33,7 @@ docker build -f ./Dockerfile.test -t bug-module-test ../../../.. && docker run -
 - Rule: in Cisco SG/CBS module migrations, keep non-SNMP workers (for example password-expiry SSH checks and DHCP-source polling) as separate workers; do not fold them into the SNMP task worker.
 - Rule: across all modules, separate workers by connection method (for example SNMP, SSH, HTTP/API, RouterOS) and keep them as distinct workers.
 - Rule: across all modules, separate capability-handling workers (for example DHCP/leases discovery) from core telemetry/control workers; do not fold capability workers into unrelated polling workers.
+- Rule: when a service manually updates data that a polling worker also writes, stamp the manual write with `lastUpdated` and have the worker skip DB updates when `lastUpdated` is newer than the poll start time.
 
 ### Logging Conventions
 
