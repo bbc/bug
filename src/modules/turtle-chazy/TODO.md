@@ -4,5 +4,4 @@
 - add clear route
 - add screenshot
 - add panel status (default/success etc)
-- add heartbeat status check and worker task
 - add tests

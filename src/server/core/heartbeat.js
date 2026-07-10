@@ -13,7 +13,7 @@ const set = async ({ collectionName = "heartbeat" } = {}) => {
     }
 };
 
-const statusCheckHeartbeat = async ({ timeout = 10, collectionName = "heartbeat", errorMessage = "There is no recent data from the device" } = {}) => {
+const statusCheckHeartbeat = async ({ timeout = 10, collectionName = "heartbeat", errorMessage = "Failed to connect to device" } = {}) => {
     const value = await mongoSingle.get(collectionName);
     const statusItems = [];
     if (!value || (Date.now() - new Date(value).getTime() > (timeout * 1000))) {
