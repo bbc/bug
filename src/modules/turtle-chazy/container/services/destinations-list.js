@@ -61,8 +61,10 @@ module.exports = async (destinationDevice = null) => {
         let status = eachDestination.status;
 
         let matchingRoute = mappedRoutes?.[eachDestination.index];
-        // if sourcedevice is set, but sourceindex isn't, then the source is missing - mark as MISSING
-        if (matchingRoute?.sourceDevice && matchingRoute?.sourceIndex === null) {
+
+        // if the destination is subscribed to itself we don't mind if the source is missing
+        if (status !== "SUBSCRIBE_SELF" && matchingRoute?.sourceDevice && matchingRoute?.sourceIndex === null) {
+            // if sourcedevice is set, but sourceindex isn't, then the source is missing - mark as MISSING
             status = "UNRESOLVED";
         }
 

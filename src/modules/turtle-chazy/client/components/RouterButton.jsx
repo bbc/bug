@@ -122,6 +122,22 @@ export default function RouterButton({
             );
         }
 
+        if (button.status === "SUBSCRIBE_SELF") {
+            return (
+                <Typography
+                    sx={{
+                        fontWeight: 700,
+                        fontSize: "0.7rem",
+                        opacity: 0.9,
+                        padding: "8px 0px",
+                        color: "primary.main",
+                    }}
+                >
+                    INTERNAL ROUTE
+                </Typography>
+            );
+        }
+
         const faultyRoute = button.sourceDevice && !button.sourceChannel;
         return (
             <Box
@@ -145,7 +161,7 @@ export default function RouterButton({
                         color: faultyRoute ? "warning.main" : "text.primary",
                     }}
                 >
-                    {button.sourceDevice ? button.sourceDevice : "-"}
+                    {button.sourceDevice ? button.sourceDevice : "\u00A0"}
                 </Typography>
                 <Typography
                     sx={{
@@ -158,7 +174,7 @@ export default function RouterButton({
                         textOverflow: "ellipsis",
                     }}
                 >
-                    {button.sourceChannel ? button.sourceChannel : "-"}
+                    {button.sourceChannel ? button.sourceChannel : "\u00A0"}
                 </Typography>
             </Box>
         );
