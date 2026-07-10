@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.0.2
+
+- 2026-07-09: fix enable output when added ([e63891f](https://github.com/bbc/bug/commit/e63891f24ef2db6ebbd38a725c48d5c69005e49f))
+- 2026-07-09: add heartbeat task and update status checks [copilot] ([8d5cd47](https://github.com/bbc/bug/commit/8d5cd47203cc3d0a7b371757648dc3569ccc69dd))
+
 ### version 1.0.1
 
 - 2026-07-08: enhance status handling and logic [copilot] ([c45e9c8](https://github.com/bbc/bug/commit/c45e9c8f8386b9cce7e4e8e19cc30118d933ad24))
