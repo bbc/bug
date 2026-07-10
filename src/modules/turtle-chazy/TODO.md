@@ -1,4 +1,3 @@
 - channel rename - make sure unique - if not just use channel number
-- add edit/rename
 - add clear route
 - add screenshot
