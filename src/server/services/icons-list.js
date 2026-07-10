@@ -3,7 +3,7 @@
 const logger = require("@core/logger")(module);
 const path = require("path");
 const readDir = require("@core/read-dir");
-const { paramCase } = require("change-case");
+const { kebabCase } = require("change-case");
 const cacheStore = require("@core/cache-store");
 
 module.exports = async (variant = null) => {
@@ -43,7 +43,7 @@ module.exports = async (variant = null) => {
         }
 
         const icons = Object.keys(mdi).filter(key => !key.endsWith("Outline")).map((key) => ({
-            id: `${paramCase(key)}`,
+            id: `${kebabCase(key)}`,
             sortKey: key,
             variant: null,
             type: "mdi",
