@@ -4,7 +4,7 @@ import BugCountdownSpinner from "@core/BugCountdownSpinner";
 import BugDynamicIcon from "@core/BugDynamicIcon";
 import { useSortable } from "@dnd-kit/sortable";
 import LockIcon from "@mui/icons-material/Lock";
-import { Box, Button } from "@mui/material";
+import { Box, Button, CircularProgress } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React from "react";
 import { useLongPress } from "use-long-press";
@@ -19,6 +19,8 @@ const BugRouterButton = ({
     disabled = false,
     draggable = false,
     editMode = false,
+    pending = false,
+    buttonColor = null,
     id,
     icon = null,
     iconColor = null,
@@ -80,7 +82,7 @@ const BugRouterButton = ({
     };
 
     const handleClick = () => {
-        if (disabled) {
+        if (disabled || pending) {
             return;
         }
         if (editMode) {
@@ -152,7 +154,7 @@ const BugRouterButton = ({
                 borderWidth: "1px",
                 borderStyle: isWaitingForConfirmation ? "dashed" : "solid",
                 borderColor: isWaitingForConfirmation ? "primary.main" : "rgba(136, 136, 136, 0.5)",
-                backgroundColor: editMode ? "none" : selected ? "primary.main" : "tertiary.main",
+                backgroundColor: editMode ? "none" : buttonColor || (selected ? "primary.main" : "tertiary.main"),
                 margin: "4px",
                 width: wide ? "160px" : "128px",
                 height: "128px",
@@ -168,7 +170,7 @@ const BugRouterButton = ({
                 textTransform: "none",
                 padding: "0px",
                 lineHeight: editMode ? 1.5 : 1.4,
-                cursor: disabled ? "not-allowed" : editMode ? (draggable ? "move" : "default") : "pointer",
+                cursor: disabled || pending ? "not-allowed" : editMode ? (draggable ? "move" : "default") : "pointer",
                 "& .MuiButton-label": {
                     flexDirection: "column",
                     height: "100%",
@@ -176,7 +178,9 @@ const BugRouterButton = ({
                 "&:hover": {
                     borderStyle: isWaitingForConfirmation ? "dashed" : "solid",
                     borderColor: isWaitingForConfirmation ? "primary.main" : "rgba(136, 136, 136, 0.5)",
-                    backgroundColor: editMode ? "inherit" : selected ? "primary.hover" : "tertiary.hover",
+                    backgroundColor: editMode
+                        ? "inherit"
+                        : buttonColor || (selected ? "primary.hover" : "tertiary.hover"),
                 },
                 WebkitTouchCallout: "none !important",
                 WebkitUserSelect: "none !important",
@@ -262,14 +266,13 @@ const BugRouterButton = ({
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
-                        height: iconSize === "small" ? "42%" : "65%",
+                        height: iconSize === "small" ? "48%" : "65%",
                         "@media (max-width:800px)": {
                             height: "56%",
                         },
                         "@media (max-width:600px)": {
                             display: "none",
                         },
-                        paddingBottom: iconSize === "small" ? "4px" : 0,
                     }}
                 >
                     <Box
@@ -287,7 +290,9 @@ const BugRouterButton = ({
                             },
                         }}
                     >
-                        {isWaitingForConfirmation ? (
+                        {pending ? (
+                            <CircularProgress sx={{ color: "text.disabled" }} variant="indeterminate" />
+                        ) : isWaitingForConfirmation ? (
                             <BugCountdownSpinner duration={3000} />
                         ) : icon ? (
                             <StyledBugDynamicIcon color={iconColor} iconName={icon} />

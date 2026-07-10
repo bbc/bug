@@ -30,6 +30,8 @@ export default {
         number: 1,
         icon: "MusicNote",
         iconColor: "#ffffff",
+        buttonColor: null,
+        pending: false,
         iconSize: "medium",
         selected: false,
         locked: false,
@@ -62,6 +64,15 @@ export default {
             control: "color",
             description: "The color of the icon.",
             table: { type: { summary: "string" } },
+        },
+        buttonColor: {
+            control: "color",
+            description: "Optional override for the router button background color.",
+            table: { type: { summary: "string" } },
+        },
+        pending: {
+            description: "Shows a loading spinner and prevents clicks while actions are in progress.",
+            table: { type: { summary: "boolean" }, defaultValue: { summary: false } },
         },
         iconSize: {
             options: ["small", "medium"],
@@ -105,4 +116,17 @@ export const Default = {
             <BugRouterButton {...args} />
         </div>
     ),
+};
+
+export const CustomButtonColor = {
+    args: {
+        buttonColor: "#005f73",
+        selected: false,
+    },
+};
+
+export const Pending = {
+    args: {
+        pending: true,
+    },
 };
