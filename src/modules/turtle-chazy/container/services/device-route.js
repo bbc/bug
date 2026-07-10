@@ -2,6 +2,7 @@
 const turtleWebApi = require("@utils/turtle-webapi");
 const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
+const logger = require("@core/logger")(module);
 
 module.exports = async (destinationDevice, destinationIndex, sourceDevice, sourceIndex) => {
 
@@ -9,17 +10,22 @@ module.exports = async (destinationDevice, destinationIndex, sourceDevice, sourc
     try {
         config = await configGet();
         if (!config) {
-            throw new Error();
+            throw new Error("missing config");
         }
     } catch (error) {
-        logger.error(`device-route: failed to fetch config`);
-        return false;
+        logger.error(`failed to fetch config: ${error.message}`);
+        throw new Error("failed to fetch config");
     }
 
     const command = ["SET", "DANTE", "DEV", destinationDevice, "AUDIO", "RXCHN", destinationIndex, "SOURCE", sourceDevice, "CHN", sourceIndex];
 
     // we get no usable response from the box, so we just assume it's worked
-    await turtleWebApi.command(config.address, command);
+    try {
+        await turtleWebApi.command(config.address, command);
+    } catch (error) {
+        logger.error(`failed to apply route command: ${error.message}`);
+        throw new Error("failed to apply route command");
+    }
 
     const routesCollection = await mongoCollection("routes");
     const sourcesCollection = await mongoCollection("sources");
@@ -29,7 +35,8 @@ module.exports = async (destinationDevice, destinationIndex, sourceDevice, sourc
     const sourceDocument = await sourcesCollection.findOne({ deviceId: sourceDevice });
     const routeDocument = await routesCollection.findOne({ deviceId: destinationDevice });
     if (!sourceDocument || !routeDocument || !destinationDocument) {
-        return false;
+        logger.error(`missing source, destination, or route document for route update`);
+        throw new Error("missing source, destination, or route document for route update");
     }
 
     const route = {
@@ -42,6 +49,11 @@ module.exports = async (destinationDevice, destinationIndex, sourceDevice, sourc
 
     const result = await routesCollection.updateOne({ deviceId: destinationDevice, "routes.destinationIndex": destinationIndex },
         { $set: { "routes.$": route } })
+
+    if (!result?.matchedCount) {
+        logger.error(`route update target not found for destination ${destinationDevice} channel ${destinationIndex}`);
+        throw new Error("route update target not found");
+    }
 
     return true;
 };
