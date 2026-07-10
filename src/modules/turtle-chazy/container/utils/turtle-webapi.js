@@ -1,5 +1,6 @@
 "use strict";
 const axios = require("axios");
+const logger = require("@core/logger")(module);
 
 const REQUEST_TIMEOUT_MS = 2500;
 
@@ -15,9 +16,9 @@ const request = async (config) => {
         });
     } catch (error) {
         if (error.code === "ECONNABORTED") {
-            console.log("Request timed out");
+            logger.warning("Request timed out");
         } else {
-            console.log("Request failed:", error.message);
+            logger.warning(`Request failed: ${error.message}`);
         }
         throw error;
     }

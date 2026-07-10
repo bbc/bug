@@ -1,12 +1,13 @@
 "use strict";
 const turtleWebApi = require("./turtle-webapi");
 const mongoCollection = require("@core/mongo-collection");
+const logger = require("@core/logger")(module);
 
 module.exports = async ({ address, uiPort }) => {
 
     const response = await turtleWebApi.get("cgi-bin/getjson.cgi?json=dante", { address });
     const devices = response?.dante ?? [];
-    console.log(`fetch-devices: found ${devices.length} device(s)`);
+    logger.info(`found ${devices.length} device(s)`);
 
     const devicesCollection = await mongoCollection("devices");
     const sourcesCollection = await mongoCollection("sources");

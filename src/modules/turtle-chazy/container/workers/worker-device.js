@@ -7,6 +7,7 @@ const mongoDb = require("@core/mongo-db");
 const fetchDevices = require("@utils/fetch-devices");
 const mongoCollection = require("@core/mongo-collection");
 const mongoCreateIndex = require("@core/mongo-createindex");
+const logger = require("@core/logger")(module);
 
 parentPort.postMessage({
     restartDelay: 10000,
@@ -27,7 +28,7 @@ const main = async () => {
     await mongoCreateIndex(routesCollection, "timestamp", { expireAfterSeconds: 60 });
 
     // Kick things off
-    console.log(`worker-device: connecting to controller ...`);
+    logger.debug("connecting to controller ...");
 
     // use an infinite loop
     while (true) {
