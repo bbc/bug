@@ -36,6 +36,7 @@ const get = async (path, { address }) => {
 
 const post = async (path, { address }, jsonBody) => {
     const url = `http://${address}/${path}`;
+    logger.info(`Sending POST request to Turtle WebAPI: ${url} with body: ${JSON.stringify(jsonBody)}`);
     const response = await request({ method: "post", url, data: jsonBody });
     return response.status === 200;
 };
@@ -43,6 +44,7 @@ const post = async (path, { address }, jsonBody) => {
 const command = async (address, commandArray) => {
     const commandString = encodeURIComponent(commandArray.join(" "));
     const url = `http://${address}/cgi-bin/submit?cmd=${commandString}`;
+    logger.info(`Sending command to Turtle WebAPI: ${commandArray.join(" ")}`);
     const response = await request({ method: "get", url });
     return response.data;
 };
