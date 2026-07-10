@@ -5,7 +5,5 @@
 - add screenshot
 - add panel status (default/success etc)
 - refactor services with try/catch/throw
-- refactor workers to improve error handling
-- new worker design using tasks
 - add heartbeat status check and worker task
 - add tests
