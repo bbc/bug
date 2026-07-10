@@ -21,7 +21,7 @@ describe("sources-list", () => {
         const routesDoc = {
             deviceId: "dest-a",
             routes: [
-                { destinationIndex: 5, sourceDevice: "src-a", sourceChannel: "Input 2", sourceIndex: 2 },
+                { destinationIndex: 5, sourceDevice: "src-a", sourceChannel: "Input 2", sourceIndex: 2, status: "IN_PROGRESS" },
             ],
         };
 
@@ -51,7 +51,7 @@ describe("sources-list", () => {
         const result = await service("-", "dest-a", 5);
 
         expect(result.devices[0]).toMatchObject({ label: "src-a", selected: true });
-        expect(result.sources[0]).toMatchObject({ index: 1, selected: false });
-        expect(result.sources[1]).toMatchObject({ index: 2, selected: true });
+        expect(result.sources[0]).toMatchObject({ index: 1, selected: false, status: null });
+        expect(result.sources[1]).toMatchObject({ index: 2, selected: true, status: "IN_PROGRESS" });
     });
 });

@@ -17,6 +17,7 @@ module.exports = async (destinationDevice, destinationIndex, sourceDevice, sourc
         throw new Error("failed to fetch config");
     }
 
+    logger.info(`applying route: ${sourceDevice} channel ${sourceIndex} -> ${destinationDevice} channel ${destinationIndex}`);
     const command = ["SET", "DANTE", "DEV", destinationDevice, "AUDIO", "RXCHN", destinationIndex, "SOURCE", sourceDevice, "CHN", sourceIndex];
 
     // we get no usable response from the box, so we just assume it's worked
@@ -44,13 +45,25 @@ module.exports = async (destinationDevice, destinationIndex, sourceDevice, sourc
         destinationIndex: destinationIndex,
         sourceDevice: sourceDevice,
         sourceChannel: sourceDocument?.labels[sourceIndex - 1]?.name,
-        sourceIndex: sourceIndex
+        sourceIndex: sourceIndex,
+        status: "IN_PROGRESS",
     }
 
-    const result = await routesCollection.updateOne({ deviceId: destinationDevice, "routes.destinationIndex": destinationIndex },
-        { $set: { "routes.$": route } })
+    const lastUpdated = new Date();
 
-    if (!result?.matchedCount) {
+    const result = await routesCollection.updateOne({ deviceId: destinationDevice, "routes.destinationIndex": destinationIndex },
+        {
+            $set: {
+                "routes.$": route,
+                timestamp: lastUpdated,
+                lastUpdated,
+                skipNextWorkerUpdate: true,
+            },
+        })
+
+    if (result.matchedCount > 0) {
+        logger.info(`route update successful for destination ${destinationDevice} channel ${destinationIndex}`);
+    } else {
         logger.error(`route update target not found for destination ${destinationDevice} channel ${destinationIndex}`);
         throw new Error("route update target not found");
     }

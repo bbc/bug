@@ -58,9 +58,8 @@ module.exports = async (destinationDevice = null) => {
     // then get channels for this destination device
     destination?.labels?.forEach((eachDestination, eachIndex) => {
 
-        let status = eachDestination.status;
-
         let matchingRoute = mappedRoutes?.[eachDestination.index];
+        let status = matchingRoute?.status ?? eachDestination.status;
 
         // if the destination is subscribed to itself we don't mind if the source is missing
         if (status !== "SUBSCRIBE_SELF" && matchingRoute?.sourceDevice && matchingRoute?.sourceIndex === null) {

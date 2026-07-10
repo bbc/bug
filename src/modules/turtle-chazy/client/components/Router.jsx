@@ -38,13 +38,13 @@ export default function Router({ panelId, editMode = false, sourceGroup = "-", d
             destinationDevice: destinationGroup,
             destinationIndex: selectedDestinationIndex,
         },
-        interval: editMode ? 5000 : 2000,
+        interval: 2000,
         forceRefresh: sourceForceRefresh,
     });
 
     const destinationButtons = useApiPoller({
         url: `/container/${panelId}/destinations/${destinationGroup ?? "-"}`,
-        interval: 5000,
+        interval: 2000,
         forceRefresh: destinationForceRefresh,
     });
 

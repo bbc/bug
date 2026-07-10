@@ -62,7 +62,11 @@ describe("device-route", () => {
                         sourceDevice: "src-a",
                         sourceChannel: "Input 2",
                         sourceIndex: 2,
+                        status: "IN_PROGRESS",
                     },
+                    timestamp: expect.any(Date),
+                    lastUpdated: expect.any(Date),
+                    skipNextWorkerUpdate: true,
                 },
             }
         );

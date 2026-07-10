@@ -5,6 +5,8 @@ const mongoCollection = require("@core/mongo-collection");
 const logger = require("@core/logger")(module);
 
 module.exports = async ({ workerData }) => {
+    logger.debug("polling devices ...");
+    const pollStartedAt = new Date();
     const response = await turtleWebApi.get("cgi-bin/getjson.cgi?json=dante", { address: workerData.address });
     const devices = response?.dante ?? [];
     logger.info(`found ${devices.length} device(s)`);
@@ -73,8 +75,49 @@ module.exports = async ({ workerData }) => {
                 "status": c.status,
             };
         });
-        await routesCollection.replaceOne(
-            { "deviceId": eachDevice.name }, { deviceId: eachDevice.name, "routes": routes, "timestamp": new Date() }, { "upsert": true }
+        const existingRoutesDocument = await routesCollection.findOne(
+            { "deviceId": eachDevice.name },
+            { projection: { _id: 1, skipNextWorkerUpdate: 1 } }
+        );
+
+        const updateFilter = existingRoutesDocument
+            ? {
+                "deviceId": eachDevice.name,
+                $or: [
+                    { lastUpdated: { $exists: false } },
+                    { lastUpdated: { $lte: pollStartedAt } },
+                ],
+            }
+            : { "deviceId": eachDevice.name };
+
+        const updateOptions = existingRoutesDocument ? undefined : { "upsert": true };
+
+        if (existingRoutesDocument?.skipNextWorkerUpdate) {
+            await routesCollection.updateOne(
+                updateFilter,
+                {
+                    $set: {
+                        deviceId: eachDevice.name,
+                        skipNextWorkerUpdate: false,
+                        "timestamp": new Date(),
+                    },
+                },
+                updateOptions
+            );
+            continue;
+        }
+
+        await routesCollection.updateOne(
+            updateFilter,
+            {
+                $set: {
+                    deviceId: eachDevice.name,
+                    "routes": routes,
+                    skipNextWorkerUpdate: false,
+                    "timestamp": new Date(),
+                },
+            },
+            updateOptions
         );
     }
 

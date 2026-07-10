@@ -1,6 +1,7 @@
 import { useBugConfirmDialog } from "@core/BugConfirmDialog";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import BugRouterButton from "@core/BugRouterButton";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import WarningIcon from "@mui/icons-material/Warning";
 import { Box, Typography } from "@mui/material";
 import { useAlert } from "@utils/Snackbar";
@@ -190,8 +191,12 @@ export default function RouterButton({
             statusIcon = <WarningIcon color="error" />;
         } else if (button.status === "OK") {
             statusIcon = <WarningIcon color="success" />;
+        } else if (button.status === "IN_PROGRESS") {
+            statusIcon = <HourglassEmptyIcon color="warning" />;
         }
     }
+
+    const isPending = buttonType === "source" && button.status === "IN_PROGRESS";
 
     return (
         <BugRouterButton
@@ -206,6 +211,7 @@ export default function RouterButton({
             number={button.index}
             selected={selected}
             disabled={disabled}
+            pending={isPending}
             editMode={editMode}
             locked={button.isLocked}
             wide

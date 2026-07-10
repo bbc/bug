@@ -30,7 +30,7 @@ const main = async () => {
         logger.debug("starting device task worker ...");
 
         workerTaskManager({
-            tasks: [{ name: "devices", seconds: 5 }, { name: "heartbeat", seconds: 5 }],
+            tasks: [{ name: "devices", seconds: 3 }, { name: "heartbeat", seconds: 5 }],
             context: { workerData },
             baseDir: __dirname,
         });
