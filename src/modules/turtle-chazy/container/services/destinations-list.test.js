@@ -1,16 +1,20 @@
 const mockMongoCollection = jest.fn();
+const mockConfigGet = jest.fn();
 
 jest.mock("@core/mongo-collection", () => (...args) => mockMongoCollection(...args));
+jest.mock("@core/config-get", () => (...args) => mockConfigGet(...args));
+jest.mock("@core/logger", () => () => ({ error: jest.fn(), info: jest.fn() }));
 
 const service = require("./destinations-list");
 
 describe("destinations-list", () => {
     beforeEach(() => {
         mockMongoCollection.mockReset();
+        mockConfigGet.mockResolvedValue({});
     });
 
     test("defaults to first destination device and marks missing route status", async () => {
-        const devices = [{ name: "dest-a" }, { name: "dest-b" }];
+        const devices = [{ name: "dest-a", active: true }, { name: "dest-b", active: true }];
         const destinationDoc = {
             deviceId: "dest-a",
             labels: [
@@ -67,7 +71,7 @@ describe("destinations-list", () => {
     });
 
     test("prefers route status when present", async () => {
-        const devices = [{ name: "dest-a" }];
+        const devices = [{ name: "dest-a", active: true }];
         const destinationDoc = {
             deviceId: "dest-a",
             labels: [{ index: 1, name: "Output 1", status: "OK" }],

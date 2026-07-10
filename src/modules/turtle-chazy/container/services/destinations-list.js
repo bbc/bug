@@ -1,38 +1,39 @@
 "use strict";
 
-// const configGet = require("@core/config-get");
+const configGet = require("@core/config-get");
 const mongoCollection = require("@core/mongo-collection");
-// const logger = require("@core/logger")(module);
+const logger = require("@core/logger")(module);
 
-module.exports = async (destinationDevice = null) => {
-    // let config;
-    // try {
-    //     config = await configGet();
-    //     if (!config) {
-    //         throw new Error();
-    //     }
-    // } catch (error) {
-    //     logger.error(`sources-list: failed to fetch config`);
-    //     return false;
-    // }
+module.exports = async (destinationDeviceName = null) => {
+    let config;
+    try {
+        config = await configGet();
+        if (!config) {
+            throw new Error();
+        }
+    } catch (error) {
+        logger.error(`destinations-list: failed to fetch config`);
+        return false;
+    }
 
-    // const icons = config.sourceIcons ? config.sourceIcons : [];
-    // const iconColors = config.sourceIconColors ? config.sourceIconColors : [];
+    const icons = config.destinationIcons ? config.destinationIcons : {};
+    const iconColors = config.destinationIconColors ? config.destinationIconColors : {};
 
     const devicesCollection = await mongoCollection("devices");
     const routesCollection = await mongoCollection("routes");
     const destinationsCollection = await mongoCollection("destinations");
 
     const devices = await devicesCollection.find().collation({ locale: "en", strength: 2 }).sort({ name: 1 }).toArray();
+    let destinationDevice = devices.find((d) => d.name === destinationDeviceName);
 
     // if destinationDevice isn't set, use the first device
     if (!destinationDevice) {
-        destinationDevice = devices[0]?.name;
+        destinationDevice = devices[0];
     }
 
     // now fetch destination and routes
-    const destination = await destinationsCollection.findOne({ deviceId: destinationDevice });
-    const routesDocument = await routesCollection.findOne({ deviceId: destinationDevice });
+    const destination = await destinationsCollection.findOne({ deviceId: destinationDevice.name });
+    const routesDocument = await routesCollection.findOne({ deviceId: destinationDevice.name });
 
     const mappedRoutes = []
     if (routesDocument?.routes) {
@@ -50,13 +51,14 @@ module.exports = async (destinationDevice = null) => {
     devices?.forEach((eachDevice, eachIndex) => {
         outputArray["devices"].push({
             label: eachDevice["name"],
-            selected: eachDevice["name"] === destinationDevice,
+            selected: eachDevice["name"] === destinationDevice.name,
             index: eachIndex,
+            active: eachDevice?.active ?? true,
         });
     });
 
     // then get channels for this destination device
-    destination?.labels?.forEach((eachDestination, eachIndex) => {
+    if (destinationDevice?.active) destination?.labels?.forEach((eachDestination, eachIndex) => {
 
         let matchingRoute = mappedRoutes?.[eachDestination.index];
         let status = matchingRoute?.status ?? eachDestination.status;
@@ -74,9 +76,9 @@ module.exports = async (destinationDevice = null) => {
             sourceChannel: matchingRoute?.sourceChannel ?? null,
             sourceIndex: matchingRoute?.sourceIndex ?? null,
             status: status,
-            deviceName: destinationDevice,
-            // icon: icons[intIndex] ? icons[intIndex] : null,
-            // iconColor: iconColors[intIndex] ? iconColors[intIndex] : "#ffffff",
+            deviceName: destinationDevice.name,
+            icon: icons[destinationDevice.name] && icons[destinationDevice.name][eachDestination.index] ? icons[destinationDevice.name][eachDestination.index] : null,
+            iconColor: iconColors[destinationDevice.name] && iconColors[destinationDevice.name][eachDestination.index] ? iconColors[destinationDevice.name][eachDestination.index] : "#ffffff",
         });
     })
 

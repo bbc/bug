@@ -1,16 +1,20 @@
 const mockMongoCollection = jest.fn();
+const mockConfigGet = jest.fn();
 
 jest.mock("@core/mongo-collection", () => (...args) => mockMongoCollection(...args));
+jest.mock("@core/config-get", () => (...args) => mockConfigGet(...args));
+jest.mock("@core/logger", () => () => ({ error: jest.fn(), info: jest.fn() }));
 
 const service = require("./sources-list");
 
 describe("sources-list", () => {
     beforeEach(() => {
         mockMongoCollection.mockReset();
+        mockConfigGet.mockResolvedValue({});
     });
 
     test("defaults source device and marks selected source by matching route", async () => {
-        const devices = [{ name: "src-a" }, { name: "src-b" }];
+        const devices = [{ name: "src-a", active: true }, { name: "src-b", active: true }];
         const sourceDoc = {
             deviceId: "src-a",
             labels: [

@@ -3,6 +3,7 @@
 "use strict";
 const turtleWebApi = require("@utils/turtle-webapi");
 const configGet = require("@core/config-get");
+const configPutViaCore = require("@core/config-putviacore");
 const mongoCollection = require("@core/mongo-collection");
 const logger = require("@core/logger")(module);
 
@@ -78,7 +79,41 @@ module.exports = async (deviceName, newName) => {
         }
     }
 
+    // update button icon and color settings for all button types
+    let configUpdated = false;
+
+    for (let buttonType of ["source", "destination"]) {
+        // update icons
+        const iconVar = `${buttonType}Icons`;
+        if (config[iconVar] && config[iconVar][deviceName]) {
+            config[iconVar][newName] = config[iconVar][deviceName];
+            delete config[iconVar][deviceName];
+            configUpdated = true;
+            logger.info(`updated ${buttonType} icons for ${deviceName} -> ${newName}`);
+        }
+
+        // update colors
+        const colorVar = `${buttonType}IconColors`;
+        if (config[colorVar] && config[colorVar][deviceName]) {
+            config[colorVar][newName] = config[colorVar][deviceName];
+            delete config[colorVar][deviceName];
+            configUpdated = true;
+            logger.info(`updated ${buttonType} icon colors for ${deviceName} -> ${newName}`);
+        }
+    }
+
+    if (configUpdated) {
+        try {
+            await configPutViaCore(config);
+            logger.info(`button icon settings saved for ${deviceName} -> ${newName}`);
+        } catch (error) {
+            logger.error(`failed to save button icon settings: ${error.message}`);
+            throw new Error("failed to save button icon settings");
+        }
+    }
+
     return true;
+
 };
 
 
