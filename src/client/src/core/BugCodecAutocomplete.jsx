@@ -6,7 +6,7 @@ export default function BugCodecAutocomplete({
     apiUrl = "",
     capability = "",
     disabled = false,
-    label = "Codec Name",
+    label = "Select Codec",
     mockApiData = null,
     onChange,
     portValue = "",
@@ -88,6 +88,7 @@ export default function BugCodecAutocomplete({
                             sx={{
                                 paddingLeft: "8px",
                                 opacity: 0.5,
+                                fontSize: "0.8rem",
                                 whiteSpace: "nowrap",
                             }}
                         >
@@ -112,7 +113,6 @@ export default function BugCodecAutocomplete({
                     placeholder={label}
                     variant={variant}
                     sx={{
-                        backgroundColor: variant === "standard" ? "inherit" : "rgba(255, 255, 255, 0.05)",
                         "& .MuiInputBase-root": {
                             borderRadius: 0,
                         },
