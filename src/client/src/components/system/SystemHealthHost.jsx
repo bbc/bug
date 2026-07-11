@@ -1,6 +1,7 @@
 import BugDetailsTable from "@core/BugDetailsTable";
 import BugGauge from "@core/BugGauge";
 import BugLoading from "@core/BugLoading";
+import BugNoData from "@core/BugNoData";
 import { useApiPoller } from "@hooks/ApiPoller";
 import { Grid } from "@mui/material";
 import TimeAgo from "javascript-time-ago";
@@ -17,6 +18,16 @@ export default function SystemHealthHost({ stats }) {
 
     if (health.status === "loading" || health.status === "idle") {
         return <BugLoading />;
+    }
+
+    if (!health.data) {
+        return (
+            <BugNoData
+                title="No host health data"
+                message="Unable to retrieve host health information"
+                showConfigButton={false}
+            />
+        );
     }
 
     const upTime = health.data.uptime
