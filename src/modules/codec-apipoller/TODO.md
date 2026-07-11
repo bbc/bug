@@ -3,6 +3,4 @@
 - add screenshot
 - add panel status (default/success etc)
 - check module status (dev/beta/stable etc)
-- refactor workers to improve error handling
-- remove filename from all log actions......
 - add tests
