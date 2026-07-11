@@ -20,6 +20,7 @@ docker build -f ./Dockerfile.test -t bug-module-test ../../../.. && docker run -
 - Rule: keep worker restart checks aligned to real config dependencies.
 - Rule: default to simple, readable implementations over maximum efficiency; only optimize for performance when there is a clear, measured requirement.
 - Rule: prefer the simplest safe fix first, with minimal code changes.
+- Rule: prefer inlined one-off literal values in module runtime files instead of file-level constants when the value is used once and naming does not add clarity.
 - Rule: prefer no backward compatibility in new code; avoid aliases/shims/migration layers unless explicitly requested.
 - Rule: never add regression tests for changes unless a task explicitly asks for them.
 
@@ -27,12 +28,14 @@ docker build -f ./Dockerfile.test -t bug-module-test ../../../.. && docker run -
 
 - Rule: in module containers, prefer service-layer throw-on-error and keep routes thin; let express-async-handler propagate thrown/rejected errors via middleware instead of route-level `{ error }` handling.
 - Rule: in module containers, services should return raw payloads (object/array/value), not `{ data: ... }`; route handlers should wrap service results in API response envelopes.
+- Rule: status-check services are the exception to the general throw-on-error pattern; they should catch operational errors, log them, and return `[]` instead of throwing.
 
 ### Worker Architecture
 
 - Rule: in Cisco SG/CBS module migrations, keep non-SNMP workers (for example password-expiry SSH checks and DHCP-source polling) as separate workers; do not fold them into the SNMP task worker.
 - Rule: across all modules, separate workers by connection method (for example SNMP, SSH, HTTP/API, RouterOS) and keep them as distinct workers.
 - Rule: across all modules, separate capability-handling workers (for example DHCP/leases discovery) from core telemetry/control workers; do not fold capability workers into unrelated polling workers.
+- Rule: prefer worker scheduling via `@core/worker-taskmanager` with task handlers in `workers/tasks/` rather than manual infinite loops in worker files.
 - Rule: when a service manually updates data that a polling worker also writes, stamp the manual write with `lastUpdated` and have the worker skip DB updates when `lastUpdated` is newer than the poll start time.
 
 ### Logging Conventions

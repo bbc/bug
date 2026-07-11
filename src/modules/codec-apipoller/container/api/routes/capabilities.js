@@ -1,20 +1,16 @@
 const express = require("express");
 const capabilityCodecDb = require("@services/capability-codecdb");
+const asyncHandler = require("express-async-handler");
 const route = express.Router();
 
-route.get("/codec-db", async function (req, res, next) {
-    try {
+route.get(
+    "/codec-db",
+    asyncHandler(async function (req, res) {
         res.json({
             status: "success",
             data: await capabilityCodecDb(),
         });
-    } catch (error) {
-        console.log(error);
-        res.json({
-            status: "error",
-            message: "Failed to get codecdb capability result",
-        });
-    }
-});
+    })
+);
 
 module.exports = route;
