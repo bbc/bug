@@ -5,22 +5,34 @@ import AxiosGet from "@utils/AxiosGet";
 import React from "react";
 
 export default function CodecList({ panelId }) {
-    const [zones, setZones] = React.useState([]);
+    const [zoneOptions, setZoneOptions] = React.useState([]);
     const [capabilities, setCapabilities] = React.useState([]);
     const [deviceTags, setDeviceTags] = React.useState([]);
 
-    const fetchOptions = async (url, setter) => {
-        const response = await AxiosGet(url);
-        if (response) {
-            setter(response);
-        }
-    };
-
     React.useEffect(() => {
-        fetchOptions(`/container/${panelId}/codec/getoptions/zones`, setZones);
+        let isMounted = true;
+
+        const fetchOptions = async (url, setter) => {
+            try {
+                const response = await AxiosGet(url);
+                if (isMounted) {
+                    setter(Array.isArray(response) ? response : []);
+                }
+            } catch {
+                if (isMounted) {
+                    setter([]);
+                }
+            }
+        };
+
+        fetchOptions(`/container/${panelId}/codec/getoptions/zone`, setZoneOptions);
         fetchOptions(`/container/${panelId}/codec/getoptions/capabilities`, setCapabilities);
-        fetchOptions(`/container/${panelId}/codec/getoptions/devicetags`, setDeviceTags);
-    }, []);
+        fetchOptions(`/container/${panelId}/codec/getoptions/device.tags`, setDeviceTags);
+
+        return () => {
+            isMounted = false;
+        };
+    }, [panelId]);
 
     return (
         <>
@@ -36,15 +48,15 @@ export default function CodecList({ panelId }) {
                         content: (item) => item.name,
                     },
                     {
-                        title: "Zones",
+                        title: "Zone",
                         width: "20%",
                         minWidth: 110,
-                        field: "zones",
+                        field: "zone",
                         content: (item) => {
-                            return item?.zones.map((eachItem) => <Chip key={eachItem} label={eachItem} />);
+                            return item?.zone ? <Chip key={item.zone} label={item.zone} /> : null;
                         },
                         filterType: "multidropdown",
-                        filterOptions: zones.map((item) => {
+                        filterOptions: zoneOptions.map((item) => {
                             return { id: item, label: item };
                         }),
                     },
@@ -53,7 +65,7 @@ export default function CodecList({ panelId }) {
                         minWidth: 110,
                         field: "capabilities",
                         content: (item) => {
-                            return item?.capabilities.map((eachItem) => <Chip key={eachItem} label={eachItem} />);
+                            return item?.capabilities?.map((eachItem) => <Chip key={eachItem} label={eachItem} />);
                         },
                         filterType: "multidropdown",
                         filterOptions: capabilities.map((item) => {
@@ -83,9 +95,9 @@ export default function CodecList({ panelId }) {
                         title: "Device Tags",
                         minWidth: 110,
                         content: (item) => {
-                            return item?.devicetags.map((eachItem) => <Chip key={eachItem} label={eachItem} />);
+                            return item?.device?.tags?.map((eachItem) => <Chip key={eachItem} label={eachItem} />);
                         },
-                        field: "devicetags",
+                        field: "device.tags",
                         filterType: "multidropdown",
                         filterOptions: deviceTags.map((item) => {
                             return { id: item, label: item };
@@ -97,7 +109,7 @@ export default function CodecList({ panelId }) {
                         content: (item) => {
                             return (
                                 <>
-                                    {item.devicemanufacturer} {item.devicemodel}
+                                    {item?.device?.manufacturer || "-"} {item?.device?.model || ""}
                                 </>
                             );
                         },
