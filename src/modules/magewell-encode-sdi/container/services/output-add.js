@@ -5,6 +5,7 @@ const localdataSet = require("@services/localdata-set");
 
 function buildDefaultOutput(nextId) {
     return {
+        // common fields
         id: nextId,
         type: 133,
         name: `output-${nextId + 1}`,
@@ -13,8 +14,30 @@ function buildDefaultOutput(nextId) {
         port: 5001 + nextId,
         "net-mode": 1,
         "stream-index": 0,
+        ttl: 64,
         audio: 0,
+        "audio-streams": 1,
         "is-custom-pid": 0,
+        opt: 0,
+        "is-media-hub": 0,
+        // SRT (type 120 / 121) fields
+        latency: 120,
+        bandwidth: 25,
+        "conn-timeout": 3000,
+        "retry-duration": 10000,
+        "max-connections": 1,
+        aes: 0,
+        "aes-word": "",
+        "stream-id": "",
+        mtu: 1496,
+        token: "",
+        "event-data": "",
+        // UDP / RTP (type 132 / 133) fields
+        "pmt-pid": 0,
+        "pcr-pid": 0,
+        "video-pid": 0,
+        "audio-pid": 0,
+        "audio-pids": [],
     };
 }
 

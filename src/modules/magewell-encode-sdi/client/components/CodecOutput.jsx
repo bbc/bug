@@ -1,3 +1,4 @@
+import BugCodecAutocomplete from "@core/BugCodecAutocomplete";
 import BugDetailsCard from "@core/BugDetailsCard";
 import BugPasswordTextField from "@core/BugPasswordTextField";
 import BugSelect from "@core/BugSelect";
@@ -26,6 +27,15 @@ export default function CodecOutput({
         { id: 132, label: "UDP" },
         { id: 133, label: "RTP" },
     ];
+
+    const capability =
+        outputData?.["type"] === 120
+            ? "srt"
+            : outputData?.["type"] === 133
+              ? "rtp"
+              : outputData?.["type"] === 132
+                ? "udp"
+                : null;
 
     const supportedType = [120, 121, 132, 133].includes(outputData?.["type"]);
     const isSRT = [120, 121].includes(outputData?.["type"]);
@@ -85,13 +95,31 @@ export default function CodecOutput({
                     name: "Output Type",
                     value: (
                         <BugSelect
-                            disabled={!supportedType}
                             value={outputData?.["type"] ?? ""}
                             onChange={(event) => onOutputChange({ type: parseInt(event.target.value, 10) })}
                             options={outputTypeOptions}
                         ></BugSelect>
                     ),
                 },
+                [120, 133, 132].includes(outputData?.["type"]) &&
+                    showCodecDropdown && {
+                        name: "Codec",
+                        value: (
+                            <BugCodecAutocomplete
+                                addressValue={outputData?.url}
+                                portValue={outputData?.port}
+                                apiUrl={`/container/${panelId}/codecdb`}
+                                capability={capability}
+                                onChange={(event, codec) => {
+                                    onOutputChange({
+                                        url: codec.address,
+                                        port: codec.port,
+                                    });
+                                }}
+                            />
+                        ),
+                    },
+
                 !isSRTListener &&
                     supportedType && {
                         name: "IP Address",

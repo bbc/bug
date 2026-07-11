@@ -3,6 +3,7 @@ import BugToolbarWrapper from "@core/BugToolbarWrapper";
 import { useApiPoller } from "@hooks/ApiPoller";
 import { usePanelToolbarEventTrigger } from "@hooks/PanelToolbarEvent";
 import CheckIcon from "@mui/icons-material/Check";
+import LaunchIcon from "@mui/icons-material/Launch";
 import SaveIcon from "@mui/icons-material/Save";
 import UndoIcon from "@mui/icons-material/Undo";
 import { Button, Divider, ListItemIcon, ListItemText, MenuItem } from "@mui/material";
@@ -24,6 +25,14 @@ export default function Toolbar({ panelId, ...props }) {
 
     const isPending = pending.status === "success" && pending.data;
     const hasCritical = panel.data._status && panel.data._status.filter((x) => x.type === "critical").length > 0;
+
+    const handleLaunchClicked = async (event, item) => {
+        if (panelConfig?.data?.address) {
+            const url = `http://${panelConfig.data.address}`;
+            const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+            if (newWindow) newWindow.opener = null;
+        }
+    };
 
     const handleCancelClicked = async (event, item) => {
         if (await AxiosCommand(`/container/${panelId}/device/revert`)) {
@@ -104,6 +113,13 @@ export default function Toolbar({ panelId, ...props }) {
             <MenuItem key="showadvanced" onClick={handleShowAdvancedClicked}>
                 <ListItemIcon>{panelConfig?.data?.showAdvanced ? <CheckIcon fontSize="small" /> : null}</ListItemIcon>
                 <ListItemText primary="Show Advanced" />
+            </MenuItem>,
+            <Divider key="divider" />,
+            <MenuItem key="launch" onClick={handleLaunchClicked}>
+                <ListItemIcon>
+                    <LaunchIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Launch device webpage" />
             </MenuItem>,
         ];
     };

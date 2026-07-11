@@ -13,6 +13,7 @@ const localdataRouter = require("@routes/localdata");
 const outputRouter = require("@routes/output");
 const deviceRouter = require("@routes/device");
 const thumbRouter = require("@routes/thumb");
+const codecDbRouter = require("@routes/codecdb");
 
 const heapInfo = require("@core/heap-info");
 
@@ -40,6 +41,7 @@ app.use("/api/localdata", localdataRouter);
 app.use("/api/output", outputRouter);
 app.use("/api/device", deviceRouter);
 app.use("/api/thumb", thumbRouter);
+app.use("/api/codecdb", codecDbRouter);
 
 app.use("*", defaultRouter);
 
