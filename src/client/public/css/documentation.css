@@ -1884,7 +1884,7 @@ html {
 body {
     margin: 0;
     background: #181818;
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-family: "Inter", "Helvetica", "Arial", sans-serif;
 }
 
 .swagger-ui .opblock {

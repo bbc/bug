@@ -1,7 +1,7 @@
 import { alpha } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 const defaultTheme = createTheme();
-const selectedFont = "Roboto";
+const selectedFont = "Inter";
 
 const theme = (selectedTheme = "dark") => {
     const getPalette = (selectedTheme) => {
