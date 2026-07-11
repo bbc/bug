@@ -25,6 +25,13 @@ module.exports = async ({ workerData }) => {
         }
 
         await mongoSingle.set("codecs", response.data, 600);
+        await mongoSingle.set(
+            "codecsStatus",
+            {
+                lastUpdated: new Date(),
+            },
+            600
+        );
         logger.debug(`stored ${response.data.length} codec records`);
     } catch (error) {
         logger.error(error.stack || error.message || error);

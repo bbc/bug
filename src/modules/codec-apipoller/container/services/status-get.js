@@ -1,11 +1,13 @@
 "use strict";
 
 const statusCheckMongoSingle = require("@core/status-checkmongosingle");
+const statusGetDefault = require("@services/status-getdefault");
 const logger = require("@core/logger")(module);
 
 module.exports = async () => {
     try {
         return [].concat(
+            await statusGetDefault(),
             await statusCheckMongoSingle({
                 collectionName: "codecs",
                 message: ["There is no recent codec data for this service.", "Check your settings."],

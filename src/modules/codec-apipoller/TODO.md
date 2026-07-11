@@ -1,2 +1,1 @@
-- add panel status (default/success etc)
 - add tests
