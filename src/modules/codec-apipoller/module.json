@@ -12,6 +12,7 @@
     "needsContainer": true,
     "devmounts": ["api", "services", "workers"],
     "protectedRoutes": ["config"],
+    "memory": "256",
     "defaultconfig": {
         "id": "",
         "order": 0,
