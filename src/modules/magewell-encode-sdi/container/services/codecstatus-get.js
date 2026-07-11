@@ -123,7 +123,7 @@ module.exports = async () => {
     // main stream
     statusBlocks = codecStatus?.codec?.["main-stream"] ? [...statusBlocks, [
         {
-            label: "Main Encoder",
+            label: "Main Encode",
             state: hasInputVideo ? "success" : "inactive",
             items: [{ "size": "large", value: mainVideoBitrate?.value.toString() }, { "size": "small", value: mainVideoBitrate?.label }, { "size": "medium", value: formatEncodeResolution(mainStream)?.toString() }],
         },
@@ -139,7 +139,7 @@ module.exports = async () => {
     // sub stream
     statusBlocks = codecStatus?.codec?.["sub-stream"] ? [...statusBlocks, [
         {
-            label: "Sub Encoder",
+            label: "Sub Encode",
             state: subStreamEnabled ? "success" : "inactive",
             items: [{ "size": "large", value: subVideoBitrate?.value.toString() }, { "size": "small", value: subVideoBitrate?.label }, { "size": "medium", value: formatEncodeResolution(subStream)?.toString() }],
         },

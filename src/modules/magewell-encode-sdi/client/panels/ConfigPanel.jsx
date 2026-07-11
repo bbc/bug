@@ -1,5 +1,5 @@
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
-import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
+import BugConfigFormPanelSelect from "@core/BugConfigFormPanelSelect";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import BugLoading from "@core/BugLoading";
@@ -80,18 +80,16 @@ export default function ConfigPanel() {
                     />
                 </Grid>
 
-                <Grid size={{ xs: 12, lg: 6 }}>
-                    <BugConfigFormPasswordTextField
-                        name="password"
+                <Grid size={{ xs: 12, md: 12 }}>
+                    <BugConfigFormPanelSelect
+                        name="codecSource"
+                        label="Codec Database Source"
                         control={control}
-                        rules={{ required: true }}
+                        defaultValue={panelConfig.data.codecSource ?? ""}
+                        error={errors.codecSource}
+                        helperText="Select a source of codec information"
                         fullWidth
-                        error={errors.password}
-                        validationResult={validationResults.password}
-                        defaultValue={panelConfig.data.password}
-                        supportsValidation
-                        onChange={(event) => validateServer(event, "username", ["address", "password"])}
-                        label="Password"
+                        capability="codec-db"
                     />
                 </Grid>
             </BugConfigWrapper>

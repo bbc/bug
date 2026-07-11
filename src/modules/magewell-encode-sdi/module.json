@@ -10,16 +10,9 @@
     "license": "Apache-2.0",
     "status": "development",
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "services",
-        "workers",
-        "utils"
-    ],
+    "devmounts": ["api", "services", "workers", "utils"],
     "memory": 200,
-    "protectedRoutes": [
-        "config"
-    ],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "needsConfigured": true,
@@ -30,6 +23,7 @@
         "username": "",
         "password": "",
         "address": "",
-        "enabled": false
+        "enabled": false,
+        "codecSource": ""
     }
 }
