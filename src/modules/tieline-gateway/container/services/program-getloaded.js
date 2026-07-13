@@ -25,6 +25,7 @@ module.exports = async () => {
         for (const eachGroup of groups) {
             let groupConnected = true;
             let groupAnyConnected = false;
+            let groupAnyConnecting = false;
 
             const groupConnections = Array.isArray(eachGroup.connections) ? eachGroup.connections : [];
 
@@ -40,10 +41,12 @@ module.exports = async () => {
 
                 groupConnected = groupConnected && eachConnection["_connected"];
                 groupAnyConnected = groupAnyConnected || eachConnection["_connected"];
+                groupAnyConnecting = groupAnyConnecting || eachConnection["_connecting"];
             }
 
             eachGroup["_connected"] = groupConnected;
             eachGroup["_anyconnected"] = groupAnyConnected;
+            eachGroup["_anyconnecting"] = groupAnyConnecting;
             deviceConnected = deviceConnected && groupConnected;
         }
 

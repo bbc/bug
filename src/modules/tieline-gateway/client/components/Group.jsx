@@ -89,18 +89,18 @@ export default function Group({ group, panelId, onChange }) {
             <BugCard fullHeight>
                 <CardHeader
                     action={
-                        <>
+                        <Box sx={{ display: "flex", gap: "8px" }}>
                             {group.connections.length > 1 && !group._anyconnected && (
                                 <BugApiButton onClick={handleGroupConnect} variant="outlined" color="success">
                                     Connect All
                                 </BugApiButton>
                             )}
-                            {group._anyconnected && (
+                            {(group._anyconnected || group._anyconnecting) && (
                                 <BugApiButton onClick={handleGroupDisconnect} variant="outlined" color="error">
                                     Disconnect All
                                 </BugApiButton>
                             )}
-                        </>
+                        </Box>
                     }
                     sx={{
                         borderBottomWidth: "1px",

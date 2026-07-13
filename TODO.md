@@ -31,3 +31,4 @@
 - improve ping validation/address validation in all modules (look at mikrotik-interfaces)
 - use rounding on sparklines to reduce bps noise
 - notifications bell in toolbar shouldn't show with default messages
+- when module is archived give warning
