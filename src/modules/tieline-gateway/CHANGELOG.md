@@ -1,5 +1,13 @@
 ## Changelog
 
+### version 1.0.7
+
+- 2026-07-13: improve codec matching with offset audio ports ([85a0222](https://github.com/bbc/bug/commit/85a0222d202ca95306755faadb6a955156117275))
+- 2026-07-13: refactor codec fetching logic [copilot] ([90a8c45](https://github.com/bbc/bug/commit/90a8c456de3ba53eb5c326c55948af1750ab6ece))
+- 2026-07-13: add quaternary option to group labels ([9c355be](https://github.com/bbc/bug/commit/9c355be76f8649998357df9a82ca8f85358f61ed))
+- 2026-07-13: fix import of pLimit module [copilot] ([09a794b](https://github.com/bbc/bug/commit/09a794b728e38ed12d2faff60d2771b8b08f5e6f))
+- 2026-07-13: enable 'disable-all' when one endpoint is connecting ([af37b71](https://github.com/bbc/bug/commit/af37b71f6107dbdffa3f74ae9e50d1682aaf9bb5))
+
 ### version 1.0.6
 
 - 2026-05-28: add tests ([4bf6f24](https://github.com/bbc/bug/commit/4bf6f24c46164ef5a771072a4f69f64805610051))
