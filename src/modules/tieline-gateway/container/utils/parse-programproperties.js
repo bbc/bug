@@ -70,9 +70,11 @@ module.exports = async (programPropertiesResult) => {
             connectionArray["encodeDecodeMask"] = eachConnection?.["config"]?.["ENCODE_DECODE_MASK"]?.["_text"];
             if (connectionArray["direction"] === "outbound") {
                 connectionArray["_tabName"] = `TX${txCount}`;
+                connectionArray["_connectionIndex"] = txCount;
                 txCount += 1;
             } else {
-                connectionArray["_tabName"] = `RX${txCount}`;
+                connectionArray["_tabName"] = `RX${rxCount}`;
+                connectionArray["_connectionIndex"] = rxCount;
                 rxCount += 1;
             }
 

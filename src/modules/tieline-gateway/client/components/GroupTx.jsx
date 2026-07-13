@@ -41,7 +41,7 @@ const getCodecSessionRange = (codec) => {
     return { basePort, maxPort };
 };
 
-export default function GroupTx({ panelConfig, connection, group, panelId, onChange, showAdvanced }) {
+export default function GroupTx({ panelConfig, connection, group, panelId, onChange, showAdvanced, connectionIndex }) {
     const sendAlert = useAlert();
     const [selectedCodec, setSelectedCodec] = React.useState(null);
 
@@ -73,7 +73,6 @@ export default function GroupTx({ panelConfig, connection, group, panelId, onCha
             if (!sessionRange) {
                 return false;
             }
-
             return currentPort >= sessionRange.basePort && currentPort <= sessionRange.maxPort;
         });
     };
@@ -86,6 +85,14 @@ export default function GroupTx({ panelConfig, connection, group, panelId, onCha
         audioPort >= selectedSessionRange.basePort &&
         audioPort <= selectedSessionRange.maxPort &&
         audioPort !== selectedSessionRange.basePort;
+
+    const handleCodecAutocompleteChange = (e, codec) => {
+        const localConnectionIndex = connectionIndex > 0 ? connectionIndex - 1 : 0;
+        onChange(group.id, connection.id, {
+            destination: codec.address,
+            audioPort: codec.port + localConnectionIndex,
+        });
+    };
 
     return (
         <Box
@@ -124,12 +131,7 @@ export default function GroupTx({ panelConfig, connection, group, panelId, onCha
                                 apiUrl={`/container/${panelId}/codecdb`}
                                 capability="tieline"
                                 onValueResolved={setSelectedCodec}
-                                onChange={(e, codec) => {
-                                    onChange(group.id, connection.id, {
-                                        destination: codec.address,
-                                        audioPort: codec.port,
-                                    });
-                                }}
+                                onChange={handleCodecAutocompleteChange}
                                 disabled={connection._connected || connection._connecting}
                             />
                         ),

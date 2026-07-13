@@ -48,6 +48,7 @@ export default function Group({ group, panelId, onChange }) {
                     panelId={panelId}
                     showAdvanced={showAdvanced}
                     panelConfig={panelConfig}
+                    connectionIndex={connection._connectionIndex}
                 />
             );
         }
