@@ -7,30 +7,33 @@ const StatusItem = require("@core/StatusItem");
 const logger = require("@core/logger")(module);
 
 module.exports = async () => {
-
     try {
-        const [dbTables, dbDhcpLeases, config] = await Promise.all([
+        const [dbTables, dbDhcpLeases, dbListItems, config] = await Promise.all([
             mongoSingle.get('routingTables'),
             mongoSingle.get('dhcpLeases'),
+            mongoSingle.get('listItems'),
             configGet()
         ]);
 
-        if (!config) {
-            return []
+        if (!config?.routingTablePrefix) {
+            return [];
         }
 
-        const managedLeases = (dbDhcpLeases || []).filter(d => d.isManaged === true);
         const prefix = config.routingTablePrefix;
-        const managedTables = (dbTables || []).filter(table => table.name?.startsWith(prefix) && !table.disabled && table.comment)
-        const entryText = managedLeases.length === 1 ? "entry" : "entries";
+        const managedEntries = (dbListItems || []).filter((item) =>
+            item?.comment?.toLowerCase().includes("[bug_sdwan]")
+        );
+        const managedTables = (dbTables || []).filter(
+            (table) => table.name?.startsWith(prefix) && !table.disabled && table.comment
+        );
+        const entryText = managedEntries.length === 1 ? "entry" : "entries";
 
         return new StatusItem({
-            message: `Device active with ${managedLeases.length} ${entryText} and ${managedTables.length} WAN(s) defined`,
+            message: `Device active with ${managedEntries.length} ${entryText} and ${managedTables.length} WAN(s) defined`,
             key: "defaultservice",
             type: "default",
             flags: [],
-        })
-
+        });
 
     } catch (err) {
         logger.error(`status-checkentries: ${err.stack || err.message}`);
