@@ -3,7 +3,7 @@
 const logger = require("@core/logger")(module);
 const ensureArray = require("@utils/ensure-array");
 const parseProgramProperties = require("@utils/parse-programproperties");
-const pLimit = require("p-limit");
+const pLimit = require("p-limit").default;
 
 module.exports = async ({ tielineApi, mongoSingle }) => {
     try {
