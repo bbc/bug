@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.0.3
+
+- 2026-07-11: add codec database functionality [copilot] ([0f82ea4](https://github.com/bbc/bug/commit/0f82ea44bdbef5af311f2381a6e6fc6893608e9d))
+- 2026-07-11: add codec db worker tasks ([c0179b4](https://github.com/bbc/bug/commit/c0179b409608f74a91206a560ced834d50f87a5a))
+
 ### version 1.0.2
 
 - 2026-07-09: fix enable output when added ([e63891f](https://github.com/bbc/bug/commit/e63891f24ef2db6ebbd38a725c48d5c69005e49f))
