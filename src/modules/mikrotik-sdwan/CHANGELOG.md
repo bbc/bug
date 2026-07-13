@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.0.26
+
+- 2026-07-13: fix default status ([556b4c9](https://github.com/bbc/bug/commit/556b4c94e1e6b01207e63c3baf12785c03e5e40c))
+- 2026-07-13: add validation ([4944c65](https://github.com/bbc/bug/commit/4944c65fdf30b6e171a05ebfdb32977fdf153a26))
+
 ### version 1.0.25
 
 - 2026-06-24: check ping and wan on disabled routes ([fb5f16d](https://github.com/bbc/bug/commit/fb5f16dc8b922a907956429682453d4abb4ab345))
