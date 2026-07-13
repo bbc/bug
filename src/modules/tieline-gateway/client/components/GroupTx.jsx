@@ -127,6 +127,7 @@ export default function GroupTx({ panelConfig, connection, group, panelId, onCha
                                     { id: "Primary", label: "Primary" },
                                     { id: "Secondary", label: "Secondary" },
                                     { id: "Tertiary", label: "Tertiary" },
+                                    { id: "Quaternary", label: "Quaternary" },
                                     { id: "LAN1", label: "LAN1" },
                                     { id: "LAN2", label: "LAN2" },
                                     { id: "Wi-Fi", label: "Wi-Fi" },
