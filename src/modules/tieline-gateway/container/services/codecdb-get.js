@@ -15,6 +15,7 @@ module.exports = async (streamType) => {
             name: codec.name,
             address: codec.address,
             port: codec.port,
+            params: codec.params,
             device: `${codec.device.manufacturer} ${codec.device.model}`,
         };
     });

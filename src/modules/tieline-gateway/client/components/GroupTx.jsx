@@ -6,9 +6,44 @@ import BugTextField from "@core/BugTextField";
 import { Box } from "@mui/material";
 import AxiosCommand from "@utils/AxiosCommand";
 import { useAlert } from "@utils/Snackbar";
+import React from "react";
 import StateLabel from "./StateLabel";
+
+const parseCodecParams = (codec) => {
+    const rawParams = codec?.params;
+    if (!rawParams) {
+        return {};
+    }
+
+    if (typeof rawParams !== "string") {
+        return rawParams;
+    }
+
+    try {
+        return JSON.parse(rawParams);
+    } catch {
+        return {};
+    }
+};
+
+const getCodecSessionRange = (codec) => {
+    const basePort = parseInt(codec?.port, 10);
+    if (Number.isNaN(basePort)) {
+        return null;
+    }
+
+    const params = parseCodecParams(codec);
+    const maxSessionsValue =
+        params.max_sessions ?? params.maxSessions ?? params.MAX_SESSIONS ?? codec?.max_sessions ?? codec?.maxSessions;
+    const maxSessions = parseInt(maxSessionsValue, 10);
+    const maxPort = Number.isNaN(maxSessions) ? basePort : basePort + maxSessions;
+
+    return { basePort, maxPort };
+};
+
 export default function GroupTx({ panelConfig, connection, group, panelId, onChange, showAdvanced }) {
     const sendAlert = useAlert();
+    const [selectedCodec, setSelectedCodec] = React.useState(null);
 
     const handleConnect = async (connection) => {
         const url = `/container/${panelId}/connection/connect/${encodeURIComponent(connection.id)}`;
@@ -21,6 +56,36 @@ export default function GroupTx({ panelConfig, connection, group, panelId, onCha
         sendAlert(`Requested disconnection`, { variant: "info" });
         await AxiosCommand(url);
     };
+
+    const handleCalculateCodecValue = ({ options, addressValue, portValue }) => {
+        const currentPort = parseInt(portValue, 10);
+
+        if (Number.isNaN(currentPort)) {
+            return null;
+        }
+
+        return options.find((item) => {
+            if (item.address !== addressValue) {
+                return false;
+            }
+
+            const sessionRange = getCodecSessionRange(item);
+            if (!sessionRange) {
+                return false;
+            }
+
+            return currentPort >= sessionRange.basePort && currentPort <= sessionRange.maxPort;
+        });
+    };
+
+    const selectedSessionRange = getCodecSessionRange(selectedCodec);
+    const audioPort = parseInt(connection?.audioPort, 10);
+    const isAudioOffsetPort =
+        !Number.isNaN(audioPort) &&
+        selectedSessionRange &&
+        audioPort >= selectedSessionRange.basePort &&
+        audioPort <= selectedSessionRange.maxPort &&
+        audioPort !== selectedSessionRange.basePort;
 
     return (
         <Box
@@ -53,10 +118,12 @@ export default function GroupTx({ panelConfig, connection, group, panelId, onCha
                         name: "Destination",
                         value: (
                             <BugCodecAutocomplete
+                                calculateValue={handleCalculateCodecValue}
                                 addressValue={connection.destination}
                                 portValue={connection.audioPort}
                                 apiUrl={`/container/${panelId}/codecdb`}
                                 capability="tieline"
+                                onValueResolved={setSelectedCodec}
                                 onChange={(e, codec) => {
                                     onChange(group.id, connection.id, {
                                         destination: codec.address,
@@ -87,6 +154,11 @@ export default function GroupTx({ panelConfig, connection, group, panelId, onCha
                             <BugTextField
                                 fullWidth
                                 value={connection.audioPort}
+                                helperText={
+                                    isAudioOffsetPort
+                                        ? `Default audio port (${selectedSessionRange.basePort}) overridden`
+                                        : ""
+                                }
                                 onChange={(e) => onChange(group.id, connection.id, { audioPort: e.target.value })}
                                 type="text"
                                 variant="outlined"
