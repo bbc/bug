@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.8
+
+- 2026-07-13: use connectionIndex to auto-increment port in UI ([0cc9219](https://github.com/bbc/bug/commit/0cc92191c55cf29f0db6eaae884b9c1e56a37604))
+
 ### version 1.0.7
 
 - 2026-07-13: improve codec matching with offset audio ports ([85a0222](https://github.com/bbc/bug/commit/85a0222d202ca95306755faadb6a955156117275))
