@@ -27,6 +27,7 @@ export default {
     args: {
         addressValue: "",
         apiUrl: "",
+        calculateValue: null,
         capability: "",
         disabled: false,
         label: "Search codec database ...",
@@ -44,10 +45,27 @@ export default {
                 defaultValue: { summary: "null" },
             },
         },
+        onValueResolved: {
+            action: "value resolved",
+            description:
+                "Optional callback fired when the displayed value is resolved from addressValue/portValue/calculateValue. Passes the resolved item or null.",
+            table: {
+                type: { summary: "function" },
+                defaultValue: { summary: "null" },
+            },
+        },
         addressValue: {
             description: "Optionally provide an IP address to pre-select matching codecs",
             table: {
                 type: { summary: "string" },
+                defaultValue: { summary: "null" },
+            },
+        },
+        calculateValue: {
+            description:
+                "Optional function to calculate the displayed selected value. Receives { options, addressValue, portValue } and should return an item or item id.",
+            table: {
+                type: { summary: "function" },
                 defaultValue: { summary: "null" },
             },
         },

@@ -4,13 +4,16 @@ import React from "react";
 export default function BugCodecAutocomplete({
     addressValue = "",
     apiUrl = "",
+    calculateValue,
     capability = "",
     disabled = false,
     label = "Select Codec",
     mockApiData = null,
     onChange,
+    onValueResolved,
     portValue = "",
     variant = "outlined",
+
     sx = {},
 }) {
     const [options, setOptions] = React.useState([]);
@@ -30,6 +33,7 @@ export default function BugCodecAutocomplete({
                             device: item.device,
                             address: item.address,
                             port: item.port,
+                            params: item.params,
                         }))
                     );
                 }
@@ -42,18 +46,30 @@ export default function BugCodecAutocomplete({
     React.useEffect(() => {
         // address and/or port has changed
         // we need to search the codec list for any matching values
-        const codec = options.find((item) => {
-            return item.address === addressValue && parseInt(item.port) === parseInt(portValue);
-        });
+        const codec =
+            typeof calculateValue === "function"
+                ? calculateValue({ options, addressValue, portValue })
+                : options.find((item) => {
+                      return item.address === addressValue && parseInt(item.port) === parseInt(portValue);
+                  });
 
-        if (codec) {
+        const resolvedCodec =
+            codec && typeof codec === "object" && codec.id
+                ? options.find((item) => item.id === codec.id) || codec
+                : options.find((item) => item.id === codec) || codec;
+
+        if (resolvedCodec) {
             // we have a match
-            setValue(codec);
+            setValue(resolvedCodec);
         } else {
             // clear the value
             setValue("");
         }
-    }, [addressValue, portValue, options]);
+
+        if (typeof onValueResolved === "function") {
+            onValueResolved(resolvedCodec || null);
+        }
+    }, [addressValue, calculateValue, onValueResolved, options, portValue]);
 
     const handleChanged = (event, value) => {
         // find the selected codec
