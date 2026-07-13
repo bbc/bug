@@ -23,29 +23,40 @@ const main = async () => {
     await mongoDb.connect(workerData.id);
 
     while (true) {
-        let codecs = [];
+        try {
+            let codecs = [];
 
-        // loop through each dhcp source and fetch the list
-        if (workerData?.codecSource) {
-            const url = `http://${workerData?.codecSource}:${modulePort}/api/capabilities/codec-db`;
-            try {
-                // make the request
-                const response = await axios.get(url);
-                if (response?.data?.status === "success" && Array.isArray(response?.data?.data)) {
-                    codecs = response.data.data;
+            // loop through each dhcp source and fetch the list
+            if (workerData?.codecSource) {
+                const url = `http://${workerData?.codecSource}:${modulePort}/api/capabilities/codec-db`;
+                try {
+                    // make the request
+                    const response = await axios.get(url);
+                    if (response?.data?.status === "success" && Array.isArray(response?.data?.data)) {
+                        codecs = response.data.data;
+                    }
+                } catch (error) {
+                    logger.error(error.stack || error || error.message);
+                    // it's not available - wait a few seconds
+                    await delay(5000);
                 }
-            } catch (error) {
-                logger.error(error.stack || error || error.message);
-                // it's not available - wait a few seconds
-                await delay(5000);
             }
+
+            await mongoSingle.set("codecdb", codecs, 60);
+
+            // every 45 seconds
+            await delay(45000);
+        } catch (error) {
+            logger.error(`fatal error`);
+            logger.error(error.stack || error.message || error);
+            process.exit();
         }
 
-        await mongoSingle.set("codecdb", codecs, 60);
-
-        // every 45 seconds
-        await delay(45000);
     }
 };
 
-main();
+main().catch(err => {
+    logger.error(`startup failure`);
+    logger.error(err.stack || err);
+    process.exit(1);
+});
