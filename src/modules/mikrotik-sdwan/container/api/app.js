@@ -11,6 +11,7 @@ const entryRouter = require("@routes/entry");
 const wanRouter = require("@routes/wan");
 const dhcpRouter = require("@routes/dhcp");
 const routeRouter = require("@routes/route");
+const validateRouter = require("@routes/validate");
 
 const heapInfo = require("@core/heap-info");
 
@@ -36,6 +37,7 @@ app.use("/api/entry", entryRouter);
 app.use("/api/wan", wanRouter);
 app.use("/api/dhcp", dhcpRouter);
 app.use("/api/route", routeRouter);
+app.use("/api/validate", validateRouter);
 
 app.use("*", defaultRouter);
 
