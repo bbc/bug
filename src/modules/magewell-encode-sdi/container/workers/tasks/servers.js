@@ -28,7 +28,13 @@ module.exports = async ({ magewellClient, mongoSingle }) => {
             logger.error("missing servers payload from magewell device");
             return false;
         }
-        const parsedPayload = payload["stream-server"].map((s) => {
+        const streamServers = Array.isArray(payload["stream-server"])
+            ? payload["stream-server"]
+            : payload["stream-server"]
+                ? [payload["stream-server"]]
+                : [];
+
+        const parsedPayload = streamServers.map((s) => {
             return {
                 "id": s.id,
                 "type": s.type,
