@@ -3,10 +3,12 @@ import { usePanelStatus } from "@hooks/PanelStatus";
 import CheckIcon from "@mui/icons-material/Check";
 import DoneIcon from "@mui/icons-material/Done";
 import EditIcon from "@mui/icons-material/Edit";
+import LaunchIcon from "@mui/icons-material/Launch";
 import { Button, Divider, ListItemIcon, ListItemText, MenuItem } from "@mui/material";
 import AxiosPut from "@utils/AxiosPut";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+
 export default function Toolbar({ panelId, ...props }) {
     const toolbarProps = { ...props };
     const location = useLocation();
@@ -40,6 +42,14 @@ export default function Toolbar({ panelId, ...props }) {
         navigate(`/panel/${panelId}/route/${groups}`);
     };
 
+    const handleLaunchClicked = async (event, item) => {
+        if (panelConfig?.data?.address) {
+            const url = `http://${panelConfig.data.address}`;
+            const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+            if (newWindow) newWindow.opener = null;
+        }
+    };
+
     const buttons = () => (
         <>
             {editMode ? (
@@ -60,6 +70,13 @@ export default function Toolbar({ panelId, ...props }) {
             <MenuItem key="usetake" onClick={handleUseTakeClicked}>
                 <ListItemIcon>{panelConfig?.data?.useTake ? <CheckIcon fontSize="small" /> : null}</ListItemIcon>
                 <ListItemText primary="Confirm Take" />
+            </MenuItem>,
+            <Divider key="divider" />,
+            <MenuItem key="launch" onClick={handleLaunchClicked}>
+                <ListItemIcon>
+                    <LaunchIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Launch device webpage" />
             </MenuItem>,
         ];
     };
