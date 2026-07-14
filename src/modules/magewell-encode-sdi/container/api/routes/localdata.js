@@ -7,10 +7,9 @@ const localdataPending = require("@services/localdata-pending");
 router.post(
     "/",
     asyncHandler(async (req, res) => {
-        const result = await localdataSet(req.body);
         res.json({
-            status: result ? "success" : "failure",
-            data: result,
+            status: "success",
+            data: await localdataSet(req.body),
         });
     })
 );
@@ -18,10 +17,9 @@ router.post(
 router.get(
     "/checkpending",
     asyncHandler(async (req, res) => {
-        const isPending = await localdataPending();
         res.json({
             status: "success",
-            data: isPending,
+            data: await localdataPending(),
         });
     })
 );

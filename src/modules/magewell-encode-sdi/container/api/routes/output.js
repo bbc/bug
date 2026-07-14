@@ -7,10 +7,9 @@ const outputDelete = require("@services/output-delete");
 router.post(
     "/",
     asyncHandler(async (req, res) => {
-        const result = await outputAdd();
         res.json({
-            status: result ? "success" : "failure",
-            data: result,
+            status: "success",
+            data: await outputAdd(),
         });
     })
 );
@@ -18,10 +17,9 @@ router.post(
 router.delete(
     "/:outputIndex",
     asyncHandler(async (req, res) => {
-        const result = await outputDelete(req.params.outputIndex);
         res.json({
-            status: result ? "success" : "failure",
-            data: result,
+            status: "success",
+            data: await outputDelete(req.params.outputIndex),
         });
     })
 );
