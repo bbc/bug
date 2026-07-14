@@ -67,7 +67,8 @@ export default function PanelTableRow({ panel, showGroups }) {
                 <BugApiSwitch
                     disabled={
                         panel?._dockerContainer?._status === "building" ||
-                        panel?._dockerContainer?._status === "starting"
+                        panel?._dockerContainer?._status === "starting" ||
+                        panel?._dockerContainer?._status === "upgrading"
                     }
                     checked={panel._active || panel?._dockerContainer?._status === "building"}
                     onChange={(checked) => handleEnabledChanged(checked, panel.id)}

@@ -24,14 +24,15 @@ export default function PanelDropdownMenu({ panel }) {
     const { renameDialog } = useBugRenameDialog();
     const { confirmDialog } = useBugConfirmDialog();
     const needsContainer = panel?._module.needsContainer ?? true;
+    const isUpgrading = panel?._dockerContainer?._status === "upgrading";
     const hideRestart = !needsContainer;
     const hideUpgrade = !needsContainer;
-    const disableEnable = panel?.enabled || panel?._dockerContainer._isBuilding;
-    const disableDisable = !panel?.enabled || panel?._dockerContainer._isBuilding;
-    const disableRestart = !needsContainer;
-    const disableUpgrade = !panel?.upgradeable;
+    const disableEnable = panel?.enabled || panel?._dockerContainer._isBuilding || isUpgrading;
+    const disableDisable = !panel?.enabled || panel?._dockerContainer._isBuilding || isUpgrading;
+    const disableRestart = !needsContainer || isUpgrading;
+    const disableUpgrade = !panel?.upgradeable || isUpgrading;
     const disableDelete = false; //panel?._dockerContainer._isBuilding;
-    const disableConfig = !panel?.enabled || panel?._dockerContainer._isBuilding;
+    const disableConfig = !panel?.enabled || panel?._dockerContainer._isBuilding || isUpgrading;
 
     const handleOpenMenuClick = (event) => {
         setAnchorEl(event.currentTarget);

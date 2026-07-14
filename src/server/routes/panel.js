@@ -231,8 +231,21 @@ router.get(
     "/start/:panelId",
     restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
-        // starts and builds if necessary
-        const result = await panelStart(req.params.panelId);
+        let result;
+        try {
+            // starts and builds if necessary
+            result = await panelStart(req.params.panelId);
+        } catch (error) {
+            if (error.code === "PANEL_UPGRADE_IN_PROGRESS") {
+                res.status(409);
+                return hashResponse(res, req, {
+                    status: "failure",
+                    message: error.message,
+                    data: null,
+                });
+            }
+            throw error;
+        }
         hashResponse(res, req, {
             status: result ? "success" : "failure",
             message: "Started panel",
@@ -270,8 +283,21 @@ router.get(
     "/restart/:panelId",
     restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
-        // stop and start (and rebuild if necessary)
-        const result = await panelRestart(req.params.panelId);
+        let result;
+        try {
+            // stop and start (and rebuild if necessary)
+            result = await panelRestart(req.params.panelId);
+        } catch (error) {
+            if (error.code === "PANEL_UPGRADE_IN_PROGRESS") {
+                res.status(409);
+                return hashResponse(res, req, {
+                    status: "failure",
+                    message: error.message,
+                    data: null,
+                });
+            }
+            throw error;
+        }
         hashResponse(res, req, {
             status: result ? "success" : "failure",
             message: "Restarted panel",
@@ -392,7 +418,20 @@ router.get(
     "/enable/:panelId",
     restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
-        const result = await panelEnable(req.params.panelId);
+        let result;
+        try {
+            result = await panelEnable(req.params.panelId);
+        } catch (error) {
+            if (error.code === "PANEL_UPGRADE_IN_PROGRESS") {
+                res.status(409);
+                return hashResponse(res, req, {
+                    status: "failure",
+                    message: error.message,
+                    data: null,
+                });
+            }
+            throw error;
+        }
         hashResponse(res, req, {
             status: result ? "success" : "failure",
             message: "Enabled panel",
@@ -430,7 +469,20 @@ router.get(
     "/disable/:panelId",
     restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
-        const result = await panelDisable(req.params.panelId);
+        let result;
+        try {
+            result = await panelDisable(req.params.panelId);
+        } catch (error) {
+            if (error.code === "PANEL_UPGRADE_IN_PROGRESS") {
+                res.status(409);
+                return hashResponse(res, req, {
+                    status: "failure",
+                    message: error.message,
+                    data: null,
+                });
+            }
+            throw error;
+        }
         hashResponse(res, req, {
             status: result ? "success" : "failure",
             message: "Disabled panel",

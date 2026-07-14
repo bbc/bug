@@ -52,7 +52,6 @@ export default function PanelRowState({ panel }) {
     if (panel._isPending) {
         return <State state="empty">...</State>;
     }
-
     const isReady = !panel?._module?.needsContainer || panel?._dockerContainer?._moduleBuilt;
 
     switch (panel._dockerContainer._status) {
@@ -64,10 +63,11 @@ export default function PanelRowState({ panel }) {
                 </State>
             );
 
-        case "upgrading":
-            return <State state="upgrading">UPGRADING PANEL [{formatDuration(upgradeElapsed)}]</State>;
         case "error":
             return <State state="error">ERROR - {panel._buildStatus.text}</State>;
+
+        case "upgrading":
+            return <State state="upgrading">UPGRADING PANEL [{formatDuration(upgradeElapsed)}]</State>;
         default:
         // do nothing
     }

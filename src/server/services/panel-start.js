@@ -7,6 +7,7 @@ const dockerGetContainer = require("@services/docker-getcontainer");
 const dockerStartContainer = require("@services/docker-startcontainer");
 const dockerCreateContainer = require("@services/docker-createcontainer");
 const panelBuildStatusModel = require("@models/panel-buildstatus");
+const moduleUpgradeStatusModel = require("@models/module-upgradestatus");
 const moduleNeedsContainer = require("@services/module-needscontainer");
 const delay = require("delay").default;
 const panelConfigPush = require("@services/panelconfig-push");
@@ -21,6 +22,13 @@ module.exports = async (panelId) => {
         const config = await panelConfig.get(panelId);
         if (!config) {
             throw new Error(`Panel ${panelId} not found`);
+        }
+
+        const moduleUpgradeStatus = await moduleUpgradeStatusModel.get(config.module);
+        if (moduleUpgradeStatus?.active) {
+            const error = new Error(`Panel '${panelId}' cannot be started while module '${config.module}' is upgrading`);
+            error.code = "PANEL_UPGRADE_IN_PROGRESS";
+            throw error;
         }
 
         if (!(await moduleNeedsContainer(config?.module))) {
@@ -82,6 +90,9 @@ module.exports = async (panelId) => {
         logger.warning(`failed to push config to container for panel id ${panelId} - given up`);
         return false;
     } catch (error) {
+        if (error.code === "PANEL_UPGRADE_IN_PROGRESS") {
+            throw error;
+        }
         await panelBuildStatusModel.setError(panelId, "Unknown error");
         logger.warning(`${error.stack}`);
         throw new Error(`Failed to start panel id ${panelId}`);

@@ -6,7 +6,8 @@ export default function PanelPowerIcon({ panel }) {
         panel._dockerContainer._status === "building" ||
         panel._dockerContainer._status === "stopping" ||
         panel._dockerContainer._status === "starting" ||
-        panel._dockerContainer._status === "restarting"
+        panel._dockerContainer._status === "restarting" ||
+        panel._dockerContainer._status === "upgrading"
     ) {
         return <CircularProgress size={30} />;
     }

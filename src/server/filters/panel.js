@@ -20,7 +20,7 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
     // check container states
     let isRunning = (containerInfo && containerInfo.state === "running") ?? false;
     let isBuilding = (!isRunning && panelBuildStatus && panelBuildStatus?.error !== true) ?? false;
-    let isUpgrading = !!panelUpgradeStatus ?? false;
+    let isUpgrading = panelUpgradeStatus?.active === true;
     let isBuilt = panelBuildStatus !== null ?? false;
     let isStarting = recentlyStarted(containerInfo.status);
     let isRestarting = (containerInfo && containerInfo.state === "restarting") ?? false;
@@ -29,7 +29,9 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
     delete containerInfo.status;
 
     let status = "disabled";
-    if (!moduleConfig.needsContainer && panelConfig["enabled"]) {
+    if (isUpgrading) {
+        status = "upgrading";
+    } else if (!moduleConfig.needsContainer && panelConfig["enabled"]) {
         status = "active"
     } else if (isRestarting) {
         status = "restarting";
@@ -39,8 +41,6 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
         status = panelConfig["enabled"] ? "running" : "stopping";
     } else if (isBuilding) {
         status = "building";
-    } else if (isUpgrading) {
-        status = "upgrading";
     } else if (isBuilt) {
         if (panelBuildStatus.error) {
             status = "error";
