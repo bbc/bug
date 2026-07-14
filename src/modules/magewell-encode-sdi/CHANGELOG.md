@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.0.5
+
+- 2026-07-14: update Dockerfile and add route tests [copilot] ([8ebb88f](https://github.com/bbc/bug/commit/8ebb88f5b873acaf084dacae6195469a3998f21f))
+- 2026-07-14: fix: unable to delete output 0 ([646a0e7](https://github.com/bbc/bug/commit/646a0e7aa7bec34a33c441b8d54523ec2e173f61))
+
 ### version 1.0.4
 
 - 2026-07-14: fix: handle missing stream-server payload [copilot] ([81fc671](https://github.com/bbc/bug/commit/81fc67116bd422911965d5a6944b497ea0ba7db9))
