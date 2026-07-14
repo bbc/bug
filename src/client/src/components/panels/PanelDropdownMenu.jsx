@@ -142,6 +142,26 @@ export default function PanelDropdownMenu({ panel }) {
         setAnchorEl(null);
         event.stopPropagation();
         event.preventDefault();
+        const result = await renameDialog({
+            title: "Change panel group",
+            defaultValue: panel?.group.toUpperCase(),
+            confirmButtonText: "Change",
+            filter: (char) => char.replace(":", ""),
+            allowBlank: true,
+            sx: {
+                "& .MuiInputBase-input": {
+                    textTransform: "uppercase",
+                },
+            },
+        });
+
+        if (result !== false) {
+            if (await AxiosCommand(`/api/panel/group/${panel?.id}/${result.toLowerCase()}`)) {
+                sendAlert(`Updated group for panel ${panel?.title}`, { broadcast: "true", variant: "success" });
+            } else {
+                sendAlert(`Failed to change group for panel: ${panel?.title}`, { variant: "error" });
+            }
+        }
     };
 
     const handleViewLogs = async (event) => {
