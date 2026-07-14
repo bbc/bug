@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.0.4
+
+- 2026-07-14: fix: handle missing stream-server payload [copilot] ([81fc671](https://github.com/bbc/bug/commit/81fc67116bd422911965d5a6944b497ea0ba7db9))
+- 2026-07-14: fix: add missing password field to config panel ([64325fb](https://github.com/bbc/bug/commit/64325fb398af6c92970a23cf11316f95a399198c))
+
 ### version 1.0.3
 
 - 2026-07-11: add codec database functionality [copilot] ([0f82ea4](https://github.com/bbc/bug/commit/0f82ea44bdbef5af311f2381a6e6fc6893608e9d))
