@@ -3,6 +3,7 @@ import { Badge } from "@mui/material";
 const BadgeWrapper = ({
     panel,
     children,
+    hideDefault = false,
     position = {
         vertical: "top",
         horizontal: "right",
@@ -12,6 +13,7 @@ const BadgeWrapper = ({
     let warningCount = 0;
     let infoCount = 0;
     let criticalCount = 0;
+    let defaultCount = 0;
 
     if (panel?._status) {
         criticalCount = panel._status.filter((x) => x.type === "critical").length;
@@ -84,6 +86,9 @@ const BadgeWrapper = ({
         );
     }
 
+    if (hideDefault) {
+        return null;
+    }
     return children;
 };
 

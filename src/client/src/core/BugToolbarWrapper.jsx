@@ -199,11 +199,15 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
                                 horizontal: "center",
                             }}
                         >
-                            <PanelStatus statusItems={panel.data._status} panel={panel.data} />
+                            <PanelStatus
+                                statusItems={panel.data._status.filter((x) => x.type !== "default")}
+                                panel={panel.data}
+                            />
                         </Popover>
 
                         <BugToolbarIcon onClick={handleStatusClick}>
                             <BadgeWrapper
+                                hideDefault={true}
                                 panel={panel.data}
                                 position={{
                                     vertical: "top",
