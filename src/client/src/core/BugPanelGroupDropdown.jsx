@@ -14,7 +14,7 @@ export default function BugPanelGroupDropdown({ value, onChange, fullWidth = tru
     const panelList = useSelector((state) => state.panelList);
     const [inputValue, setInputValue] = React.useState(value);
 
-    let panelListGroups = panelList.data ? _.uniq(panelList.data.map((a) => a.group.toUpperCase())) : [];
+    let panelListGroups = panelList.data ? _.uniq(panelList.data.map((a) => a.group.toUpperCase())).sort() : [];
     _.pull(panelListGroups, "");
 
     return (
