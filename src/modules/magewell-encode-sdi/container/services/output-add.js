@@ -7,7 +7,7 @@ function buildDefaultOutput(nextId) {
     return {
         // common fields
         id: nextId,
-        type: 133,
+        type: 120,
         name: `output-${nextId + 1}`,
         "is-use": 0,
         url: "192.168.100.1",
