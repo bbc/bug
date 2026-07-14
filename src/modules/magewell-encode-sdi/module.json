@@ -4,7 +4,7 @@
     "description": "Control and monitoring of Magewell SRT encoders",
     "capabilities": [],
     "notes": "",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "icon": "mdi-set-top-box",
     "author": "Geoff House",
     "license": "Apache-2.0",
