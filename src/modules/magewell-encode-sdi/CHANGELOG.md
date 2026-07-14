@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.0.6
+
+- 2026-07-14: replace text field with password field [copilot] ([7c0849f](https://github.com/bbc/bug/commit/7c0849faee44df01589f671330279567223d2e1c))
+- 2026-07-14: add validation routes and services [copilot] ([2a5c091](https://github.com/bbc/bug/commit/2a5c09116caba01a80f7e2277795fda26b51a9aa))
+
 ### version 1.0.5
 
 - 2026-07-14: update Dockerfile and add route tests [copilot] ([8ebb88f](https://github.com/bbc/bug/commit/8ebb88f5b873acaf084dacae6195469a3998f21f))
