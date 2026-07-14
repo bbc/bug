@@ -14,6 +14,7 @@ const outputRouter = require("@routes/output");
 const deviceRouter = require("@routes/device");
 const thumbRouter = require("@routes/thumb");
 const codecDbRouter = require("@routes/codecdb");
+const validateRouter = require("@routes/validate");
 
 const heapInfo = require("@core/heap-info");
 
@@ -42,6 +43,7 @@ app.use("/api/output", outputRouter);
 app.use("/api/device", deviceRouter);
 app.use("/api/thumb", thumbRouter);
 app.use("/api/codecdb", codecDbRouter);
+app.use("/api/validate", validateRouter);
 
 app.use("*", defaultRouter);
 
