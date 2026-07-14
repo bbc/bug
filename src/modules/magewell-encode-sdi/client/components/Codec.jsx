@@ -93,7 +93,7 @@ export default function Codec({ panelId }) {
     };
 
     const onOutputClose = async (index) => {
-        if (codecdata?.["stream-server"]?.length === 1) {
+        if (codecdata?.["stream-server"]?.length === 0) {
             return;
         }
 
