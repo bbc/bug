@@ -80,6 +80,21 @@ export default function ConfigPanel() {
                     />
                 </Grid>
 
+                <Grid size={{ xs: 12, lg: 6 }}>
+                    <BugConfigFormTextField
+                        name="password"
+                        control={control}
+                        rules={{ required: true }}
+                        fullWidth
+                        error={errors.password}
+                        validationResult={validationResults.password}
+                        defaultValue={panelConfig.data.password}
+                        supportsValidation
+                        onChange={(event) => validateServer(event, "password", ["address", "username"])}
+                        label="Password"
+                    />
+                </Grid>
+
                 <Grid size={{ xs: 12, md: 12 }}>
                     <BugConfigFormPanelSelect
                         name="codecSource"
