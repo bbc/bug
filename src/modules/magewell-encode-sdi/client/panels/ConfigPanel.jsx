@@ -1,5 +1,6 @@
 import BugConfigFormPanelGroup from "@core/BugConfigFormPanelGroup";
 import BugConfigFormPanelSelect from "@core/BugConfigFormPanelSelect";
+import BugConfigFormPasswordTextField from "@core/BugConfigFormPasswordTextField";
 import BugConfigFormTextField from "@core/BugConfigFormTextField";
 import BugConfigWrapper from "@core/BugConfigWrapper";
 import BugLoading from "@core/BugLoading";
@@ -81,7 +82,7 @@ export default function ConfigPanel() {
                 </Grid>
 
                 <Grid size={{ xs: 12, lg: 6 }}>
-                    <BugConfigFormTextField
+                    <BugConfigFormPasswordTextField
                         name="password"
                         control={control}
                         rules={{ required: true }}
