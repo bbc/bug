@@ -7,10 +7,18 @@ module.exports = async (formData) => {
         address: formData.address,
         username: formData.username,
         password: formData.password,
+        apiPath: "/usapi",
+        codeField: "result",
+        autoLogin: false,
     });
 
     try {
         await magewellClient.login();
+        const response = await magewellClient.request("get-status", {}, { requireAuth: false });
+        console.log(response);
+        if (!response?.ok) {
+            throw new Error("missing status payload from magewell device");
+        }
     } catch (error) {
         return new validationResult([
             {
