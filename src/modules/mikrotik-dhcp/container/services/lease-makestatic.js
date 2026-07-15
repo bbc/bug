@@ -21,11 +21,11 @@ module.exports = async (leaseId) => {
 
 
         await routerOsApi.run("/ip/dhcp-server/lease/make-static", ["=numbers=" + leaseId]);
-        logger.info(`mikrotik-leasemakestatic: made lease id ${leaseId} static`);
+        logger.info(`Made lease id ${leaseId} static`);
 
         return true;
     } catch (err) {
-        err.message = `lease-makestatic: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }

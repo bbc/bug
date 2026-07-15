@@ -19,10 +19,10 @@ module.exports = async ({ routerOsApi, serversCollection }) => {
                 })
             );
         }
-        logger.debug(`servers: saving ${servers.length} server(s) to database`);
+        logger.debug(`Saving ${servers.length} server(s) to database`);
         await mongoSaveArray(serversCollection, servers, "id");
     } catch (error) {
-        logger.error(`servers: ${error.message}`);
+        logger.error(error.message);
         throw error;
     }
 };

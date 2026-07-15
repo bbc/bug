@@ -19,7 +19,7 @@ module.exports = async () => {
 
         return addressLists;
     } catch (err) {
-        err.message = `addresslists-list: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }

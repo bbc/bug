@@ -23,7 +23,7 @@ module.exports = async (leaseId) => {
 
         return lease;
     } catch (err) {
-        err.message = `lease-get: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }

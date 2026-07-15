@@ -34,7 +34,7 @@ module.exports = async (leaseId) => {
         return true;
 
     } catch (err) {
-        err.message = `lease-magicpacket: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }

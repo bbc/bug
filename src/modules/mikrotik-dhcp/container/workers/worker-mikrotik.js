@@ -46,11 +46,11 @@ const main = async () => {
         });
 
         logger.info(
-            `worker-mikrotik: connecting to device at ${workerData.address} with username ${workerData.username}, password ${obscure(workerData.password)}`
+            `Connecting to device at ${workerData.address} with username ${workerData.username}, password ${obscure(workerData.password)}`
         );
 
         await routerOsApi.connect();
-        logger.info("worker-mikrotik: device connected ok");
+        logger.info("Device connected successfully");
 
         workerTaskManager({
             tasks: [
@@ -61,14 +61,14 @@ const main = async () => {
         });
 
     } catch (err) {
-        logger.error(`worker-mikrotik: fatal error`);
+        logger.error("Fatal error");
         logger.error(err.stack || err.message || err);
         process.exit();
     }
 }
 
 main().catch(err => {
-    logger.error(`worker-mikrotik: startup failure`);
+    logger.error("Startup failure");
     logger.error(err.stack || err);
     process.exit(1);
 });

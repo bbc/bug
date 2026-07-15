@@ -102,7 +102,7 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
 
         return leases;
     } catch (err) {
-        err.message = `lease-list: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }

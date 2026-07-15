@@ -24,7 +24,7 @@ module.exports = async (leaseId, comment) => {
         //TODO update db
         return true;
     } catch (err) {
-        err.message = `lease-comment: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }

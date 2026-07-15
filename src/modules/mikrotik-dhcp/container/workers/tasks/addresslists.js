@@ -17,7 +17,7 @@ module.exports = async ({ routerOsApi, addressListsCollection }) => {
         }
         const addressLists = Object.values(addressListUniqueObject);
 
-        logger.debug(`addresslists: saving ${addressLists.length} address list(s) to database`);
+        logger.debug(`Saving ${addressLists.length} address list(s) to database`);
         // this is a simple array, so we save it manually
         await addressListsCollection.replaceOne(
             { key: "addresslists" },
@@ -29,7 +29,7 @@ module.exports = async ({ routerOsApi, addressListsCollection }) => {
         );
 
     } catch (error) {
-        logger.error(`addresslists: ${error.message}`);
+        logger.error(error.message);
         throw error;
     }
 };

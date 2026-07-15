@@ -37,13 +37,13 @@ module.exports = async (params) => {
             paramArray.push(`=comment=${params.comment}`)
         }
 
-        logger.debug(`lease-info: adding lease with params ${JSON.stringify(params)}`);
+        logger.debug(`Adding lease with params ${JSON.stringify(params)}`);
 
         await routerOsApi.run("/ip/dhcp-server/lease/add", paramArray);
-        logger.info(`lease-add: added lease for address ${params.address}`);
+        logger.info(`Added lease for address ${params.address}`);
         return true;
     } catch (err) {
-        err.message = `lease-add: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }

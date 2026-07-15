@@ -2,5 +2,4 @@
 - add dhcp pool number left to mikrotik dhcp module
 - mikrotik-dhcp should warn when pools are full
 - update db on lease changes
-- remove filename from all log actions......
 - add heartbeat status check and worker task

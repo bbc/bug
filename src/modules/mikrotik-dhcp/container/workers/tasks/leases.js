@@ -20,10 +20,10 @@ module.exports = async ({ routerOsApi, leasesCollection }) => {
             );
         }
 
-        logger.debug(`leases: saving ${leases.length} lease(s) to database`);
+        logger.debug(`Saving ${leases.length} lease(s) to database`);
         await mongoSaveArray(leasesCollection, leases, "id");
     } catch (error) {
-        logger.error(`leases: ${error.message}`);
+        logger.error(error.message);
         throw error;
     }
 };

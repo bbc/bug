@@ -14,7 +14,6 @@
 - need to use UTC for all panel dates
 - add panel toolbar menu to logs page
 - update mikrotik modules using new core class
-- codecs should show green when connected
 - explain admin/user
 - disable UI for actions for users
 - use health check in modules
@@ -25,5 +24,4 @@
 - do I need a way to view some basic info on a device? Maybe a details view expandable from the home screen with device name, model, IP, contact details etc
 - do I remove the menu on the home page tiles and just have an expand icon?
 - use rounding on sparklines to reduce bps noise
-- notifications bell in toolbar shouldn't show with default messages
 - when module is archived give warning

@@ -15,7 +15,7 @@ module.exports = async () => {
 
         return servers;
     } catch (err) {
-        err.message = `server-list: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }

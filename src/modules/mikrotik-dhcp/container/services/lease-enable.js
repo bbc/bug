@@ -20,10 +20,10 @@ module.exports = async (leaseId) => {
         });
 
         await routerOsApi.run("/ip/dhcp-server/lease/enable", ["=numbers=" + leaseId]);
-        logger.info(`lease-enable: enabled lease id ${leaseId}`);
+        logger.info(`Enabled lease id ${leaseId}`);
         return true;
     } catch (err) {
-        err.message = `lease-enable: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }

@@ -21,7 +21,7 @@ module.exports = async (leaseId) => {
         });
 
         await routerOsApi.run("/ip/dhcp-server/lease/remove", ["=numbers=" + leaseId]);
-        logger.info(`mikrotik-leasedelete: removed lease id ${leaseId}`);
+        logger.info(`Removed lease id ${leaseId}`);
 
         // now update local db
         const dbLeases = await mongoCollection("leases");
@@ -30,7 +30,7 @@ module.exports = async (leaseId) => {
         return true;
 
     } catch (err) {
-        err.message = `lease-delete: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }
