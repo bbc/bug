@@ -2,6 +2,7 @@
 
 const statusCheckPending = require("@services/status-checkpending");
 const statusCheckMongoSingle = require("@core/status-checkmongosingle");
+const statusCheckCodecDb = require("@core/status-checkcodecdb");
 const statusCheckConnecting = require("@services/status-checkconnecting");
 const statusGetDefault = require("@services/status-getdefault");
 const statusCheckStreaming = require("@services/status-checkstreaming");
@@ -14,12 +15,7 @@ module.exports = async () => {
         await statusCheckConnecting(),
         await statusCheckStreaming(),
         await statusCheckHeartbeat({ timeout: 10 }),
-        await statusCheckMongoSingle({
-            collectionName: "codecdb",
-            message: ["Codec database is empty"],
-            itemType: "warning",
-            timeoutSeconds: 60,
-        }),
+        await statusCheckCodecDb(),
 
     );
 };

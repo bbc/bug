@@ -1,7 +1,7 @@
 "use strict";
 
-const statusCheckCollection = require("@core/status-checkcollection");
 const statusCheckMongoSingle = require("@core/status-checkmongosingle");
+const statusCheckCodecDb = require("@core/status-checkcodecdb");
 const statusCheckLinkQuality = require("@services/status-checklinkquality");
 const statusCheckAlarms = require("@services/status-checkalarms");
 
@@ -15,6 +15,7 @@ module.exports = async () => {
             flags: ["restartPanel", "configurePanel"],
         }),
         await statusCheckLinkQuality(),
-        await statusCheckAlarms()
+        await statusCheckAlarms(),
+        await statusCheckCodecDb(),
     );
 };

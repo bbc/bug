@@ -1,6 +1,7 @@
 "use strict";
 
 const statusCheckMongoSingle = require("@core/status-checkmongosingle");
+const statusCheckCodecDb = require("@core/status-checkcodecdb");
 const statusCheckLinkQuality = require("@services/status-checklinkquality");
 const statusCheckAlarms = require("@services/status-checkalarms");
 const statusGetDefault = require("@services/status-getdefault");
@@ -20,6 +21,7 @@ module.exports = async () => {
         await statusCheckAlarms(),
         await statusCheckHeartbeat({ timeout: 20 }),
         await statusGetDefault(),
-        await statusGetConnection()
+        await statusGetConnection(),
+        await statusCheckCodecDb(),
     );
 };
