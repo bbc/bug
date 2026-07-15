@@ -13,6 +13,13 @@ module.exports = async () => {
         await statusGetDefault(),
         await statusCheckConnecting(),
         await statusCheckStreaming(),
-        await statusCheckHeartbeat({ timeout: 10 })
+        await statusCheckHeartbeat({ timeout: 10 }),
+        await statusCheckMongoSingle({
+            collectionName: "codecdb",
+            message: ["Codec database is empty"],
+            itemType: "warning",
+            timeoutSeconds: 60,
+        }),
+
     );
 };
