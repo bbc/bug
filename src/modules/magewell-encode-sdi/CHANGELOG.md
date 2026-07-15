@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.7
+
+- 2026-07-14: change default output type to srt-caller ([cba755f](https://github.com/bbc/bug/commit/cba755f50221ccd32e96ed1fbcc5dfc425adcf2e))
+
 ### version 1.0.6
 
 - 2026-07-14: replace text field with password field [copilot] ([7c0849f](https://github.com/bbc/bug/commit/7c0849faee44df01589f671330279567223d2e1c))

@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.1.26
+
+- 2026-07-15: update lease db on changes ([55df246](https://github.com/bbc/bug/commit/55df24660d574b3960eccfa4d423d19e806c9143))
+- 2026-07-15: remove filename from logging ([ef3241d](https://github.com/bbc/bug/commit/ef3241d36408c7d476c07264b1afcb6ebf548cbc))
+
 ### version 1.1.25
 
 - 2026-06-16: fix upgrade to 'oui' package ([2b7d636](https://github.com/bbc/bug/commit/2b7d6367637be593b45ea6f485ba106254ef89b7))

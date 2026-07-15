@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.4
+
+- 2026-07-14: add launch button to open device webpage ([45768e1](https://github.com/bbc/bug/commit/45768e1afb07bc75916775ec43e1bb53fd075527))
+
 ### version 1.0.3
 
 - 2026-07-10: add service/route tests ([4e3c332](https://github.com/bbc/bug/commit/4e3c332d02eee3aa0b28d100c9f8e662c005d8a3))
