@@ -1,5 +1,6 @@
 "use strict";
 
+const mongoCollection = require("@core/mongo-collection");
 const RouterOSApi = require("@core/routeros-api");
 const configGet = require("@core/config-get");
 const logger = require("@core/logger")(module);
@@ -39,8 +40,27 @@ module.exports = async (params) => {
 
         logger.debug(`Adding lease with params ${JSON.stringify(params)}`);
 
-        await routerOsApi.run("/ip/dhcp-server/lease/add", paramArray);
+        const result = await routerOsApi.run("/ip/dhcp-server/lease/add", paramArray);
         logger.info(`Added lease for address ${params.address}`);
+
+        const newId = result?.[0]?.ret;
+        if (newId) {
+            const dbLeases = await mongoCollection("leases");
+            const dbServers = await mongoCollection("servers");
+            const server = params.server ? await dbServers.findOne({ id: params.server }) : null;
+            await dbLeases.insertOne({
+                id: newId,
+                address: params.address,
+                "mac-address": params["mac-address"],
+                disabled: params.disabled ?? false,
+                dynamic: false,
+                server: server ? server.name : "all",
+                "address-lists": params["address-lists"] || [],
+                comment: params.comment || "",
+                lastUpdated: new Date(),
+            });
+        }
+
         return true;
     } catch (err) {
         err.message = err.stack || err.message;

@@ -1,5 +1,6 @@
 "use strict";
 
+const mongoCollection = require("@core/mongo-collection");
 const RouterOSApi = require("@core/routeros-api");
 const configGet = require("@core/config-get");
 const logger = require("@core/logger")(module);
@@ -21,6 +22,10 @@ module.exports = async (leaseId) => {
 
         await routerOsApi.run("/ip/dhcp-server/lease/disable", ["=numbers=" + leaseId]);
         logger.info(`Disabled lease id ${leaseId}`);
+
+        const dbLeases = await mongoCollection("leases");
+        await dbLeases.updateOne({ id: leaseId }, { $set: { disabled: true, lastUpdated: new Date() } });
+
         return true;
     } catch (err) {
         err.message = err.stack || err.message;

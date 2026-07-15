@@ -1,5 +1,4 @@
 - add historical entries to CHANGELOG.md
 - add dhcp pool number left to mikrotik dhcp module
 - mikrotik-dhcp should warn when pools are full
-- update db on lease changes
 - add heartbeat status check and worker task

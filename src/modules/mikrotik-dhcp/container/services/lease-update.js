@@ -73,6 +73,16 @@ module.exports = async (leaseId, formData) => {
             }
         }
 
+        const updateFields = { lastUpdated: new Date() };
+        if (lease.dynamic) updateFields.dynamic = false;
+        if (formData.address) updateFields.address = formData.address;
+        if (formData.comment !== undefined) updateFields.comment = formData.comment || "";
+        if (formData['mac-address']) updateFields['mac-address'] = formData['mac-address'];
+        if (formData.enabled !== undefined) updateFields.disabled = !formData.enabled;
+        if (formData['server']) updateFields.server = formData['server'];
+        if (formData['address-lists'] !== undefined) updateFields['address-lists'] = formData['address-lists'];
+        await dbLeases.updateOne({ id: leaseId }, { $set: updateFields });
+
         return true;
     } catch (err) {
         err.message = err.stack || err.message;
