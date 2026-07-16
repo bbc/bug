@@ -5,11 +5,14 @@ const ouiData = require("oui-data");
 const logger = require("@core/logger")(module);
 
 const getOuiPrefix = (macAddress = "") => macAddress.replace(/[^a-fA-F0-9]/g, "").slice(0, 6).toUpperCase();
+const isStaticLeaseMac = (macAddress = "") => /^(00:00:00|02:00:00)/i.test(macAddress);
 
 module.exports = async (leaseId) => {
     try {
         const dbLeases = await mongoCollection("leases");
         let lease = await dbLeases.findOne({ "id": leaseId });
+
+        lease["_isStatic"] = isStaticLeaseMac(lease["mac-address"]);
 
         // set manufacturer
         lease["manufacturer"] = "";

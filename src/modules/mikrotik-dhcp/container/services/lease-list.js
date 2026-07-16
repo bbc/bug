@@ -6,6 +6,7 @@ const sortHandlers = require("@core/sort-handlers");
 const logger = require("@core/logger")(module);
 
 const getOuiPrefix = (macAddress = "") => macAddress.replace(/[^a-fA-F0-9]/g, "").slice(0, 6).toUpperCase();
+const isStaticLeaseMac = (macAddress = "") => /^(00:00:00|02:00:00)/i.test(macAddress);
 
 module.exports = async (sortField = null, sortDirection = "asc", filters = {}) => {
     try {
@@ -49,6 +50,8 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
         }
 
         for (const eachLease of leases) {
+            eachLease["_isStatic"] = isStaticLeaseMac(eachLease["mac-address"]);
+
             // set manufacturer
             eachLease["manufacturer"] = "";
             if (eachLease["mac-address"]) {
@@ -89,6 +92,7 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
             ["last-seen"]: sortHandlers.number,
             ["expires-after"]: sortHandlers.number,
             server: sortHandlers.string,
+            
         };
 
         // sort
