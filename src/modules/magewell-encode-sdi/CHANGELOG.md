@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.0.8
+
+- 2026-07-15: add codecdb check ([c46cbff](https://github.com/bbc/bug/commit/c46cbff7543970f0cad01fb9e61dc15adf64e5b0))
+- 2026-07-15: fix validation logic ([d8e3834](https://github.com/bbc/bug/commit/d8e3834873af89273e4983d757e136b633ee9a36))
+
 ### version 1.0.7
 
 - 2026-07-14: change default output type to srt-caller ([cba755f](https://github.com/bbc/bug/commit/cba755f50221ccd32e96ed1fbcc5dfc425adcf2e))
