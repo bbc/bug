@@ -2,26 +2,17 @@
     "name": "netgear-avline",
     "longname": "Netgear AV Line Switch",
     "description": "Control and monitoring of Netgear AV Line ethernet switches",
-    "capabilities": [
-        "network-switch"
-    ],
+    "capabilities": ["network-switch"],
     "notes": "",
     "version": "1.0.2",
     "icon": "SettingsEthernet",
     "author": "Geoff House",
     "license": "Apache-2.0",
     "memory": 220,
-    "status": "beta",
+    "status": "stable",
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "services",
-        "workers",
-        "utils"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "services", "workers", "utils"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "order": 0,

@@ -9,17 +9,10 @@
     "author": "Geoff House",
     "memory": 200,
     "license": "Apache-2.0",
-    "status": "beta",
+    "status": "stable",
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "services",
-        "workers",
-        "utils"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "services", "workers", "utils"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "order": 0,

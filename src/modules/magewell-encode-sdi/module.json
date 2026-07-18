@@ -8,18 +8,11 @@
     "icon": "mdi-set-top-box",
     "author": "Geoff House",
     "license": "Apache-2.0",
-    "status": "development",
+    "status": "stable",
     "needsContainer": true,
-    "devmounts": [
-        "api",
-        "services",
-        "workers",
-        "utils"
-    ],
+    "devmounts": ["api", "services", "workers", "utils"],
     "memory": 200,
-    "protectedRoutes": [
-        "config"
-    ],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "needsConfigured": true,

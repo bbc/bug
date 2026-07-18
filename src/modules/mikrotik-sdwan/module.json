@@ -8,18 +8,11 @@
     "icon": "AltRoute",
     "author": "Geoff House",
     "license": "Apache-2.0",
-    "status": "development",
+    "status": "stable",
     "needsContainer": true,
     "memory": 512,
-    "devmounts": [
-        "api",
-        "services",
-        "workers",
-        "utils"
-    ],
-    "protectedRoutes": [
-        "config"
-    ],
+    "devmounts": ["api", "services", "workers", "utils"],
+    "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
         "needsConfigured": true,
