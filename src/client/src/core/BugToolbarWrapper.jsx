@@ -112,7 +112,7 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
         }
     };
 
-    const getToolbar = (roles = [], menuItems) => {
+    const getToolbar = (roles = []) => {
         if (
             (Array.isArray(menuItems) && menuItems.length > 0) ||
             roles.includes("admin") ||
@@ -181,6 +181,7 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
     if (panel.status === "loading") {
         return <></>;
     }
+    console.log(panel.data);
     if (panel.status === "success") {
         return (
             <>
@@ -220,7 +221,7 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
                     </>
                 )}
                 <Box sx={{ display: { xs: "none", sm: "block" } }}>{buttons ? buttons : null}</Box>
-                {getToolbar(user?.data?.roles, menuItems)}
+                {getToolbar(user?.data?.roles)}
             </>
         );
     }

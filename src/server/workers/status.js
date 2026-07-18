@@ -15,6 +15,29 @@ const dockerContainer = require("@models/docker-container");
 const modulePort = process.env.MODULE_PORT || 3200;
 const databaseName = process.env.BUG_CONTAINER || "bug";
 
+const moduleStatusWarnings = {
+    archived: {
+        key: "module-archived",
+        title: "Module Archived",
+        message: ["This module has been archived and may be removed in a future release."],
+    },
+    development: {
+        key: "module-development",
+        title: "Module In Development",
+        message: ["This module is still in development and may be unstable."],
+    },
+    testing: {
+        key: "module-testing",
+        title: "Module In Testing",
+        message: ["This module is currently in testing and may be unstable."],
+    },
+    beta: {
+        key: "module-beta",
+        title: "Module In Beta",
+        message: ["This module is currently in beta testing and may be unstable."],
+    },
+};
+
 const fetch = async () => {
     try {
         const panelStatusCollection = await mongoCollection("panelstatus");
@@ -34,6 +57,9 @@ const fetch = async () => {
                 };
 
                 if (eachPanelConfig.enabled) {
+                    // find the module config for this panel
+                    const thisModuleConfig = moduleConfig.find((o) => o.name === eachPanelConfig["module"]) ?? null;
+
                     // check if panel has just started
                     const containerInfo = await dockerContainer.get(eachPanelConfig.id);
                     const startedInLast10Secs = startedInLastNSeconds(containerInfo?.status, 20);
@@ -58,7 +84,6 @@ const fetch = async () => {
                         ];
                     } else {
                         // find the module config for this panel
-                        const thisModuleConfig = moduleConfig.find((o) => o.name === eachPanelConfig["module"]) ?? null;
                         if (eachPanelConfig.enabled && thisModuleConfig && thisModuleConfig.needsContainer) {
                             const url = `http://${eachPanelConfig.id}:${modulePort}/api/status`;
                             try {
@@ -112,6 +137,12 @@ const fetch = async () => {
                                 );
                             }
                         }
+                    }
+
+                    // warn if the module is archived or still in development
+                    const moduleStatusWarning = moduleStatusWarnings[thisModuleConfig?.status];
+                    if (moduleStatusWarning) {
+                        panelStatus.statusItems.push(new StatusItem({ ...moduleStatusWarning, type: "warning" }));
                     }
                 }
 
