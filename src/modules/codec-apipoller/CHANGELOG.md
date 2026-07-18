@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.1.2
+
+- 2026-07-15: update test to return only default status [copilot] ([f393752](https://github.com/bbc/bug/commit/f393752f58250c70f85bcb1ad3b7e7a622ce03a8))
+- 2026-07-14: don't alert on stale data ([e82848b](https://github.com/bbc/bug/commit/e82848bc4ab58d61801702dee165c73a5456998f))
+
 ### version 1.1.1
 
 - 2026-07-11: add tests ([ecba755](https://github.com/bbc/bug/commit/ecba7554bee8460fb864e7adab8528093fa33c6f))

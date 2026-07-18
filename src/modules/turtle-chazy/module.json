@@ -4,15 +4,22 @@
     "description": "Turtle Chazy Dante Controller",
     "capabilities": [],
     "notes": "",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "icon": "mdi-turtle",
     "author": "Geoff House",
     "license": "Apache-2.0",
     "status": "stable",
     "needsContainer": true,
     "memory": 512,
-    "devmounts": ["api", "services", "workers", "utils"],
-    "protectedRoutes": ["config"],
+    "devmounts": [
+        "api",
+        "services",
+        "workers",
+        "utils"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
     "defaultconfig": {
         "id": "",
         "order": 0,
