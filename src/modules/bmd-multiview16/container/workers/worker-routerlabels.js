@@ -7,6 +7,7 @@ const mongoDb = require("@core/mongo-db");
 const axios = require("axios");
 const modulePort = process.env.PORT;
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@core/logger")(module);
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -35,10 +36,10 @@ const main = async () => {
                     if (response?.data?.status === "success" && Array.isArray(response.data.data)) {
                         labels = response.data.data;
                     } else {
-                        console.warn(`worker-routerlabels: invalid response`, response?.data);
+                        logger.warning(`invalid response ${JSON.stringify(response?.data)}`);
                     }
                 } catch (error) {
-                    console.error(`worker-routerlabels: ${error.stack || error.message}`);
+                    logger.error(error.stack || error.message);
                     // wait before retry
                     await delay(5000);
                 }
@@ -50,14 +51,12 @@ const main = async () => {
             await delay(2000);
         }
     } catch (err) {
-        console.error(`worker-routerlabels: fatal error`);
-        console.error(err.stack || err.message || err);
+        logger.error(err.stack || err.message || err);
         process.exit();
     }
 };
 
 main().catch(err => {
-    console.error("worker-routerlabels: startup failure");
-    console.error(err.stack || err.message || err);
+    logger.error(err.stack || err.message || err);
     process.exit(1);
 });

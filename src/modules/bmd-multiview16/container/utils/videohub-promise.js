@@ -2,6 +2,7 @@
 const net = require("net");
 const events = require("events");
 const parser = require("./videohub-parser");
+const logger = require("@core/logger")(module);
 
 class Router extends events.EventEmitter {
     constructor(opts = {}) {
@@ -50,7 +51,7 @@ class Router extends events.EventEmitter {
                 if (command) message += `${command}\n\n`;
                 else message += `\n`;
 
-                if (log) console.log(`videohub-promise: sending ${JSON.stringify(message)}`);
+                if (log) logger.debug(`sending ${JSON.stringify(message)}`);
 
                 this.socket.write(message, (err) => {
                     if (err) return reject(err);

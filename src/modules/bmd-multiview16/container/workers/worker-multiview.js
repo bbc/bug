@@ -6,6 +6,7 @@ const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
 const videohub = require("@utils/videohub-promise");
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@core/logger")(module);
 
 const updateDelay = 2000;
 let lastSeen = null;
@@ -42,7 +43,7 @@ const main = async () => {
         await mongoDb.connect(workerData.id);
 
         // Kick things off
-        console.log(`worker-multiview: connecting to device at ${workerData.address}:${workerData.port}`);
+        logger.debug(`connecting to device at ${workerData.address}:${workerData.port}`);
 
         const router = new videohub({
             host: workerData.address,
@@ -50,10 +51,10 @@ const main = async () => {
         });
 
         router.on("update", saveResult);
-        console.log("worker-multiview: attempting connection ... ");
+        logger.debug("attempting connection ...");
 
         await router.connect();
-        console.log("worker-multiview: waiting for events ...");
+        logger.debug("waiting for events ...");
 
         let statusDumpTime = Date.now();
         let statusDumpFields = [
@@ -88,14 +89,12 @@ const main = async () => {
             }
         }
     } catch (err) {
-        console.error(`worker-multiview: fatal error`);
-        console.error(err.stack || err.message || err);
+        logger.error(err.stack || err.message || err);
         process.exit();
     }
 };
 
 main().catch(err => {
-    console.error("worker-multiview: startup failure");
-    console.error(err.stack || err.message || err);
+    logger.error(err.stack || err.message || err);
     process.exit(1);
 });

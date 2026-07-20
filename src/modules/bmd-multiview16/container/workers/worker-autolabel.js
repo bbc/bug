@@ -9,6 +9,7 @@ const modulePort = process.env.PORT;
 const mongoSingle = require("@core/mongo-single");
 const configGet = require("@core/config-get");
 const labelSet = require("@services/label-set");
+const logger = require("@core/logger")(module);
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -28,8 +29,7 @@ const main = async () => {
         }
 
     } catch (err) {
-        console.error(`worker-autolabel: fatal error`);
-        console.error(err.stack || err.message || err);
+        logger.error(err.stack || err.message || err);
         process.exit();
     }
 };
@@ -56,17 +56,16 @@ const updateLabels = async () => {
         if (routerIndex !== undefined) {
             const routerLabel = routerLabels[routerIndex].inputLabel;
             if (routerLabel !== inputLabels[eachEnabledIndex]) {
-                console.log(`worker-autolabel: updating ${eachEnabledIndex} to ${routerLabel}`);
+                logger.debug(`updating ${eachEnabledIndex} to ${routerLabel}`);
                 await labelSet(eachEnabledIndex, routerLabel);
             } else {
-                console.log(`${eachEnabledIndex} is already ${routerLabel}`);
+                logger.debug(`${eachEnabledIndex} is already ${routerLabel}`);
             }
         }
     }
 };
 
 main().catch(err => {
-    console.error("worker-autolabel: startup failure");
-    console.error(err.stack || err.message || err);
+    logger.error(err.stack || err.message || err);
     process.exit(1);
 });
