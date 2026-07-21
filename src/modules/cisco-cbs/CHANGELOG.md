@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.2.5
+
+- 2026-07-21: fix db updating race conditions when updating labels ([44e3915](https://github.com/bbc/bug/commit/44e39153fcc7a5c898700ff6660f2f28aa1ba39d))
+- 2026-07-21: add heartbeat status check and worker task [copilot] ([fdd3aff](https://github.com/bbc/bug/commit/fdd3affa31c91593231b7c709bab3af2627e1a56))
+
 ### version 1.2.4
 
 - 2026-06-16: fix spurious error when disabling interface ([6d5c3e3](https://github.com/bbc/bug/commit/6d5c3e371577f32b1d82c3a4ac618ef6412ce54d))
