@@ -4,8 +4,6 @@ const asyncHandler = require("express-async-handler");
 const playerDetails = require("@services/player-details");
 const logger = require("@core/logger")(module);
 const axios = require("axios");
-const url = require("url");
-const path = require("path");
 
 route.get(
     "/:playerId/:filePath",
@@ -16,8 +14,8 @@ route.get(
         if (req.params?.filePath === "playlist.m3u8" || req.params?.filePath === "") {
             proxyAddress = player?.source;
         } else {
-            const parsedSource = url.parse(player?.source, true);
-            proxyAddress = `${parsedSource?.protocol}//${parsedSource?.host}/${req.params?.filePath}`;
+            const parsedSource = new URL(player?.source);
+            proxyAddress = `${parsedSource.protocol}//${parsedSource.host}/${req.params?.filePath}`;
         }
 
         logger.info(`proxying file request to: ${proxyAddress}`);
