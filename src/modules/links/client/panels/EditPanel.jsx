@@ -53,7 +53,7 @@ export default function EditPanel() {
 
     const onClickAdd = (index) => {
         setDialogOpen(true);
-        if (index !== null) {
+        if (index !== null && index !== undefined) {
             setCurrentIndex(index);
         } else {
             setCurrentIndex(null);
