@@ -7,10 +7,6 @@ const logger = require("@core/logger")(module);
 module.exports = async () => {
     try {
         const dbSystem = await mongoSingle.get("videohub_device");
-        if (!dbSystem) {
-            throw new Error("no result from database");
-        }
-
         if (!dbSystem?.friendly_name) {
             return new StatusItem({
                 key: `nodescription`,
@@ -28,7 +24,7 @@ module.exports = async () => {
             type: "default",
             flags: [],
         });
-    } catch (error) {
+    } catch (err) {
         logger.error(err.stack || err.message);
         return [];
     }
