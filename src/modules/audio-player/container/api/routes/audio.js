@@ -2,6 +2,7 @@ const express = require("express");
 const route = express.Router();
 const asyncHandler = require("express-async-handler");
 const playerDetails = require("@services/player-details");
+const logger = require("@core/logger")(module);
 const axios = require("axios");
 const url = require("url");
 const path = require("path");
@@ -19,7 +20,7 @@ route.get(
             proxyAddress = `${parsedSource?.protocol}//${parsedSource?.host}/${req.params?.filePath}`;
         }
 
-        console.log(`audio: proxying file request to: ${proxyAddress}`);
+        logger.info(`proxying file request to: ${proxyAddress}`);
 
         try {
             const { data } = await axios.get(proxyAddress, { responseType: "stream" });
