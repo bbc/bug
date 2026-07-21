@@ -181,7 +181,7 @@ export default function BugToolbarWrapper({ buttons, menuItems }) {
     if (panel.status === "loading") {
         return <></>;
     }
-    console.log(panel.data);
+
     if (panel.status === "success") {
         return (
             <>
