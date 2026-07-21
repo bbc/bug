@@ -5,6 +5,8 @@ const ciscoPortlist = require("@utils/ciscosg-portlist");
 
 module.exports = async ({ snmpAwait, interfacesCollection, mongoSingle }) => {
     try {
+        const pollStartedAt = new Date();
+
         const vlans = await mongoSingle.get("vlans");
 
         if (!vlans?.length) {
@@ -71,7 +73,13 @@ module.exports = async ({ snmpAwait, interfacesCollection, mongoSingle }) => {
 
             bulkOperations.push({
                 updateOne: {
-                    filter: { interfaceId: eachInterface.interfaceId },
+                    filter: {
+                        interfaceId: eachInterface.interfaceId,
+                        $or: [
+                            { lastUpdated: { $exists: false } },
+                            { lastUpdated: { $lte: pollStartedAt } },
+                        ],
+                    },
                     update: {
                         $set: {
                             "tagged-vlans": taggedVlans,

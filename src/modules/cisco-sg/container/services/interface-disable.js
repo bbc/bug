@@ -34,9 +34,10 @@ module.exports = async (interfaceId) => {
         logger.info("snmp success - updating DB");
 
         const interfacesCollection = await mongoCollection("interfaces");
+        const lastUpdated = new Date();
         const dbResult = await interfacesCollection.updateOne(
             { interfaceId: Number(interfaceId) },
-            { $set: { "admin-state": false } }
+            { $set: { "admin-state": false, lastUpdated } }
         );
 
         if (dbResult.matchedCount !== 1) {

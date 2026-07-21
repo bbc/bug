@@ -7,6 +7,8 @@ const ADMIN_STATE_OID = "1.3.6.1.2.1.2.2.1.7";
 
 module.exports = async ({ snmpAwait, interfacesCollection }) => {
     try {
+        const pollStartedAt = new Date();
+
         const interfaces = await interfacesCollection.find().toArray();
 
         if (!interfaces?.length) {
@@ -44,7 +46,13 @@ module.exports = async ({ snmpAwait, interfacesCollection }) => {
 
             bulkOperations.push({
                 updateOne: {
-                    filter: { interfaceId },
+                    filter: {
+                        interfaceId,
+                        $or: [
+                            { lastUpdated: { $exists: false } },
+                            { lastUpdated: { $lte: pollStartedAt } },
+                        ],
+                    },
                     update: {
                         $set: {
                             "link-state": linkState,

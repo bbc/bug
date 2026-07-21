@@ -40,9 +40,10 @@ module.exports = async (interfaceId, action) => {
         logger.info("success - updating DB");
 
         const interfacesCollection = await mongoCollection("interfaces");
+        const lastUpdated = new Date();
         const dbResult = await interfacesCollection.updateOne(
             { interfaceId: Number(interfaceId) },
-            { $set: { "poe-admin-enable": action === "enable" } }
+            { $set: { "poe-admin-enable": action === "enable", lastUpdated } }
         );
 
         logger.info(`${JSON.stringify(dbResult.result)}`);

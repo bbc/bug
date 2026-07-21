@@ -8,6 +8,8 @@ const OUT_OCTETS_OID = "1.3.6.1.2.1.2.2.1.16";
 
 module.exports = async ({ snmpAwait, interfacesCollection, historyCollection }) => {
     try {
+        const pollStartedAt = new Date();
+
         const interfaces = await interfacesCollection.find().toArray();
 
         if (!interfaces?.length) {
@@ -113,7 +115,13 @@ module.exports = async ({ snmpAwait, interfacesCollection, historyCollection }) 
 
             bulkOperations.push({
                 updateOne: {
-                    filter: { interfaceId: eachInterface.interfaceId },
+                    filter: {
+                        interfaceId: eachInterface.interfaceId,
+                        $or: [
+                            { lastUpdated: { $exists: false } },
+                            { lastUpdated: { $lte: pollStartedAt } },
+                        ],
+                    },
                     update: { $set: fieldsToUpdate },
                     upsert: false,
                 },

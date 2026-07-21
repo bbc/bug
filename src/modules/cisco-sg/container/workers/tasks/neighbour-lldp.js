@@ -15,6 +15,8 @@ const parseHexString = (hexString) => {
 
 module.exports = async ({ snmpAwait, interfacesCollection }) => {
     try {
+        const pollStartedAt = new Date();
+
         const lldpInfo = await snmpAwait.subtree({
             oid: "1.0.8802.1.1.2.1.4.1.1",
             raw: true,
@@ -56,6 +58,10 @@ module.exports = async ({ snmpAwait, interfacesCollection }) => {
         const activeInterfaceIds = activeLldpEntries.map(({ eachIndex }) => parseInt(eachIndex, 10));
         const clearFilter = {
             lldp: { $exists: true },
+            $or: [
+                { lastUpdated: { $exists: false } },
+                { lastUpdated: { $lte: pollStartedAt } },
+            ],
         };
 
         if (activeInterfaceIds.length) {
@@ -78,7 +84,13 @@ module.exports = async ({ snmpAwait, interfacesCollection }) => {
         for (const { lldpObject, eachIndex } of activeLldpEntries) {
             operations.push({
                 updateOne: {
-                    filter: { interfaceId: parseInt(eachIndex, 10) },
+                    filter: {
+                        interfaceId: parseInt(eachIndex, 10),
+                        $or: [
+                            { lastUpdated: { $exists: false } },
+                            { lastUpdated: { $lte: pollStartedAt } },
+                        ],
+                    },
                     update: {
                         $set: {
                             lldp: lldpObject,

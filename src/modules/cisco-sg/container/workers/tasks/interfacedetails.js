@@ -61,6 +61,8 @@ const SNMP_CHUNK_SIZE = 10;
 
 module.exports = async ({ snmpAwait, interfacesCollection }) => {
     try {
+        const pollStartedAt = new Date();
+
         const interfaces = await interfacesCollection.find().toArray();
 
         if (!interfaces?.length) {
@@ -186,7 +188,13 @@ module.exports = async ({ snmpAwait, interfacesCollection }) => {
 
             bulkOperations.push({
                 updateOne: {
-                    filter: { interfaceId },
+                    filter: {
+                        interfaceId,
+                        $or: [
+                            { lastUpdated: { $exists: false } },
+                            { lastUpdated: { $lte: pollStartedAt } },
+                        ],
+                    },
                     update: {
                         $set: {
                             alias,

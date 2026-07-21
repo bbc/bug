@@ -11,6 +11,8 @@ const SNMP_CHUNK_SIZE = 25;
 
 module.exports = async ({ snmpAwait, interfacesCollection }) => {
     try {
+        const pollStartedAt = new Date();
+
         const ifIDs = await snmpAwait.subtree({
             maxRepetitions: INTERFACE_SUBTREE_MAX_REPETITIONS,
             oid: IF_STATUS_OID,
@@ -66,7 +68,13 @@ module.exports = async ({ snmpAwait, interfacesCollection }) => {
 
                 bulkOperations.push({
                     updateOne: {
-                        filter: { interfaceId: dbDocument.interfaceId },
+                        filter: {
+                            interfaceId: dbDocument.interfaceId,
+                            $or: [
+                                { lastUpdated: { $exists: false } },
+                                { lastUpdated: { $lte: pollStartedAt } },
+                            ],
+                        },
                         update: { $set: dbDocument },
                         upsert: true,
                     },

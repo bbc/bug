@@ -38,9 +38,10 @@ module.exports = async (interfaceId, newName) => {
         logger.info("success - updating DB");
 
         const interfacesCollection = await mongoCollection("interfaces");
+        const lastUpdated = new Date();
         const dbResult = await interfacesCollection.updateOne(
             { interfaceId: Number(interfaceId) },
-            { $set: { alias: newName } }
+            { $set: { alias: newName, lastUpdated } }
         );
 
         if (dbResult.matchedCount !== 1) {
