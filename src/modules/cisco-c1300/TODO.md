@@ -1,4 +1,2 @@
-- bitrates not working on traffic graphs for interfaces
 - show errdisabled state (like aristas)
 - show POE details in details tab
--
