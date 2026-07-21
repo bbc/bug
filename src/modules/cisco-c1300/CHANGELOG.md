@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.2.31
+
+- 2026-07-21: improve routes and add tests ([4c631d8](https://github.com/bbc/bug/commit/4c631d80929024b2095ec04766e0722b969ee996))
+
 ### version 1.2.30
 
 - 2026-07-21: add heartbeat status check and worker task [copilot] ([8cc17b1](https://github.com/bbc/bug/commit/8cc17b194251baca15cb428901398618fa8dde66))

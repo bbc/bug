@@ -1,5 +1,11 @@
 ## Changelog
 
+### version 1.1.4
+
+- 2026-07-21: add README and screenshot assets ([88ff34a](https://github.com/bbc/bug/commit/88ff34aad7fb2a0d55c0824faf44151bc0b1c206))
+- 2026-07-21: add heartbeat check ([a8f9597](https://github.com/bbc/bug/commit/a8f95970a46b1bbdb863e2e14e2323a8b0ab3c30))
+- 2026-07-21: fix db updating race conditions when updating labels ([8231b0e](https://github.com/bbc/bug/commit/8231b0eab9ceb62dd5b669801271450e22da4c4e))
+
 ### version 1.1.3
 
 - 2026-06-24: fix toobig on interfaces worker ([165ea06](https://github.com/bbc/bug/commit/165ea06481e70b52688d6b986a0652935032df6d))
