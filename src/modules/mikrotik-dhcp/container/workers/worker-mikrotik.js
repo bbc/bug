@@ -21,16 +21,19 @@ const main = async () => {
         await mongoDb.connect(workerData.id);
         const addressListsCollection = await mongoCollection("addressLists");
         const leasesCollection = await mongoCollection("leases");
+        const poolsCollection = await mongoCollection("pools");
         const serversCollection = await mongoCollection("servers");
 
         // clear old entries
         await addressListsCollection.deleteMany({});
         await leasesCollection.deleteMany({});
+        await poolsCollection.deleteMany({});
         await serversCollection.deleteMany({});
 
         // and now create the index with ttl
         await mongoCreateIndex(addressListsCollection, "timestamp", { expireAfterSeconds: 60 });
         await mongoCreateIndex(leasesCollection, "timestamp", { expireAfterSeconds: 60 });
+        await mongoCreateIndex(poolsCollection, "timestamp", { expireAfterSeconds: 60 });
         await mongoCreateIndex(serversCollection, "timestamp", { expireAfterSeconds: 60 });
 
         const routerOsApi = new RouterOSApi({
@@ -54,11 +57,12 @@ const main = async () => {
 
         workerTaskManager({
             tasks: [
+                { name: "pools", seconds: 20 },
                 { name: "heartbeat", seconds: 5 },
                 { name: "addresslists", seconds: 10 },
                 { name: "leases", seconds: 2 },
                 { name: "servers", seconds: 10 },
-            ], context: { routerOsApi, addressListsCollection, leasesCollection, serversCollection }, baseDir: __dirname
+            ], context: { routerOsApi, addressListsCollection, leasesCollection, poolsCollection, serversCollection }, baseDir: __dirname
         });
 
     } catch (err) {

@@ -11,7 +11,7 @@ module.exports = async ({ routerOsApi, mongoSingle }) => {
             result: resourceData,
             booleanFields: [],
             timeFields: ["uptime"],
-            numberFields: ["cpu-count", "write-sect-since-reboot", "write-sect-total"]
+            integerFields: ["cpu-count", "write-sect-since-reboot", "write-sect-total"]
         });
 
         const nameData = await routerOsApi.run("/system/identity/print");

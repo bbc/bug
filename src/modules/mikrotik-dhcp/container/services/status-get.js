@@ -2,6 +2,7 @@
 
 const { statusCheckHeartbeat } = require("@core/heartbeat");
 const statusCheckCollection = require("@core/status-checkcollection");
+const statusCheckPools = require("./status-checkpools");
 const statusGetDefault = require("./status-getdefault");
 
 module.exports = async () => {
@@ -16,6 +17,7 @@ module.exports = async () => {
             timeoutSeconds: 10,
             flags: ["restartPanel", "configurePanel"],
         }),
+        await statusCheckPools(),
         await statusGetDefault()
     );
 };
