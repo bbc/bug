@@ -1,12 +1,13 @@
 import { useAlert } from "@utils/Snackbar";
 import ReactPlayer from "react-player/lazy";
 
-export default function AudioPlayer({ title, source, playing, volume, onPlayingChange }) {
+export default function AudioPlayer({ title, source, playing, volume, onPlayingChange, onActiveChange }) {
     const sendAlert = useAlert();
 
     const handleError = () => {
         // If there’s an error while trying to play, notify parent
         if (onPlayingChange) onPlayingChange(false);
+        if (onActiveChange) onActiveChange(false);
         sendAlert(`Failed to play ${title}`, { broadcast: "false", variant: "error" });
     };
 
@@ -27,7 +28,14 @@ export default function AudioPlayer({ title, source, playing, volume, onPlayingC
             playing={true}
             url={source}
             onError={handleError}
-            onEnded={() => onPlayingChange && onPlayingChange(false)}
+            onPlay={() => onActiveChange && onActiveChange(true)}
+            onBuffer={() => onActiveChange && onActiveChange(false)}
+            onBufferEnd={() => onActiveChange && onActiveChange(true)}
+            onPause={() => onActiveChange && onActiveChange(false)}
+            onEnded={() => {
+                if (onPlayingChange) onPlayingChange(false);
+                if (onActiveChange) onActiveChange(false);
+            }}
         />
     );
 }

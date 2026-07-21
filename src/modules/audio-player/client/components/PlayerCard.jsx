@@ -1,6 +1,6 @@
 import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import { Card, CardActions, CardContent, Grid, IconButton, Slider, Typography } from "@mui/material";
+import { Card, CardActions, CardContent, CircularProgress, Grid, IconButton, Slider, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 import { Sparklines, SparklinesBars } from "react-sparklines";
@@ -8,11 +8,22 @@ import AudioPlayer from "./AudioPlayer";
 
 export default function PlayerCard({ panelId, player }) {
     const [playing, setPlaying] = useState(false);
+    const [active, setActive] = useState(false);
     const [volume, setVolume] = useState(0.5);
     const theme = useTheme();
     const [bars, setBars] = useState([]);
 
-    const togglePlayPause = () => setPlaying((prev) => !prev);
+    const buffering = playing && !active;
+
+    const togglePlayPause = () => {
+        setPlaying((prev) => {
+            const next = !prev;
+            if (!next) {
+                setActive(false);
+            }
+            return next;
+        });
+    };
 
     const handleVolume = (event, newVolume) => {
         const vol = newVolume / 100;
@@ -21,7 +32,7 @@ export default function PlayerCard({ panelId, player }) {
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-            if (playing) {
+            if (active) {
                 const newBars = Array.from({ length: 15 }, () => Math.floor(Math.random() * 20));
                 setBars(newBars);
             } else {
@@ -29,7 +40,7 @@ export default function PlayerCard({ panelId, player }) {
             }
         }, 140);
         return () => clearInterval(intervalId);
-    }, [playing]);
+    }, [active]);
 
     return (
         <Card
@@ -39,8 +50,8 @@ export default function PlayerCard({ panelId, player }) {
                 minWidth: 275,
                 margin: "4px",
                 display: "flex",
-                borderColor: playing ? "success.main" : "secondary.main",
-                backgroundColor: playing ? "success.secondary" : "background.paper",
+                borderColor: active ? "success.main" : "secondary.main",
+                backgroundColor: active ? "success.secondary" : "background.paper",
             }}
             variant="outlined"
         >
@@ -66,10 +77,13 @@ export default function PlayerCard({ panelId, player }) {
                             title={player.title}
                             source={`/container/${panelId}/audio/${player.id}/playlist.m3u8`}
                             onPlayingChange={(state) => setPlaying(state)}
+                            onActiveChange={(state) => setActive(state)}
                         />
 
                         <IconButton onClick={togglePlayPause}>
-                            {playing ? (
+                            {buffering ? (
+                                <CircularProgress size="3rem" color="secondary" />
+                            ) : playing ? (
                                 <PauseIcon sx={{ fontSize: "3rem !important" }} />
                             ) : (
                                 <PlayArrowIcon sx={{ fontSize: "3rem !important" }} />
@@ -85,7 +99,7 @@ export default function PlayerCard({ panelId, player }) {
                             marks
                             min={0}
                             max={100}
-                            color={playing ? "primary" : "secondary"}
+                            color={active ? "primary" : "secondary"}
                         />
                     </CardActions>
                 </Grid>
