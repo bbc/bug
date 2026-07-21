@@ -1,10 +1,8 @@
 import { useAlert } from "@utils/Snackbar";
-import { useRef } from "react";
 import ReactPlayer from "react-player/lazy";
 
 export default function AudioPlayer({ title, source, playing, volume, onPlayingChange }) {
     const sendAlert = useAlert();
-    const player = useRef();
 
     const handleError = () => {
         // If there’s an error while trying to play, notify parent
@@ -12,35 +10,23 @@ export default function AudioPlayer({ title, source, playing, volume, onPlayingC
         sendAlert(`Failed to play ${title}`, { broadcast: "false", variant: "error" });
     };
 
-    const handleReady = () => {
-        if (player.current) {
-            const duration = player.current.getDuration();
-            player.current.seekTo(duration, "seconds"); // jump to live point
-        }
-    };
-
-    const handlePlay = () => {
-        if (onPlayingChange) onPlayingChange(true);
-    };
-
-    const handlePause = () => {
-        if (onPlayingChange) onPlayingChange(false);
-    };
+    // Only mount the player while playing. This guarantees the stream is never
+    // loaded (and cannot autoplay) on page load, and is fully torn down when
+    // paused. A freshly mounted live HLS stream starts at the live edge.
+    if (!playing) {
+        return null;
+    }
 
     return (
         <ReactPlayer
             hidden
-            ref={player}
             controls={true}
             width="100%"
             height="50px"
             volume={volume}
-            playing={playing}
+            playing={true}
             url={source}
             onError={handleError}
-            onReady={handleReady}
-            onPlay={handlePlay}
-            onPause={handlePause}
             onEnded={() => onPlayingChange && onPlayingChange(false)}
         />
     );
