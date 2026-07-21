@@ -42,6 +42,8 @@ const convertPoePortType = (value) => {
 
 module.exports = async ({ snmpAwait, interfacesCollection }) => {
 
+    const pollStartedAt = new Date();
+
     const interfaces = await interfacesCollection.find().toArray();
     if (!interfaces?.length) {
         logger.debug("no interfaces found in db yet - waiting ...");
@@ -98,7 +100,13 @@ module.exports = async ({ snmpAwait, interfacesCollection }) => {
 
         bulkOperations.push({
             updateOne: {
-                filter: { interfaceId },
+                filter: {
+                    interfaceId,
+                    $or: [
+                        { lastUpdated: { $exists: false } },
+                        { lastUpdated: { $lte: pollStartedAt } },
+                    ],
+                },
                 update: {
                     $set: {
                         alias,

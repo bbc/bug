@@ -20,6 +20,8 @@ const convert32BitCounters = (results) => {
 
 module.exports = async ({ snmpAwait, interfacesCollection, historyCollection }) => {
 
+    const pollStartedAt = new Date();
+
     // get list of interfaces
     const interfaces = await interfacesCollection.find().toArray();
     if (!interfaces?.length) {
@@ -127,7 +129,13 @@ module.exports = async ({ snmpAwait, interfacesCollection, historyCollection }) 
         // add to bulk operations instead of per-interface update
         bulkOperations.push({
             updateOne: {
-                filter: { interfaceId: eachInterface.interfaceId },
+                filter: {
+                    interfaceId: eachInterface.interfaceId,
+                    $or: [
+                        { lastUpdated: { $exists: false } },
+                        { lastUpdated: { $lte: pollStartedAt } },
+                    ],
+                },
                 update: { $set: fieldsToUpdate },
                 upsert: false
             }

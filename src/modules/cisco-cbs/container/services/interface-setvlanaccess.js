@@ -51,9 +51,10 @@ module.exports = async (interfaceId, untaggedVlan = "1") => {
         logger.info("success - updating DB");
 
         // update db
+        const lastUpdated = new Date();
         const dbResult = await interfaceCollection.updateOne(
             { interfaceId: Number(interfaceId) },
-            { $set: { "untagged-vlan": Number(untaggedVlan), "tagged-vlans": [] } }
+            { $set: { "untagged-vlan": Number(untaggedVlan), "tagged-vlans": [], lastUpdated } }
         );
 
         logger.info(`${JSON.stringify(dbResult.result)}`);

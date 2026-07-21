@@ -1,3 +1,1 @@
 - show errdisabled state (like aristas)
-- interface on now-deleted vlan - does it show 'loading' in control?
-- fix db updating race conditions when updating labels, vlans etc (like cisco-c1300)

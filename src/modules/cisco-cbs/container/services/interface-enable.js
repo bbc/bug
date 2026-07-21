@@ -33,9 +33,10 @@ module.exports = async (interfaceId) => {
 
         // update the DB to match
         const interfacesCollection = await mongoCollection("interfaces");
+        const lastUpdated = new Date();
         const dbResult = await interfacesCollection.updateOne(
             { interfaceId: Number(interfaceId) },
-            { $set: { "admin-state": true } }
+            { $set: { "admin-state": true, lastUpdated } }
         );
 
         if (dbResult.matchedCount !== 1) {

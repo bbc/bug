@@ -4,6 +4,8 @@ const logger = require("@core/logger")(module);
 
 module.exports = async ({ snmpAwait, mongoSingle, interfacesCollection }) => {
 
+    const pollStartedAt = new Date();
+
     try {
         // fetch leases from the db first - we merge this with the fetched MAC addresses to provide
         // more details to the user
@@ -54,7 +56,13 @@ module.exports = async ({ snmpAwait, mongoSingle, interfacesCollection }) => {
                 .map((fdbArray, eachIndex) => ({ fdbArray, eachIndex }))
                 .filter(({ fdbArray }) => Array.isArray(fdbArray))
                 .map(({ fdbArray, eachIndex }) => interfacesCollection.updateOne(
-                    { interfaceId: eachIndex },
+                    {
+                        interfaceId: eachIndex,
+                        $or: [
+                            { lastUpdated: { $exists: false } },
+                            { lastUpdated: { $lte: pollStartedAt } },
+                        ],
+                    },
                     {
                         $set: {
                             fdb: fdbArray,
