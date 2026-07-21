@@ -4,14 +4,14 @@ const configGet = require("@core/config-get");
 const configPutViaCore = require("@core/config-putviacore");
 
 module.exports = async (playerId, newPlayer) => {
-    let config = await configGet();
+    const config = await configGet();
 
     if (!config) {
-        return false;
+        throw new Error("Failed to load config");
     }
 
     if (!config.players[playerId]) {
-        return false;
+        throw new Error(`Player ${playerId} not found`);
     }
 
     config.players[playerId] = { ...config.players[playerId], ...newPlayer };

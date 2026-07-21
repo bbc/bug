@@ -3,10 +3,12 @@
 const configGet = require("@core/config-get");
 
 module.exports = async (playerId) => {
-    try {
-        const config = await configGet();
-        return config.players[playerId];
-    } catch (error) {
-        return [];
+    const config = await configGet();
+    const player = config.players[playerId];
+
+    if (!player) {
+        throw new Error(`Player ${playerId} not found`);
     }
+
+    return player;
 };

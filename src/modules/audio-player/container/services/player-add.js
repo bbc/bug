@@ -8,17 +8,19 @@ module.exports = async (player) => {
     const config = await configGet();
 
     if (!config) {
-        return false;
+        throw new Error("Failed to load config");
     }
 
-    if (player.source && player.title) {
-        //Trim links
-        player.source = player.source.trim();
-        player.title = player.title.trim();
-
-        const playerId = await uuidv4();
-        config.players[playerId] = player;
+    if (!player.source || !player.title) {
+        throw new Error("Player source and title are required");
     }
+
+    //Trim links
+    player.source = player.source.trim();
+    player.title = player.title.trim();
+
+    const playerId = uuidv4();
+    config.players[playerId] = player;
 
     return await configPutViaCore(config);
 };

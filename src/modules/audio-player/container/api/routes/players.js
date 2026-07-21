@@ -13,7 +13,7 @@ route.get(
     asyncHandler(async (req, res) => {
         const results = await playerList();
         hashResponse(res, req, {
-            status: results.length > 0 ? "success" : "failure",
+            status: "success",
             data: results,
         });
     })
@@ -24,7 +24,7 @@ route.get(
     asyncHandler(async (req, res) => {
         const results = await playerDetails(req.params?.playerId);
         hashResponse(res, req, {
-            status: results ? "success" : "failure",
+            status: "success",
             data: results,
         });
     })
@@ -35,7 +35,7 @@ route.put(
     asyncHandler(async (req, res) => {
         const results = await playerUpdate(req.params?.playerId, req.body);
         hashResponse(res, req, {
-            status: results ? "success" : "failure",
+            status: "success",
             data: results,
         });
     })
@@ -46,7 +46,7 @@ route.post(
     asyncHandler(async (req, res) => {
         const result = await playerAdd(req.body);
         hashResponse(res, req, {
-            status: result ? "success" : "failure",
+            status: "success",
             data: result,
         });
     })
@@ -57,7 +57,7 @@ route.delete(
     asyncHandler(async (req, res) => {
         const results = await playerDelete(req.params?.playerId);
         hashResponse(res, req, {
-            status: results ? "success" : "failure",
+            status: "success",
             data: results,
         });
     })
