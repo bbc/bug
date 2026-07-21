@@ -12,7 +12,7 @@ module.exports = async () => {
             throw new Error("failed to load config");
         }
 
-        logger.info("device-save: saving device config ...");
+        logger.info("saving device config ...");
 
         const result = await ciscoC1300SSH({
             host: config.address,
@@ -34,11 +34,11 @@ module.exports = async () => {
             );
         }
 
-        logger.info("device-save: success");
+        logger.info("save successful");
 
         await deviceSetPending(false);
     } catch (err) {
-        err.message = `device-save: ${err.stack || err.message}`;
+        err.message = `failed to save device config: ${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     }

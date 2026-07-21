@@ -25,7 +25,7 @@ module.exports = async (interfaceId, newName) => {
             community: config.snmpCommunity,
         });
 
-        logger.info(`interface-rename: renaming interface ${interfaceId} to '${newName}' ...`);
+        logger.info(`renaming interface ${interfaceId} to '${newName}' ...`);
 
         // perform SNMP set to rename interface
         await snmpAwait.set({
@@ -33,7 +33,7 @@ module.exports = async (interfaceId, newName) => {
             value: newName.toString(),
         });
 
-        logger.info(`interface-rename: success - updating DB`);
+        logger.info(`SNMP success - updating DB`);
 
         // update the DB to match
         const interfacesCollection = await mongoCollection("interfaces");
@@ -43,7 +43,7 @@ module.exports = async (interfaceId, newName) => {
             { $set: { alias: newName, lastUpdated } }
         );
 
-        logger.info(`interface-rename: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`DB update result: ${JSON.stringify(dbResult.result)}`);
 
         if (dbResult.matchedCount !== 1) {
             throw new Error(
@@ -54,9 +54,9 @@ module.exports = async (interfaceId, newName) => {
         // mark system as pending
         await deviceSetPending(true);
 
-        logger.info(`interface-rename: complete`);
+        logger.info(`interface rename complete`);
     } catch (err) {
-        err.message = `interface-rename(${interfaceId}): ${err.stack || err.message}`;
+        err.message = `failed to rename interface ${interfaceId}: ${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     } finally {

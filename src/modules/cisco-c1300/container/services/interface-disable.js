@@ -20,7 +20,7 @@ module.exports = async (interfaceId) => {
             throw new Error("failed to load config");
         }
 
-        logger.info(`interface-disable: disabling interface ${interfaceId} via SNMP`);
+        logger.info(`disabling interface ${interfaceId} via SNMP`);
 
         // create SNMP session
         snmpAwait = new SnmpAwait({
@@ -33,7 +33,7 @@ module.exports = async (interfaceId) => {
             value: 2,
         });
 
-        logger.info(`interface-disable: SNMP success - updating DB`);
+        logger.info(`SNMP success - updating DB`);
 
         // update the DB to match
         const interfacesCollection = await mongoCollection("interfaces");
@@ -51,9 +51,9 @@ module.exports = async (interfaceId) => {
 
         await deviceSetPending(true);
 
-        logger.info(`interface-disable: complete`);
+        logger.info(`interface disable complete`);
     } catch (err) {
-        err.message = `interface-disable(${interfaceId}): ${err.stack || err.message}`;
+        err.message = `failed to disable interface ${interfaceId}: ${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     } finally {

@@ -67,7 +67,7 @@ module.exports = async (formData) => {
             try {
                 snmpAwait.close();
             } catch (error) {
-                logger.warning(`validate-snmp: failed to close snmp session`);
+                logger.warning(`failed to close snmp session`);
             }
         }
     }

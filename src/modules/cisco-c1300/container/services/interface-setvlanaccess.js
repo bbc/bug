@@ -31,14 +31,14 @@ module.exports = async (interfaceId, untaggedVlan = "1") => {
 
         const interfaceCollection = await mongoCollection("interfaces");
 
-        logger.info(`interface-setvlanaccess: setting interface to access mode`);
+        logger.info(`setting interface to access mode`);
 
         await snmpAwait.set({
             oid: `.1.3.6.1.4.1.9.6.1.101.48.22.1.1.${interfaceId}`,
             value: 11,
         });
 
-        logger.info(`interface-setvlanaccess: setting vlan ${untaggedVlan} on interface ${interfaceId}`);
+        logger.info(`setting vlan ${untaggedVlan} on interface ${interfaceId}`);
 
         await snmpAwait.set({
             oid: `.1.3.6.1.4.1.9.6.1.101.48.62.1.1.${interfaceId}`,
@@ -48,7 +48,7 @@ module.exports = async (interfaceId, untaggedVlan = "1") => {
             },
         });
 
-        logger.info(`interface-setvlanaccess: success - updating DB`);
+        logger.info(`SNMP success - updating DB`);
 
         // update db
         const lastUpdated = new Date();
@@ -57,13 +57,13 @@ module.exports = async (interfaceId, untaggedVlan = "1") => {
             { $set: { "untagged-vlan": Number(untaggedVlan), "tagged-vlans": [], lastUpdated } }
         );
 
-        logger.info(`interface-setvlanaccess: ${JSON.stringify(dbResult.result)}`);
+        logger.info(`DB update result: ${JSON.stringify(dbResult.result)}`);
 
         await deviceSetPending(true);
 
         return true;
     } catch (err) {
-        err.message = `interface-setvlanaccess: ${err.stack || err.message}`;
+        err.message = `failed to set access VLAN on interface ${interfaceId}: ${err.stack || err.message}`;
         logger.error(err.message);
         throw err;
     } finally {

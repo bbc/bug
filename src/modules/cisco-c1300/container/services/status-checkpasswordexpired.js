@@ -18,7 +18,7 @@ module.exports = async () => {
         }
         return [];
     } catch (err) {
-        logger.error(`status-checkpasswordexpired: ${err.stack || err.message}`);
+        logger.error(`password-expired status check failed: ${err.stack || err.message}`);
         return [];
     }
 };
