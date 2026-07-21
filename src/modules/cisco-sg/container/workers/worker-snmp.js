@@ -44,6 +44,7 @@ const main = async () => {
 
         workerTaskManager({
             tasks: [
+                { name: "heartbeat", seconds: 5 },
                 { name: "interfaces", seconds: 900 },
                 { name: "vlans", seconds: 60 },
                 { name: "system", seconds: 30 },
