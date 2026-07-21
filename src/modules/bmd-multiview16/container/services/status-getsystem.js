@@ -7,7 +7,10 @@ const logger = require("@core/logger")(module);
 module.exports = async () => {
     try {
         const dbSystem = await mongoSingle.get("videohub_device");
-        if (!dbSystem?.friendly_name) {
+        if (!dbSystem) {
+            return [];
+        }
+        if (!dbSystem.friendly_name) {
             return new StatusItem({
                 key: `nodescription`,
                 message: `Device active and running`,
