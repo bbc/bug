@@ -4,14 +4,19 @@
     "description": "Audio Player",
     "capabilities": [],
     "notes": "",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "icon": "mdi-speaker",
     "author": "Ryan McCartney",
     "license": "Apache-2.0",
     "status": "stable",
     "needsContainer": true,
-    "devmounts": ["api", "services"],
-    "protectedRoutes": ["config"],
+    "devmounts": [
+        "api",
+        "services"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
     "defaultconfig": {
         "id": "",
         "order": 0,
