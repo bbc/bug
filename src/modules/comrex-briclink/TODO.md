@@ -1,6 +1,4 @@
 - add historical entries to CHANGELOG.md
 - add screenshot
-- add panel status (default/success etc)
-- check module status (dev/beta/stable etc)
 - add heartbeat status check and worker task
 - add tests

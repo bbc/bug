@@ -1,6 +1,7 @@
 "use strict";
 
 const statusCheckStats = require("@services/status-checkstats");
+const statusGetDefault = require("@services/status-getdefault");
 const statusCheckMongoSingle = require("@core/status-checkmongosingle");
 const statusCheckCodecDb = require("@core/status-checkcodecdb");
 
@@ -13,6 +14,7 @@ module.exports = async () => {
             itemType: "critical",
             flags: ["restartPanel", "configurePanel"],
         }),
+        await statusGetDefault(),
         await statusCheckCodecDb(),
     );
 };
