@@ -1,3 +1,0 @@
-- add historical entries to CHANGELOG.md
-- add screenshot
-- add tests

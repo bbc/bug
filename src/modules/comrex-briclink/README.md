@@ -16,6 +16,8 @@ It connects to the device over a TCP socket (default port `80`) using Comrex's M
 - system option monitoring
 - optional codec database lookup to populate peer targets from another BUG module
 
+![Screenshot](./assets/screenshot-comrex.png)
+
 ## Configuration
 
 | Field             | Default Value       | Description                                                          |
@@ -32,8 +34,8 @@ It connects to the device over a TCP socket (default port `80`) using Comrex's M
 | `username`        | `"bug"`             | Username used to authenticate with the device.                       |
 | `password`        | `"comrex"`          | Password for the device user.                                        |
 | `port`            | `"80"`              | TCP port used to connect to the device.                              |
-| `delay`           | `100`               | Receive buffer / delay setting (ms) applied to the codec link.       |
-| `jitter`          | `50`                | Jitter buffer setting (ms) applied to the codec link.                |
+| `delay`           | `100`               | Alert if receive buffer / delay setting (ms) goes above this level   |
+| `jitter`          | `50`                | Alert if jitter buffer (ms) goes above this level                    |
 | `loss`            | `5`                 | Acceptable packet loss threshold (%) for the codec link.             |
 | `codecSource`     | `""`                | Optional BUG module id that provides a `codec-db` list of targets.   |
 
