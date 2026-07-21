@@ -28,9 +28,13 @@ module.exports = async (configObject) => {
             bugCoreHost: process.env.BUG_CONTAINER || "bug",
             networkName: process.env.DOCKER_NETWORK_NAME || "bug",
             moduleHome: process.env.MODULE_HOME || "/home/node/module",
-            moduleMemory: moduleData?.memory || process.env.MODULE_MEMORY || 100,
+            moduleMemory: moduleData?.memory || process.env.MODULE_MEMORY || 200,
             bugHost: process.env.BUG_HOST || "127.0.0.1",
         };
+
+        // development runs nodemon with file watchers and bind-mounted source,
+        // which needs more headroom than the production-tuned module.json value
+        const containerMemory = DEFAULT_NODE_ENV === "development" ? envVars.moduleMemory + 256 : envVars.moduleMemory;
 
         const containerOptions = {
             Image: `${configObject.module}:${moduleData?.version || 'latest'}`,
@@ -44,7 +48,6 @@ module.exports = async (configObject) => {
                 `BUG_HOST=${envVars.bugHost}`,
                 `NODE_ENV=${DEFAULT_NODE_ENV}`,
                 `BUG_PORT=${envVars.bugCorePort}`,
-                `NODE_OPTIONS=--max-old-space-size=${envVars.moduleMemory}`,
             ],
             Hostname: configObject.id,
             name: configObject.id,
@@ -57,7 +60,7 @@ module.exports = async (configObject) => {
                 Mounts: [],
                 RestartPolicy: { name: "unless-stopped" },
                 NetworkMode: envVars.networkName,
-                Memory: Math.floor(envVars.moduleMemory * 1024 * 1024),
+                Memory: Math.floor(containerMemory * 1024 * 1024),
                 LogConfig: {
                     Type: "json-file",
                     Config: { "max-size": "10m", "max-file": "1" },
