@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.1.27
+
+- 2026-07-16: add static lease detection ([4378475](https://github.com/bbc/bug/commit/4378475d0c608bba6820bb97e4765f60a17ffc3f))
+
 ### version 1.1.26
 
 - 2026-07-15: update lease db on changes ([55df246](https://github.com/bbc/bug/commit/55df24660d574b3960eccfa4d423d19e806c9143))
