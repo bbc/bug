@@ -1,11 +1,5 @@
 import BugEditIconDialog from "@core/BugEditIconDialog";
 import BugLoading from "@core/BugLoading";
-import { Box } from "@mui/material";
-import AxiosPost from "@utils/AxiosPost";
-import { useAlert } from "@utils/Snackbar";
-import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import RouterButton from "./RouterButton";
 import {
     closestCenter,
     DndContext,
@@ -16,6 +10,12 @@ import {
     useSensors,
 } from "@dnd-kit/core";
 import { arrayMove, rectSortingStrategy, SortableContext, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import { Box } from "@mui/material";
+import AxiosPost from "@utils/AxiosPost";
+import { useAlert } from "@utils/Snackbar";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import RouterButton from "./RouterButton";
 
 export default function Router({
     panelId,
@@ -23,6 +23,7 @@ export default function Router({
     buttonType,
     buttons,
     selectedDestination,
+    pendingSourceIndex = null,
     onClick,
     onChange,
     disabled = false,
@@ -103,6 +104,7 @@ export default function Router({
                     panelId={panelId}
                     key={button.index}
                     selected={buttonType === "source" ? button.selected : selectedDestination === button.index}
+                    pending={buttonType === "source" && pendingSourceIndex === button.index}
                     button={button}
                     onClick={() => onClick(button.index)}
                     onEditIcon={() => handleEditIcon(button)}

@@ -26,6 +26,7 @@ const SectionHeader = styled("div")(({ theme }) => ({
 export default function Router({ panelId, editMode = false, sourceGroup = 0, destinationGroup = 0 }) {
     const sendAlert = useAlert();
     const [selectedDestination, setSelectedDestination] = React.useState(null);
+    const [pendingSourceIndex, setPendingSourceIndex] = React.useState(null);
     const [sourceForceRefresh, setSourceForceRefresh] = useForceRefresh();
     const [destinationForceRefresh, setDestinationForceRefresh] = useForceRefresh();
     const panelConfig = useSelector((state) => state.panelConfig);
@@ -47,6 +48,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
         if (editMode) {
             return;
         }
+        setPendingSourceIndex(null);
         setSelectedDestination(destinationIndex);
     };
 
@@ -55,23 +57,30 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
             return;
         }
 
+        setPendingSourceIndex(sourceIndex);
+
         let source = sourceButtons.data.sources.filter((x) => x.index === sourceIndex);
         let destination = destinationButtons.data.destinations.filter((x) => x.index === selectedDestination);
 
         if (source.length !== 1 || destination.length !== 1) {
+            setPendingSourceIndex(null);
             return;
         }
 
-        if (await AxiosCommand(`/container/${panelId}/route/${selectedDestination}/${sourceIndex}`)) {
-            sendAlert(`Successfully routed '${source[0].label}' to '${destination[0].label}'`, {
-                broadcast: "true",
-                variant: "success",
-            });
-            // force a refresh of the destinations
-            setDestinationForceRefresh();
-            return;
+        try {
+            if (await AxiosCommand(`/container/${panelId}/route/${selectedDestination}/${sourceIndex}`)) {
+                sendAlert(`Successfully routed '${source[0].label}' to '${destination[0].label}'`, {
+                    broadcast: "true",
+                    variant: "success",
+                });
+                // force a refresh of the destinations
+                setDestinationForceRefresh();
+                return;
+            }
+            sendAlert(`Failed to route '${source[0].label}' to '${destination[0].label}'`, { variant: "error" });
+        } finally {
+            setPendingSourceIndex(null);
         }
-        sendAlert(`Failed to route '${source[0].label}' to '${destination[0].label}'`, { variant: "error" });
     };
 
     const scrollableGroupButtons = (props) => {
@@ -158,6 +167,7 @@ export default function Router({ panelId, editMode = false, sourceGroup = 0, des
                             editMode={editMode}
                             buttonType="source"
                             selectedDestination={selectedDestination}
+                            pendingSourceIndex={pendingSourceIndex}
                             buttons={sourceButtons}
                             onClick={handleSourceButtonClicked}
                             useDoubleClick={useDoubleClick}

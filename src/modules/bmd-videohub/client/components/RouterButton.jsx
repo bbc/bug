@@ -19,6 +19,7 @@ export default function RouterButton({
     buttonType,
     button,
     onClick,
+    pending = false,
     selected = false,
     editMode = false,
     disabled = false,
@@ -144,6 +145,9 @@ export default function RouterButton({
         onClick(event);
     };
 
+    const isPending = buttonType === "source" && pending;
+    const buttonColor = isPending ? "warning.main" : null;
+
     return (
         <BugRouterButton
             id={`${buttonType}:${button.index}`}
@@ -157,8 +161,10 @@ export default function RouterButton({
             number={button.index + 1}
             selected={selected}
             disabled={disabled}
+            pending={isPending}
             editMode={editMode}
             locked={button.isLocked}
+            buttonColor={buttonColor}
             leftIcon={
                 button.isQuad ? (
                     <GridViewIcon
