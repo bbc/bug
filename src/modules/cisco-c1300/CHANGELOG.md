@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.2.30
+
+- 2026-07-21: add heartbeat status check and worker task [copilot] ([8cc17b1](https://github.com/bbc/bug/commit/8cc17b194251baca15cb428901398618fa8dde66))
+- 2026-07-21: remove filename from all log actions ([2a86b17](https://github.com/bbc/bug/commit/2a86b174c3e0334c2b275e1f9affda22082cd60f))
+
 ### version 1.2.29
 
 - 2026-06-17: fix poe icon ([3b9bc4c](https://github.com/bbc/bug/commit/3b9bc4cf0d854d3da792d20574daddad700d34fc))
