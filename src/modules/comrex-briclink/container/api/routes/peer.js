@@ -12,85 +12,60 @@ const peerAdd = require("@services/peer-add");
 const peerDelete = require("@services/peer-delete");
 const asyncHandler = require("express-async-handler");
 
-router.get("/connect/:peerId", async function (req, res, next) {
-    try {
+router.get(
+    "/connect/:peerId",
+    asyncHandler(async (req, res) => {
         const result = await peerConnect(req.params.peerId);
         res.json({
             status: result ? "success" : "failure",
             data: result,
         });
-    } catch (error) {
-        console.log(error);
-        res.json({
-            status: "error",
-            message: "Failed to connect peer",
-        });
-    }
-});
+    })
+);
 
-router.get("/disconnect/:peerId", async function (req, res, next) {
-    try {
+router.get(
+    "/disconnect/:peerId",
+    asyncHandler(async (req, res) => {
         const result = await peerDisconnect(req.params.peerId);
         res.json({
             status: result ? "success" : "failure",
             data: result,
         });
-    } catch (error) {
-        console.log(error);
-        res.json({
-            status: "error",
-            message: "Failed to disconnect peer",
-        });
-    }
-});
+    })
+);
 
-router.get("/disconnect", async function (req, res, next) {
-    try {
+router.get(
+    "/disconnect",
+    asyncHandler(async (req, res) => {
         const result = await peerDisconnect();
         res.json({
             status: result ? "success" : "failure",
             data: result,
         });
-    } catch (error) {
-        console.log(error);
-        res.json({
-            status: "error",
-            message: "Failed to disconnect peer",
-        });
-    }
-});
+    })
+);
 
-router.get("/rename/:peerId/:peerName", async function (req, res, next) {
-    try {
+router.get(
+    "/rename/:peerId/:peerName",
+    asyncHandler(async (req, res) => {
         const result = await peerRename(req.params.peerId, req.params.peerName);
         res.json({
             status: result ? "success" : "failure",
             data: result,
         });
-    } catch (error) {
-        console.log(error);
-        res.json({
-            status: "error",
-            message: "Failed to rename peer",
-        });
-    }
-});
+    })
+);
 
-router.get("/autoconnect/:peerId", async function (req, res, next) {
-    try {
+router.get(
+    "/autoconnect/:peerId",
+    asyncHandler(async (req, res) => {
         const result = await peerAutoConnect(req.params.peerId);
         res.json({
             status: result ? "success" : "failure",
             data: result,
         });
-    } catch (error) {
-        console.log(error);
-        res.json({
-            status: "error",
-            message: "Failed to set autoconnect for peer",
-        });
-    }
-});
+    })
+);
 
 router.get(
     "/stats",

@@ -25,4 +25,3 @@ module.exports = async ({ workerData }) => {
 
     await mongoSingle.set("codecdb", codecs, 60);
 };
-xw

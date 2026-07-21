@@ -3,11 +3,12 @@
 const comrexSocket = require("@utils/comrex-socket");
 const configGet = require("@core/config-get");
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@core/logger")(module);
 
 module.exports = async (peerId, peerName) => {
     const config = await configGet();
     if (!config) {
-        throw new Error();
+        throw new Error("failed to load config");
     }
 
     try {
@@ -19,7 +20,7 @@ module.exports = async (peerId, peerName) => {
         });
         await device.connect();
         const cmd = `<setPeerSettings id="${peerId}" name="${peerName}"/>`;
-        console.log(`peer-rename: sending '${cmd}'`);
+        logger.info(`sending '${cmd}'`);
         device.send(cmd);
         setTimeout(() => {
             device.disconnect();
@@ -32,6 +33,7 @@ module.exports = async (peerId, peerName) => {
         await mongoSingle.set("peerList", peerList, 60);
         return true;
     } catch (error) {
-        return false;
+        logger.error(error?.message || error);
+        throw error;
     }
 };

@@ -2,11 +2,12 @@
 
 const comrexSocket = require("@utils/comrex-socket");
 const configGet = require("@core/config-get");
+const logger = require("@core/logger")(module);
 
 module.exports = async (formData) => {
     const config = await configGet();
     if (!config) {
-        throw new Error();
+        throw new Error("failed to load config");
     }
 
     let addString = "<";
@@ -24,7 +25,7 @@ module.exports = async (formData) => {
             password: config.password,
         });
         await device.connect();
-        console.log(`peer-add: sending '${addString}'`);
+        logger.info(`sending '${addString}'`);
         device.send(addString);
         setTimeout(() => {
             device.disconnect();
@@ -32,6 +33,7 @@ module.exports = async (formData) => {
 
         return true;
     } catch (error) {
-        return false;
+        logger.error(error?.message || error);
+        throw error;
     }
 };

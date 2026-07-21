@@ -7,6 +7,7 @@ const comrexSocket = require("@utils/comrex-socket");
 const comrexProcessResults = require("@utils/comrex-processresults");
 const delay = require("delay");
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@core/logger")(module);
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -26,7 +27,7 @@ const main = async () => {
     await delay(3000);
 
     // Kick things off
-    console.log(`worker-stats: connecting to device at ${workerData.address}`);
+    logger.debug(`connecting to device at ${workerData.address}`);
 
     try {
         const device = new comrexSocket({
@@ -39,7 +40,7 @@ const main = async () => {
         });
         device.on("update", (result) => comrexProcessResults(result, ["channelStats", "peerStats"]));
         await device.connect();
-        console.log("worker-stats: waiting for events ...");
+        logger.debug("waiting for events ...");
     } catch (error) {
         throw new Error("failed to connect");
     }

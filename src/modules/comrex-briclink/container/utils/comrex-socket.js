@@ -6,6 +6,7 @@ const md5 = require("md5");
 const delay = require("delay");
 const MessageBuffer = require("@utils/message-buffer");
 const EventEmitter = require("events");
+const logger = require("@core/logger")(module);
 
 class ComrexSocket extends EventEmitter {
     constructor({
@@ -45,8 +46,8 @@ class ComrexSocket extends EventEmitter {
             self.socket = new net.Socket();
 
             self.socket.on("error", (err) => {
-                console.log(err);
-                console.log("comrex-socket: could not connect to device");
+                logger.error(err?.message || err);
+                logger.error("could not connect to device");
                 this.socket.destroy();
                 reject();
             });
@@ -55,7 +56,7 @@ class ComrexSocket extends EventEmitter {
                 const sanitizedData = data.toString().replace("\u0000", "").trim();
 
                 if (self.opts.debug) {
-                    console.log(sanitizedData);
+                    logger.debug(sanitizedData);
                 }
 
                 if (!self.loggedIn) {
@@ -63,7 +64,7 @@ class ComrexSocket extends EventEmitter {
                     if (result.children?.[0]?.attributes?.challenge) {
                         if (result.children?.[0]?.attributes?.["success"] === "false") {
                             // we've tried, and failed to log in
-                            console.log("comrex-socket: failed to log in");
+                            logger.error("failed to log in");
                             reject();
                             return;
                         }
@@ -71,9 +72,7 @@ class ComrexSocket extends EventEmitter {
                             // we didn't get a response last time - we'll delay by 10 seconds
                             await delay(10000);
                         }
-                        console.log(
-                            `comrex-socket: attempting to log in with provided credentials`
-                        );
+                        logger.info(`attempting to log in with provided credentials`);
 
                         // this is what comrex require to log into the device
                         const hashedChallenge = md5(result.children?.[0]?.attributes?.challenge + self.opts.password);
@@ -87,7 +86,7 @@ class ComrexSocket extends EventEmitter {
                         self.waitingForLoginResponse = false;
                         if (result.children?.[0]?.attributes?.["success"] === "true") {
                             self.loggedIn = true;
-                            console.log("comrex-socket: logged in OK");
+                            logger.info("logged in OK");
 
                             // any one-off commands
                             for (const command of self.opts.commands) {
@@ -124,7 +123,7 @@ class ComrexSocket extends EventEmitter {
             });
 
             self.socket.connect(self.opts.port, self.opts.host, function () {
-                console.log(`comrex-socket: connected to ${self.opts.host}:${self.opts.port}`);
+                logger.info(`connected to ${self.opts.host}:${self.opts.port}`);
                 self.loggedIn = false;
                 self.socket.write(`<login />${Char0}`);
             });

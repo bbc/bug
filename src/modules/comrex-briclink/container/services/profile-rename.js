@@ -3,11 +3,12 @@
 const comrexSocket = require("@utils/comrex-socket");
 const configGet = require("@core/config-get");
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@core/logger")(module);
 
 module.exports = async (profileId, profileName) => {
     const config = await configGet();
     if (!config) {
-        throw new Error();
+        throw new Error("failed to load config");
     }
 
     try {
@@ -21,7 +22,7 @@ module.exports = async (profileId, profileName) => {
         let cmd = `<setProfile id="${profileId}">`;
         cmd += `<settings name="${profileName}"/>`;
         cmd += `</setProfile>`;
-        console.log(`profile-rename: sending '${cmd}'`);
+        logger.info(`sending '${cmd}'`);
         device.send(cmd);
         setTimeout(() => {
             device.disconnect();
@@ -34,6 +35,7 @@ module.exports = async (profileId, profileName) => {
         await mongoSingle.set("profileList", profileList, 60);
         return true;
     } catch (error) {
-        return false;
+        logger.error(error?.message || error);
+        throw error;
     }
 };

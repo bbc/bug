@@ -11,6 +11,7 @@ const comrexChannelStats = require("@models/comrex-channelstats");
 const comrexLevels = require("@models/comrex-levels");
 const comrexSystem = require("@models/comrex-system");
 const comrexAddhistory = require("@utils/comrex-addhistory");
+const logger = require("@core/logger")(module);
 
 module.exports = async (result, resultFilter = null) => {
     // console.log(`comrex-processresults: got result for ${result?.children?.[0]?.name}`);
@@ -87,7 +88,7 @@ module.exports = async (result, resultFilter = null) => {
             }
             break;
         default:
-            console.log(`comrex-processresults: UNHANDLED ${result?.children?.[0]?.name}`);
-            console.log(JSON.stringify(result?.children?.[0]));
+            logger.warning(`unhandled result type ${result?.children?.[0]?.name}`);
+            logger.warning(JSON.stringify(result?.children?.[0]));
     }
 };

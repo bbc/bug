@@ -3,11 +3,12 @@
 const comrexSocket = require("@utils/comrex-socket");
 const configGet = require("@core/config-get");
 const mongoSingle = require("@core/mongo-single");
+const logger = require("@core/logger")(module);
 
 module.exports = async (peerId, formData) => {
     const config = await configGet();
     if (!config) {
-        throw new Error();
+        throw new Error("failed to load config");
     }
 
     let updateString = "<";
@@ -34,7 +35,7 @@ module.exports = async (peerId, formData) => {
             password: config.password,
         });
         await device.connect();
-        console.log(`peer-rename: sending '${updateString}'`);
+        logger.info(`sending '${updateString}'`);
         device.send(updateString);
         setTimeout(() => {
             device.disconnect();
@@ -58,6 +59,7 @@ module.exports = async (peerId, formData) => {
         await mongoSingle.set("peerList", peerList, 60);
         return true;
     } catch (error) {
-        return false;
+        logger.error(error?.message || error);
+        throw error;
     }
 };

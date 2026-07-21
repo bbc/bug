@@ -2,11 +2,12 @@
 
 const comrexSocket = require("@utils/comrex-socket");
 const configGet = require("@core/config-get");
+const logger = require("@core/logger")(module);
 
 module.exports = async (peerId = null) => {
     const config = await configGet();
     if (!config) {
-        throw new Error();
+        throw new Error("failed to load config");
     }
 
     try {
@@ -27,6 +28,7 @@ module.exports = async (peerId = null) => {
         }, 1000);
         return true;
     } catch (error) {
-        return false;
+        logger.error(error?.message || error);
+        throw error;
     }
 };
