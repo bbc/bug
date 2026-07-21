@@ -36,6 +36,11 @@ const main = async () => {
         device.on("update", (result) => comrexProcessResults(result, ["sysOptions"]));
         await device.connect();
 
+        device.on("disconnect", () => {
+            logger.debug("device disconnected, restarting worker");
+            process.exit(1);
+        });
+
         workerTaskManager({
             tasks: [{ name: "system", seconds: 5, delay: 5 }],
             context: { device },

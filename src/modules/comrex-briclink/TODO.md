@@ -1,4 +1,3 @@
 - add historical entries to CHANGELOG.md
 - add screenshot
-- add heartbeat status check and worker task
 - add tests

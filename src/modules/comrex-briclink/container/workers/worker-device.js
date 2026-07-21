@@ -23,7 +23,7 @@ const main = async () => {
         // clear the db
         await mongoSingle.clear("peerList");
         await mongoSingle.clear("codecList");
-        await mongoSingle.clear("profileLxwist");
+        await mongoSingle.clear("profileList");
 
         logger.debug(`connecting to device at ${workerData.address}`);
 
@@ -40,8 +40,13 @@ const main = async () => {
         );
         await device.connect();
 
+        device.on("disconnect", () => {
+            logger.debug("device disconnected, restarting worker");
+            process.exit(1);
+        });
+
         workerTaskManager({
-            tasks: [{ name: "device", seconds: 30, delay: 30 }],
+            tasks: [{ name: "device", seconds: 30, delay: 30 }, { name: "heartbeat", seconds: 5 }],
             context: { device },
             baseDir: __dirname,
         });

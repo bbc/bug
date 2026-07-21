@@ -40,6 +40,10 @@ const main = async () => {
         });
         device.on("update", (result) => comrexProcessResults(result, ["channelStats", "peerStats"]));
         await device.connect();
+        device.on("disconnect", () => {
+            logger.debug("device disconnected, restarting worker");
+            process.exit(1);
+        });
         logger.debug("waiting for events ...");
     } catch (error) {
         throw new Error("failed to connect");
