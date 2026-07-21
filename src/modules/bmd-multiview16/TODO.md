@@ -1,1 +1,2 @@
 - add heartbeat status check and worker task
+- merge videohub-promise with the one in bmd-videohub and move to core
