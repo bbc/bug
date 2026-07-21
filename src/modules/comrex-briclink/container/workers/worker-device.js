@@ -1,12 +1,13 @@
 "use strict";
 
 const { parentPort, workerData } = require("worker_threads");
-const delay = require("delay");
-const register = require("module-alias/register");
+require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
+const mongoSingle = require("@core/mongo-single");
 const comrexSocket = require("@utils/comrex-socket");
 const comrexProcessResults = require("@utils/comrex-processresults");
-const mongoSingle = require("@core/mongo-single");
+const workerTaskManager = require("@core/worker-taskmanager");
+const logger = require("@core/logger")(module);
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -15,18 +16,17 @@ parentPort.postMessage({
 });
 
 const main = async () => {
-    // Connect to the db
-    await mongoDb.connect(workerData.id);
-
-    // Kick things off
-    console.log(`worker-device: connecting to device at ${workerData.address}`);
-
-    // clear the db
-    await mongoSingle.clear("peerList");
-    await mongoSingle.clear("codecList");
-    await mongoSingle.clear("profileList");
-
     try {
+        // Connect to the db
+        await mongoDb.connect(workerData.id);
+
+        // clear the db
+        await mongoSingle.clear("peerList");
+        await mongoSingle.clear("codecList");
+        await mongoSingle.clear("profileLxwist");
+
+        logger.debug(`connecting to device at ${workerData.address}`);
+
         const device = new comrexSocket({
             host: workerData.address,
             port: workerData.port ?? 80,
@@ -39,20 +39,21 @@ const main = async () => {
             comrexProcessResults(result, ["codecList", "peerList", "profileList", "currentEncoder", "sipProxy"])
         );
         await device.connect();
-        console.log("worker-device: waiting for events ...");
 
-        while (true) {
-            // every 30 seconds
-            await delay(30000);
-            device.send("<getCodecList />");
-            await delay(2000);
-            device.send("<getPeerList />");
-            await delay(2000);
-            device.send("<getProfileList />");
-        }
+        workerTaskManager({
+            tasks: [{ name: "device", seconds: 30, delay: 30 }],
+            context: { device },
+            baseDir: __dirname,
+        });
     } catch (error) {
-        throw new Error("failed to connect");
+        logger.error("fatal error");
+        logger.error(error.stack || error.message || error);
+        process.exit();
     }
 };
 
-main();
+main().catch((error) => {
+    logger.error("startup failure");
+    logger.error(error.stack || error.message || error);
+    process.exit(1);
+});

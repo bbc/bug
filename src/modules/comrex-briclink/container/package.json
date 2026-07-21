@@ -26,6 +26,7 @@
         "morgan": "^1.10.0",
         "node-cache": "^5.1.2",
         "ping": "^0.4.1",
+        "toad-scheduler": "^4.1.0",
         "winston": "^3.19.0"
     },
     "devDependencies": {

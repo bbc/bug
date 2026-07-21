@@ -1,12 +1,13 @@
 "use strict";
 
 const { parentPort, workerData } = require("worker_threads");
-const delay = require("delay");
-const register = require("module-alias/register");
+require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
+const mongoSingle = require("@core/mongo-single");
 const comrexSocket = require("@utils/comrex-socket");
 const comrexProcessResults = require("@utils/comrex-processresults");
-const mongoSingle = require("@core/mongo-single");
+const workerTaskManager = require("@core/worker-taskmanager");
+const logger = require("@core/logger")(module);
 
 // Tell the manager the things you care about
 parentPort.postMessage({
@@ -15,19 +16,15 @@ parentPort.postMessage({
 });
 
 const main = async () => {
-    // Connect to the db
-    await mongoDb.connect(workerData.id);
-
-    // clear the db
-    await mongoSingle.clear("sysOptions");
-
-    // stagger the start
-    await delay(2000);
-
-    // Kick things off
-    console.log(`worker-system: connecting to device at ${workerData.address}`);
-
     try {
+        // Connect to the db
+        await mongoDb.connect(workerData.id);
+
+        // clear the db
+        await mongoSingle.clear("sysOptions");
+
+        logger.debug(`connecting to device at ${workerData.address}`);
+
         const device = new comrexSocket({
             host: workerData.address,
             port: workerData.port ?? 80,
@@ -38,16 +35,21 @@ const main = async () => {
         });
         device.on("update", (result) => comrexProcessResults(result, ["sysOptions"]));
         await device.connect();
-        console.log("worker-system: waiting for events ...");
 
-        while (true) {
-            // every 5 seconds
-            await delay(5000);
-            device.send("<getSysOptions />");
-        }
+        workerTaskManager({
+            tasks: [{ name: "system", seconds: 5, delay: 5 }],
+            context: { device },
+            baseDir: __dirname,
+        });
     } catch (error) {
-        throw new Error("failed to connect");
+        logger.error("fatal error");
+        logger.error(error.stack || error.message || error);
+        process.exit();
     }
 };
 
-main();
+main().catch((error) => {
+    logger.error("startup failure");
+    logger.error(error.stack || error.message || error);
+    process.exit(1);
+});
