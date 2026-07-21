@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.3.14
+
+- 2026-07-21: add pending source index handling [copilot] ([31703e9](https://github.com/bbc/bug/commit/31703e9ca2afd604dced3f559a660a1854f79dc2))
+
 ### version 1.3.13
 
 - 2026-06-17: handle missing 'ALARM STATUS' on some models ([484e4e7](https://github.com/bbc/bug/commit/484e4e7b304aee7bc64f030c604c23e2665474fa))
