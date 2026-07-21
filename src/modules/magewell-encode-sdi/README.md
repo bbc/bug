@@ -4,6 +4,8 @@
 
 Control and monitoring of Magewell SRT encoders
 
+This module only controls the first audio stream. Any additional audio streams are ignored.
+
 ## Configuration
 
 | Field             | Default Value           | Description                                                          |
