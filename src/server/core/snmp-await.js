@@ -6,12 +6,66 @@ const logger = require("@core/logger")(module);
 
 module.exports = class SnmpAwait {
     constructor({ host, community = "public", timeout = 5000, port = 161 }) {
-        logger.info(`connecting to device at ${host}, community ${obscure(community)}, port ${port}`);
-        this.session = snmp.createSession(host, community, {
+        this.host = host;
+        this.community = community;
+        this.timeout = timeout;
+        this.port = port;
+        this.session = null;
+        this.reconnectPromise = null;
+        this.createSession();
+    }
+
+    createSession() {
+        if (this.session) {
+            try {
+                this.session.close();
+            } catch (error) {
+                // Ignore close errors while rebuilding session.
+            }
+        }
+
+        logger.info(`connecting to device at ${this.host}, community ${obscure(this.community)}, port ${this.port}`);
+        this.session = snmp.createSession(this.host, this.community, {
             version: snmp.Version2c,
-            timeout,
-            port,
+            timeout: this.timeout,
+            port: this.port,
         });
+    }
+
+    shouldReconnect(error) {
+        const errorText = (error?.message || error || "").toString();
+        return errorText.includes("Request timed out") || errorText.includes("Socket forcibly closed");
+    }
+
+    async recreateSessionSerial() {
+        if (this.reconnectPromise) {
+            await this.reconnectPromise;
+            return;
+        }
+
+        this.reconnectPromise = Promise.resolve()
+            .then(() => {
+                this.createSession();
+            })
+            .finally(() => {
+                this.reconnectPromise = null;
+            });
+
+        await this.reconnectPromise;
+    }
+
+    async withReconnectRetry(executor) {
+        try {
+            return await executor();
+        } catch (error) {
+            if (!this.shouldReconnect(error)) {
+                throw error;
+            }
+
+            logger.warning("SNMP request failed, recreating session and retrying once");
+            await this.recreateSessionSerial();
+            return await executor();
+        }
     }
 
     session() {
@@ -62,107 +116,117 @@ module.exports = class SnmpAwait {
 
     get({ oid, raw = false, ignoreMissing = false }) {
         const self = this;
-        return new Promise((resolve, reject) => {
-            self.session.get([self.trimOid(oid)], (error, varbinds) => {
-                if (error) return reject(error);
+        return self.withReconnectRetry(
+            () => new Promise((resolve, reject) => {
+                self.session.get([self.trimOid(oid)], (error, varbinds) => {
+                    if (error) return reject(error);
 
-                const vb = varbinds[0];
-                if (snmp.isVarbindError(vb) && !(self.isMissing(snmp.varbindError(vb)) && ignoreMissing)) {
-                    return reject(snmp.varbindError(vb));
-                }
+                    const vb = varbinds[0];
+                    if (snmp.isVarbindError(vb) && !(self.isMissing(snmp.varbindError(vb)) && ignoreMissing)) {
+                        return reject(snmp.varbindError(vb));
+                    }
 
-                resolve(self.convertVarbind(vb, raw));
-            });
-        });
+                    resolve(self.convertVarbind(vb, raw));
+                });
+            })
+        );
     }
 
     getNext({ oid, raw = false, ignoreMissing = false }) {
         const self = this;
-        return new Promise((resolve, reject) => {
-            self.session.getNext([self.trimOid(oid)], (error, varbinds) => {
-                if (error) return reject(error);
+        return self.withReconnectRetry(
+            () => new Promise((resolve, reject) => {
+                self.session.getNext([self.trimOid(oid)], (error, varbinds) => {
+                    if (error) return reject(error);
 
-                const vb = varbinds[0];
-                if (snmp.isVarbindError(vb) && !(self.isMissing(snmp.varbindError(vb)) && ignoreMissing)) {
-                    return reject(snmp.varbindError(vb));
-                }
+                    const vb = varbinds[0];
+                    if (snmp.isVarbindError(vb) && !(self.isMissing(snmp.varbindError(vb)) && ignoreMissing)) {
+                        return reject(snmp.varbindError(vb));
+                    }
 
-                resolve(self.convertVarbind(vb, raw));
-            });
-        });
+                    resolve(self.convertVarbind(vb, raw));
+                });
+            })
+        );
     }
 
     walk({ oid, maxRepetitions = 10, raw = false, ignoreMissing = false }) {
         const self = this;
-        return new Promise((resolve, reject) => {
-            const result = {};
+        return self.withReconnectRetry(
+            () => new Promise((resolve, reject) => {
+                const result = {};
 
-            const feedVarbinds = (varbinds) => {
-                for (const vb of varbinds) {
-                    if (snmp.isVarbindError(vb)) {
-                        const errMsg = snmp.varbindError(vb);
-                        if (self.isMissing(errMsg) && ignoreMissing) {
-                            continue;
-                        } else {
-                            console.warn(`snmp-await: walk varbind error on ${vb.oid}: ${errMsg}`);
-                            continue;
+                const feedVarbinds = (varbinds) => {
+                    for (const vb of varbinds) {
+                        if (snmp.isVarbindError(vb)) {
+                            const errMsg = snmp.varbindError(vb);
+                            if (self.isMissing(errMsg) && ignoreMissing) {
+                                continue;
+                            } else {
+                                console.warn(`snmp-await: walk varbind error on ${vb.oid}: ${errMsg}`);
+                                continue;
+                            }
                         }
+                        result[vb.oid] = self.convertVarbind(vb, raw);
                     }
-                    result[vb.oid] = self.convertVarbind(vb, raw);
-                }
-            };
+                };
 
-            self.session.walk(self.trimOid(oid), maxRepetitions, feedVarbinds, (err) => {
-                if (err) {
-                    console.warn(`walk session error: ${err.message || err}`);
-                }
-                resolve(result);
-            });
-        });
+                self.session.walk(self.trimOid(oid), maxRepetitions, feedVarbinds, (err) => {
+                    if (err) {
+                        return reject(new Error(`walk session error: ${err.message || err}`));
+                    }
+                    resolve(result);
+                });
+            })
+        );
     }
 
     subtree({ oid, maxRepetitions = 5, raw = false, ignoreMissing = false }) {
         const self = this;
-        return new Promise((resolve, reject) => {
-            const result = {};
+        return self.withReconnectRetry(
+            () => new Promise((resolve, reject) => {
+                const result = {};
 
-            const feedVarbinds = (varbinds) => {
-                for (const vb of varbinds) {
-                    if (snmp.isVarbindError(vb)) {
-                        const errMsg = snmp.varbindError(vb);
-                        if (self.isMissing(errMsg) && ignoreMissing) continue;
-                        console.warn(`snmp-await: subtree varbind error on ${vb.oid}: ${errMsg}`);
-                        continue;
+                const feedVarbinds = (varbinds) => {
+                    for (const vb of varbinds) {
+                        if (snmp.isVarbindError(vb)) {
+                            const errMsg = snmp.varbindError(vb);
+                            if (self.isMissing(errMsg) && ignoreMissing) continue;
+                            console.warn(`snmp-await: subtree varbind error on ${vb.oid}: ${errMsg}`);
+                            continue;
+                        }
+                        result[vb.oid] = self.convertVarbind(vb, raw);
                     }
-                    result[vb.oid] = self.convertVarbind(vb, raw);
-                }
-            };
+                };
 
-            self.session.subtree(self.trimOid(oid), maxRepetitions, feedVarbinds, (err) => {
-                if (err) {
-                    return reject(new Error(`subtree session error: ${err.message || err}`));
-                }
-                resolve(result);
-            });
-        });
+                self.session.subtree(self.trimOid(oid), maxRepetitions, feedVarbinds, (err) => {
+                    if (err) {
+                        return reject(new Error(`subtree session error: ${err.message || err}`));
+                    }
+                    resolve(result);
+                });
+            })
+        );
     }
 
     checkExists({ oids }) {
         const self = this;
-        return new Promise((resolve, reject) => {
-            const results = [];
-            self.session.get(self.trimOids(oids), (err, varbinds) => {
-                if (err) return reject(err);
+        return self.withReconnectRetry(
+            () => new Promise((resolve, reject) => {
+                const results = [];
+                self.session.get(self.trimOids(oids), (err, varbinds) => {
+                    if (err) return reject(err);
 
-                for (const vb of varbinds) {
-                    results.push({
-                        oid: vb.oid,
-                        isValid: !(snmp.isVarbindError(vb) && self.isMissing(snmp.varbindError(vb))),
-                    });
-                }
-                resolve(results);
-            });
-        });
+                    for (const vb of varbinds) {
+                        results.push({
+                            oid: vb.oid,
+                            isValid: !(snmp.isVarbindError(vb) && self.isMissing(snmp.varbindError(vb))),
+                        });
+                    }
+                    resolve(results);
+                });
+            })
+        );
     }
 
     getMultiple({ oids = [], raw = false, ignoreMissing = false, chunkSize = 0 }) {
@@ -190,23 +254,17 @@ module.exports = class SnmpAwait {
         });
 
         if (normalizedChunkSize === 0) {
-            return fetchChunk(oids);
+            return self.withReconnectRetry(() => fetchChunk(oids));
         }
 
-        return new Promise((resolve, reject) => {
+        return self.withReconnectRetry(async () => {
             const results = {};
-
-            const run = async () => {
-                for (let i = 0; i < oids.length; i += normalizedChunkSize) {
-                    const chunkOids = oids.slice(i, i + normalizedChunkSize);
-                    const chunkResults = await fetchChunk(chunkOids);
-                    Object.assign(results, chunkResults);
-                }
-
-                resolve(results);
-            };
-
-            run().catch(reject);
+            for (let i = 0; i < oids.length; i += normalizedChunkSize) {
+                const chunkOids = oids.slice(i, i + normalizedChunkSize);
+                const chunkResults = await fetchChunk(chunkOids);
+                Object.assign(results, chunkResults);
+            }
+            return results;
         });
     }
 
