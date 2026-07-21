@@ -19,7 +19,7 @@ export default function MainPanel() {
         .map((key) => {
             return { id: key, ...players.data[key] };
         })
-        .sort((a, b) => a?.title.localeCompare(b?.label, "en", { sensitivity: "base" }));
+        .sort((a, b) => a?.title.localeCompare(b?.title, "en", { sensitivity: "base" }));
 
     return (
         <>

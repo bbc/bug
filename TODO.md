@@ -1,12 +1,10 @@
 # Do now
 
-- during upgrade the panel shold show as disabled in the panel view
-- should an upgrade just delete the image? Then turning it back on builds it?
-
 # Do next
 
 # Backlog
 
+- should an upgrade just delete the image? Then turning it back on builds it?
 - sort out overlaying menu in bug api table
 - update diagrams in docs to remove watchtower
 - add tests for groups
@@ -24,4 +22,3 @@
 - do I need a way to view some basic info on a device? Maybe a details view expandable from the home screen with device name, model, IP, contact details etc
 - do I remove the menu on the home page tiles and just have an expand icon?
 - use rounding on sparklines to reduce bps noise
-- when module is archived give warning
