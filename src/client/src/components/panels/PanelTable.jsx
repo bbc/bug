@@ -28,7 +28,14 @@ export default function PanelTable() {
         return (
             <>
                 <TableContainer component={Paper} square elevation={0}>
-                    <Table aria-label="simple table">
+                    <Table
+                        aria-label="simple table"
+                        sx={{
+                            tableLayout: "fixed",
+                            width: "100%",
+                            minWidth: "920px",
+                        }}
+                    >
                         <TableHead
                             sx={{
                                 "@media (max-width:512px)": {
@@ -37,9 +44,19 @@ export default function PanelTable() {
                             }}
                         >
                             <TableRow>
-                                <TableCell width="10"></TableCell>
-                                <TableCell width="10"></TableCell>
+                                <TableCell sx={{ width: "40px" }}></TableCell>
+                                <TableCell sx={{ width: "4.5rem" }}></TableCell>
                                 <TableCell>Title</TableCell>
+                                <TableCell
+                                    sx={{
+                                        "@media (max-width:512px)": {
+                                            display: "none",
+                                        },
+                                        width: "12rem",
+                                    }}
+                                >
+                                    Module
+                                </TableCell>
                                 <TableCell
                                     sx={{
                                         "@media (max-width:1024px)": {
@@ -51,23 +68,19 @@ export default function PanelTable() {
                                 </TableCell>
                                 <TableCell
                                     sx={{
-                                        "@media (max-width:512px)": {
-                                            display: "none",
-                                        },
-                                    }}
-                                >
-                                    Module
-                                </TableCell>
-                                <TableCell
-                                    sx={{
                                         "@media (max-width:250px)": {
                                             display: "none",
                                         },
+                                        width: "6rem",
                                     }}
                                 >
                                     Version
                                 </TableCell>
-                                <TableCell></TableCell>
+                                <TableCell
+                                    sx={{
+                                        width: "4rem",
+                                    }}
+                                ></TableCell>
                             </TableRow>
                         </TableHead>
 

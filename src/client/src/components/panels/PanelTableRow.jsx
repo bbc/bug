@@ -63,7 +63,7 @@ export default function PanelTableRow({ panel, showGroups }) {
             >
                 {isReady && <BugPowerIcon panel={panel} />}
             </TableCell>
-            <TableCell sx={{ width: "4rem" }} style={{ textAlign: "center" }}>
+            <TableCell sx={{ width: "5.5rem" }} style={{ textAlign: "center" }}>
                 <BugApiSwitch
                     disabled={
                         panel?._dockerContainer?._status === "building" ||
@@ -84,16 +84,6 @@ export default function PanelTableRow({ panel, showGroups }) {
             </TableCell>
             <TableCell
                 sx={{
-                    "@media (max-width:1024px)": {
-                        display: "none",
-                    },
-                    opacity: rowOpacity,
-                }}
-            >
-                {panel.description}
-            </TableCell>
-            <TableCell
-                sx={{
                     "@media (max-width:512px)": {
                         display: "none",
                     },
@@ -101,6 +91,16 @@ export default function PanelTableRow({ panel, showGroups }) {
                 }}
             >
                 {panel._module.longname}
+            </TableCell>
+            <TableCell
+                sx={{
+                    "@media (max-width:1024px)": {
+                        display: "none",
+                    },
+                    opacity: rowOpacity,
+                }}
+            >
+                {panel.description}
             </TableCell>
             <TableCell
                 sx={{
