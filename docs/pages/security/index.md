@@ -58,6 +58,40 @@ Example default user JSON:
 
 ---
 
+## User Roles
+
+BUG supports two distinct user roles that control what users can access and modify:
+
+### Admin Role
+
+Users with the **admin** role have full control over the system:
+
+- **User Management**: Create, edit, and delete users; assign and modify user roles
+- **Security Configuration**: Configure authentication methods and security settings via `/system/security`
+- **System Configuration**: Access system-wide settings via `/system/configuration`
+- **Module Configuration**: Access and modify configuration panels for all modules
+- **Panel Management**: Assign and restrict which panels are available to other users
+- **Strategies**: Create and edit security strategies
+
+### User Role
+
+Users with the **user** role have limited, operational access:
+
+- **Module Access**: View and interact with module panels (based on panel restrictions assigned by an admin)
+- **Profile Management**: Update their own user profile and password
+- **View-Only System Info**: Access system health and container status information
+- **No Administrative Access**: Cannot modify settings, manage users, or configure modules
+
+### Both Roles
+
+Users with either role can:
+
+- Log in using configured authentication methods
+- Access modules and panels they have permission to view
+- View application logs (when permitted)
+
+---
+
 ## Security Methods
 
 - [Local Authentication](/bug/pages/security/local)
