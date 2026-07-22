@@ -37,7 +37,32 @@ A panel is a single instance of a module running on BUG. You can run multiple pa
 
 # Communication
 
-![Module Communication](../../assets/diagrams/panel-communication.drawio.svg)
+```mermaid
+graph LR
+    browser["Browser\n192.168.0.2"]
+
+    subgraph host["BUG Host — 192.168.0.1"]
+        app["BUG Application\nbug/app:latest"]
+
+        subgraph storage["BUG Application Storage"]
+            mongo["Mongo DB\nmongo:latest"]
+        end
+
+        subgraph panels["Module Containers"]
+            p1["Panel Container\nciscosg:latest"]
+            pn["Other Panels..."]
+            d1[("Database")]
+            p1 <--> d1
+            pn <--> d1
+        end
+
+        app <--> mongo
+        app <-->|"GET/POST\n/container/id/request"| p1
+        app <--> pn
+    end
+
+    browser -->|"http://192.168.0.1"| app
+```
 
 ### Workers
 
