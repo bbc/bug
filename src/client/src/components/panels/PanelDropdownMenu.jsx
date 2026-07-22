@@ -89,7 +89,7 @@ export default function PanelDropdownMenu({ panel }) {
             title: "Upgrade module?",
             message: [
                 `This will stop and upgrade all instances of '${panel?._module?.longname}'.`,
-                "You will need to restart each container once upgraded. Continue?",
+                "Containers will automatically restart once upgraded. Continue?",
             ],
             confirmButtonText: "Upgrade",
         });
@@ -104,7 +104,7 @@ export default function PanelDropdownMenu({ panel }) {
             );
 
             if (await AxiosCommand(`/api/module/rebuild/${panel?._module.name}`)) {
-                sendAlert(`Panel '${panel?.title}' upgrade complete - ready to restart`, {
+                sendAlert(`Panel '${panel?.title}' upgrade complete`, {
                     broadcast: "true",
                     variant: "success",
                 });
