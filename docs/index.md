@@ -20,7 +20,7 @@ Run BUG on a server within your network and access it through a browser. From on
 ## Getting started
 
 - [Installation](./pages/installation) — Install BUG on any supported operating system
-- [Modules](./modules) — See which devices and services can be controlled, and what functionality is available
+- [Modules](./pages/modules) — See which devices and services can be controlled, and what functionality is available
 
 ## Component Library
 
@@ -44,14 +44,14 @@ Each module can be instantiated one or more times as **panels** within the BUG i
 
 To learn more about developing your own modules, see:
 
-- [Architecture](./pages/architecture.html)
+- [Architecture](./pages/architecture)
 - [Project layout](./pages/development/layout.html)
 - [Coding style](./pages/development/style.html)
 
 ## Changelogs
 
 - The BUG application changelog is stored in the [GitHub repo](https://github.com/bbc/bug/blob/main/CHANGELOG.md).
-- Module changelogs are stored inside their module folder in the repo, and built into the [documentation](/bug/storybook/pages/modules).
+- Module changelogs are stored inside their module folder in the repo, and built into the [documentation](/bug/pages/modules).
 
 ## Open source
 
