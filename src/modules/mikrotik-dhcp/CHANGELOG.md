@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.1.29
+
+- 2026-07-22: fix missing icon ([c9b9c0a](https://github.com/bbc/bug/commit/c9b9c0a4e190d8ad15b38cc2d43c5469d7d181a3))
+
 ### version 1.1.28
 
 - 2026-07-21: add status check for DHCP pools ([7c940fe](https://github.com/bbc/bug/commit/7c940fe4425ae2560ae219e7a3f5fead199bfd5f))
