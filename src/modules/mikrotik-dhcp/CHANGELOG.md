@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.1.28
+
+- 2026-07-21: add status check for DHCP pools ([7c940fe](https://github.com/bbc/bug/commit/7c940fe4425ae2560ae219e7a3f5fead199bfd5f))
+- 2026-07-21: add heartbeat status check and worker task [copilot] ([9418c9d](https://github.com/bbc/bug/commit/9418c9d9273d3647fbf14f96e9f53d556430f8ee))
+
 ### version 1.1.27
 
 - 2026-07-16: add static lease detection ([4378475](https://github.com/bbc/bug/commit/4378475d0c608bba6820bb97e4765f60a17ffc3f))
