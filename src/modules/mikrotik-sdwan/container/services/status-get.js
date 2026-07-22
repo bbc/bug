@@ -1,31 +1,19 @@
 "use strict";
 
 const statusCheckMongoSingle = require("@core/status-checkmongosingle");
+const { statusCheckHeartbeat } = require("@core/heartbeat");
 const statusCheckEntries = require("./status-checkentries");
-const statusCheckSystem = require("./status-checksystem");
 const logger = require("@core/logger")(module);
 
 module.exports = async () => {
     return [].concat(
         await statusCheckMongoSingle({
-            collectionName: "dhcpNetworks",
-            message: ["There are no DHCP networks defined in the router"],
+            collectionName: "wanAddresses",
+            message: ["There are no WAN addresses defined in the router"],
             itemType: "warning",
             timeoutSeconds: 60,
         }),
-        await statusCheckMongoSingle({
-            collectionName: "dhcpServers",
-            message: ["There are no DHCP servers defined in the router"],
-            itemType: "warning",
-            timeoutSeconds: 60,
-        }),
-        await statusCheckMongoSingle({
-            collectionName: "routingTables",
-            message: ["There are no routing tables defined in the router"],
-            itemType: "warning",
-            timeoutSeconds: 60,
-        }),
-        await statusCheckSystem(),
-        await statusCheckEntries()
+        await statusCheckEntries(),
+        await statusCheckHeartbeat({ timeout: 10 })
     );
 };

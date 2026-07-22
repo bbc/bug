@@ -46,6 +46,7 @@ const main = async () => {
 
         workerTaskManager({
             tasks: [
+                { name: "heartbeat", seconds: 5 },
                 { name: "dhcpleases", seconds: 10 },
                 { name: "dhcpnetworks", seconds: 10 },
                 { name: "dhcpservers", seconds: 10 },

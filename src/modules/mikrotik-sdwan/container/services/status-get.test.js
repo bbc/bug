@@ -1,8 +1,12 @@
 const mockStatusCheckMongoSingle = jest.fn();
+const mockStatusCheckHeartbeat = jest.fn();
 const mockStatusCheckEntries = jest.fn();
 const mockStatusCheckSystem = jest.fn();
 
 jest.mock("@core/status-checkmongosingle", () => (...args) => mockStatusCheckMongoSingle(...args));
+jest.mock("@core/heartbeat", () => ({
+    statusCheckHeartbeat: (...args) => mockStatusCheckHeartbeat(...args),
+}));
 jest.mock("./status-checkentries", () => (...args) => mockStatusCheckEntries(...args));
 jest.mock("./status-checksystem", () => (...args) => mockStatusCheckSystem(...args));
 
@@ -11,6 +15,7 @@ const statusGet = require("./status-get");
 describe("status-get", () => {
     beforeEach(() => {
         mockStatusCheckMongoSingle.mockReset();
+        mockStatusCheckHeartbeat.mockReset();
         mockStatusCheckEntries.mockReset();
         mockStatusCheckSystem.mockReset();
     });
@@ -30,7 +35,8 @@ describe("status-get", () => {
             .mockResolvedValueOnce(["c"]);
         mockStatusCheckSystem.mockResolvedValue(["d"]);
         mockStatusCheckEntries.mockResolvedValue(["e"]);
+        mockStatusCheckHeartbeat.mockResolvedValue(["f"]);
 
-        await expect(statusGet()).resolves.toEqual(["a", "b", "c", "d", "e"]);
+        await expect(statusGet()).resolves.toEqual(["a", "b", "c", "d", "e", "f"]);
     });
 });
