@@ -1,4 +1,0 @@
-- add README.md
-- add historical entries to CHANGELOG.md
-- add screenshot
-- add panel status (default/success etc)
