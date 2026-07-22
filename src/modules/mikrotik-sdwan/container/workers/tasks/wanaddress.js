@@ -27,7 +27,7 @@ module.exports = async ({ routerOsApi, mongoSingle, wanAddressesCollection }) =>
         }
 
         if (dbRoutes.length === 0 || dbRules.length === 0) {
-            logger.warning("wanaddress: no routes or rules found, skipping fetch");
+            logger.warning("No routes or rules found, skipping fetch");
             return true;
         }
 
@@ -39,7 +39,7 @@ module.exports = async ({ routerOsApi, mongoSingle, wanAddressesCollection }) =>
                 const address = loopbackAddressGet(route, dbAddresses, dbRules);
                 if (!address) return null;
 
-                logger.debug(`fetch: from ${address} via bridge ${route._bridgeName}`);
+                logger.debug(`Fetching WAN address from ${address} via bridge ${route._bridgeName}`);
 
                 // do the fetch
                 const data = await routerOsApi.conn.write("/tool/fetch", [
@@ -61,7 +61,7 @@ module.exports = async ({ routerOsApi, mongoSingle, wanAddressesCollection }) =>
                 return true;
 
             } catch (err) {
-                logger.error(`wanaddress: failed for route ${route._bridgeName}: ${err.message}`);
+                logger.error(`WAN address fetch failed for route ${route._bridgeName}: ${err.message}`);
                 return null; // continue even on failure
             }
         });
@@ -73,15 +73,15 @@ module.exports = async ({ routerOsApi, mongoSingle, wanAddressesCollection }) =>
             .filter(r => r.status === "fulfilled" && r.value).length
         const failedCount = results.length - successfulCount;
 
-        logger.info(`wanaddress: ${successfulCount} address fetch(es) successful`);
+        logger.info(`${successfulCount} address fetch(es) successful`);
 
         if (failedCount) {
-            logger.warning(`wanaddress: ${failedCount} address fetch(es) failed`);
+            logger.warning(`${failedCount} address fetch(es) failed`);
         }
         return true;
     } catch (error) {
         // log and re-throw so the worker loop handles the exit/restart
-        logger.error(`wanaddress: ${error.message}`);
+        logger.error(error.message);
         throw error;
     }
 };

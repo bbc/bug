@@ -29,12 +29,12 @@ module.exports = async ({ routerOsApi, mongoSingle }) => {
                 disabled: parsed.disabled,
             };
         });
-        logger.debug(`routingtables: found ${result.length} routing table(s) - saving to db`);
+        logger.debug(`Found ${result.length} routing table(s) - saving to db`);
         await mongoSingle.set("routingTables", result, 60);
         return true;
     } catch (error) {
         // log and re-throw so the worker loop triggers a thread restart
-        logger.error(`routingtables error: ${error.message}`);
+        logger.error(error.message);
         throw error;
     }
 };

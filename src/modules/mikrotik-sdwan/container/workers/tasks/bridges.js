@@ -21,13 +21,13 @@ module.exports = async ({ routerOsApi, mongoSingle }) => {
             }
         });
 
-        logger.debug(`bridges: found ${result.length} bridge(s) - saving to db`);
+        logger.debug(`Found ${result.length} bridge(s) - saving to db`);
         await mongoSingle.set("bridges", result, 60);
         return true;
 
     } catch (error) {
         // log and re-throw so the worker loop triggers a thread restart
-        logger.error(`bridges: ${error.message}`);
+        logger.error(error.message);
         throw error;
     }
 };

@@ -42,7 +42,7 @@ const main = async () => {
         });
 
         await routerOsApi.connect();
-        logger.info("worker-wanaddress: device connected ok");
+        logger.info("Device connected");
 
         workerTaskManager({
             tasks: [
@@ -51,14 +51,14 @@ const main = async () => {
         });
 
     } catch (err) {
-        logger.error(`worker-wanaddress: fatal error`);
+        logger.error(`fatal error`);
         logger.error(err.stack || err.message || err);
         process.exit();
     }
 }
 
 main().catch(err => {
-    logger.error(`worker-wanaddress: startup failure`);
+    logger.error(`startup failure`);
     logger.error(err.stack || err);
     process.exit(1);
 });

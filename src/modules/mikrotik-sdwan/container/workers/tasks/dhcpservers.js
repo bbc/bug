@@ -22,13 +22,13 @@ module.exports = async ({ routerOsApi, mongoSingle }) => {
             });
         });
 
-        logger.debug(`dhcpservers: found ${result.length} dhcp server(s) - saving to db`);
+        logger.debug(`Found ${result.length} DHCP server(s) - saving to db`);
         await mongoSingle.set("dhcpServers", result, 60);
         return true;
 
     } catch (error) {
         // log and re-throw so the worker loop triggers a thread restart
-        logger.error(`dhcpservers error: ${error.message}`);
+        logger.error(error.message);
         throw error;
     }
 };

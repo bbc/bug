@@ -41,15 +41,15 @@ module.exports = async (address) => {
             await routerOsApi.run(`/ip/firewall/connection/remove`, [
                 `=numbers=${connection[".id"]}`
             ]);
-            logger.info(`entry-clearconnections: removed connection with id ${connection[".id"]} for address ${address}`);
+            logger.info(`Removed connection with id ${connection[".id"]} for address ${address}`);
         }
 
-        logger.info(`entry-clearconnections: ${address} successfully cleared.`);
+        logger.info(`${address} successfully cleared.`);
         return true;
 
 
     } catch (err) {
-        err.message = `entry-clearconnections: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }

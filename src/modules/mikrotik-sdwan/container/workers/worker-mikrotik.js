@@ -42,7 +42,7 @@ const main = async () => {
         });
 
         await routerOsApi.connect();
-        logger.info("worker-mikrotik: device connected ok");
+        logger.info("Device connected");
 
         workerTaskManager({
             tasks: [

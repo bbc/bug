@@ -30,7 +30,7 @@ module.exports = async (address, list = "none") => {
         if (existingIndex !== -1) {
             // update existing
             const item = dbListItems[existingIndex];
-            logger.info(`entry-setroute: updating ${address} to list '${list}'`);
+            logger.info(`Updating ${address} to list '${list}'`);
 
             await routerOsApi.run(`/ip/firewall/address-list/set`, [
                 `=numbers=${item.id}`,
@@ -40,7 +40,7 @@ module.exports = async (address, list = "none") => {
             dbListItems[existingIndex].list = list;
         } else {
             // add new item
-            logger.info(`entry-setroute: creating new entry for ${address} in list '${list}'`);
+            logger.info(`Creating new entry for ${address} in list '${list}'`);
 
             // add to mikrotik and capture the new id
             const result = await routerOsApi.run(`/ip/firewall/address-list/add`, [
@@ -68,7 +68,7 @@ module.exports = async (address, list = "none") => {
         return true;
 
     } catch (err) {
-        err.message = `entry-setroute: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }

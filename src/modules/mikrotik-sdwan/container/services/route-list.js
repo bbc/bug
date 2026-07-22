@@ -45,7 +45,7 @@ module.exports = async () => {
                     try {
                         geoIp = await freeIpApiLookup(ipAddress);
                     } catch (geoIpError) {
-                        logger.warning(`route-list: geoip lookup failed for ${ipAddress}: ${geoIpError.message}`);
+                        logger.warning(`GeoIP lookup failed for ${ipAddress}: ${geoIpError.message}`);
                     }
                 }
 
@@ -71,7 +71,7 @@ module.exports = async () => {
         return results.sort((a, b) => (a.distance > b.distance ? 1 : -1));
 
     } catch (err) {
-        err.message = `route-list: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }

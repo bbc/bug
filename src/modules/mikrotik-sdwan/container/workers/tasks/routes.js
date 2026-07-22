@@ -22,12 +22,12 @@ module.exports = async ({ routerOsApi, mongoSingle }) => {
             }
         }).filter((route) => route?.["dst-address"] === "0.0.0.0/0" && route?.gateway);
 
-        logger.debug(`routes: found ${result.length} route(s) - saving to db`);
+        logger.debug(`Found ${result.length} route(s) - saving to db`);
         await mongoSingle.set("routes", result, 60);
         return true;
     } catch (error) {
         // log and re-throw so the worker loop handles the exit/restart
-        logger.error(`routes error: ${error.message}`);
+        logger.error(error.message);
         throw error;
     }
 };

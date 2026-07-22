@@ -43,7 +43,7 @@ module.exports = async (routeId) => {
             const address = srcAddressGet(dbRoutes[routeIndex], dbAddresses, dbRules);
 
             // we update the route
-            logger.info(`route-disable: disabling route id ${dbRoutes[routeIndex].id}`);
+            logger.info(`Disabling route id ${dbRoutes[routeIndex].id}`);
 
             await routerOsApi.run(`/ip/route/disable`, [`=numbers=${dbRoutes[routeIndex].id}`]);
 
@@ -52,7 +52,7 @@ module.exports = async (routeId) => {
             await mongoSingle.set('routes', dbRoutes);
 
             // also remove from ping & wanaddress collections
-            logger.info(`route-disable: removing ping entries for ${address}, bridge ${dbRoutes[routeIndex]._bridgeName} (if they exist)`);
+            logger.info(`Removing ping entries for ${address}, bridge ${dbRoutes[routeIndex]._bridgeName} (if they exist)`);
             await pingCollection.deleteMany({ address: address });
             await wanAddressCollection.deleteMany({ bridge: dbRoutes[routeIndex]._bridgeName });
 
@@ -60,7 +60,7 @@ module.exports = async (routeId) => {
 
         return true;
     } catch (error) {
-        error.message = `route-disable: ${error.stack || error.message}`;
+        error.message = error.stack || error.message;
         logger.error(error.message);
         throw error;
     }

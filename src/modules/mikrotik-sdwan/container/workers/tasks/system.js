@@ -17,12 +17,12 @@ module.exports = async ({ routerOsApi, mongoSingle }) => {
         const nameData = await routerOsApi.run("/system/identity/print");
 
         const result = { ...resourceResult[0], name: nameData?.[0]?.name, lastUpdated: new Date() }
-        logger.debug(`system: found ${Object.keys(result).length} system fields - saving to db`);
+        logger.debug(`Found ${Object.keys(result).length} system fields - saving to db`);
         await mongoSingle.set("system", result, 60);
         return true;
     } catch (error) {
         // log and re-throw so the worker loop handles the exit/restart
-        logger.error(`system error: ${error.message}`);
+        logger.error(error.message);
         throw error;
     }
 };

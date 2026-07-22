@@ -17,7 +17,7 @@ module.exports = async () => {
 
         // if prefix is missing, we can't filter, so return empty list
         if (!config.routingTablePrefix) {
-            logger.info("wan-list: no routing table prefix defined in config");
+            logger.info("No routing table prefix defined in config");
             return [];
         }
 
@@ -44,7 +44,7 @@ module.exports = async () => {
                 // find the route in the relevant routing table (eg rtab-180)
                 const matchingRoute = dbRoutes.find((r) => r?.['routing-table'] === t.name);
                 if (!matchingRoute) {
-                    logger.warning(`wan-list: no default route found in routing table ${t.name}`);
+                    logger.warning(`No default route found in routing table ${t.name}`);
                 }
 
                 // now we can find any ping results for this bridge name
@@ -65,7 +65,7 @@ module.exports = async () => {
             });
 
     } catch (err) {
-        err.message = `wan-list: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }

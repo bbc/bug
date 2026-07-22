@@ -35,7 +35,7 @@ module.exports = async (address, group) => {
         const entry = dbListItems[existingIndex];
 
         // update existing
-        logger.info(`entry-setlabel: setting group for ${address} to '${group}'`);
+        logger.info(`Setting group for ${address} to '${group}'`);
         const newEntry = { ...entry, group: group }
         const newComment = commentParser.stringify(newEntry);
 
@@ -53,7 +53,7 @@ module.exports = async (address, group) => {
         return true;
 
     } catch (err) {
-        err.message = `entry-setgroup: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }

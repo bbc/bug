@@ -12,11 +12,11 @@ module.exports = async ({ routerOsApi, mongoSingle }) => {
             result: rule,
         }));
 
-        logger.debug(`rules: found ${result.length} rule(s) - saving to db`);
+        logger.debug(`Found ${result.length} rule(s) - saving to db`);
         await mongoSingle.set("rules", result, 60);
         return true;
     } catch (error) {
-        logger.error(`rules error: ${error.message}`);
+        logger.error(error.message);
         throw error;
     }
 };

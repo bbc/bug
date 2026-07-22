@@ -36,7 +36,7 @@ module.exports = async () => {
         });
 
     } catch (err) {
-        logger.error(`status-checkentries: ${err.stack || err.message}`);
+        logger.error(err.stack || err.message);
         return [];
     }
 };

@@ -47,7 +47,7 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
         return dbLeases;
 
     } catch (err) {
-        err.message = `dhcplease-list: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }

@@ -26,7 +26,7 @@ module.exports = async (address) => {
         }
 
         // update the configuration
-        logger.info(`entry-lock: locking address ${address}`);
+        logger.info(`Locking address ${address}`);
         config.lockedEntries.push(address);
         const success = await configPutViaCore(config);
 
@@ -37,7 +37,7 @@ module.exports = async (address) => {
         return true;
 
     } catch (err) {
-        err.message = `entry-lock: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }

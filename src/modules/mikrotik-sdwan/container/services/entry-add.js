@@ -37,7 +37,7 @@ module.exports = async (entry) => {
         }
 
         // creating a new item requires the add command
-        logger.info(`entry-add: creating new entry for ${entry.address}`);
+        logger.info(`Creating new entry for ${entry.address}`);
 
         // we just set the list to 'none' to keep it in the list
         await routerOsApi.run(`/ip/firewall/address-list/add`, [
@@ -60,7 +60,7 @@ module.exports = async (entry) => {
         return true;
 
     } catch (err) {
-        err.message = `entry-add: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }

@@ -26,7 +26,7 @@ module.exports = async () => {
                 return serverA.localeCompare(serverB);
             });
     } catch (err) {
-        err.message = `dhcpserver-list: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }

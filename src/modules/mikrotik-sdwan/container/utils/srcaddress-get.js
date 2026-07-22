@@ -13,11 +13,11 @@ module.exports = function getSrcAddress(route, dbAddresses, dbRules) {
         );
 
         if (!addressObj || addressObj.length === 0) {
-            logger.warning(`srcaddress-get: no matching address found for dynamic route ${route._bridgeName}`);
+            logger.warning(`No matching address found for dynamic route ${route._bridgeName}`);
             return null;
         }
         if (addressObj.length > 1) {
-            logger.warning(`srcaddress-get: multiple addresses found for dynamic route ${route._bridgeName}`);
+            logger.warning(`Multiple addresses found for dynamic route ${route._bridgeName}`);
             return null;
         }
 

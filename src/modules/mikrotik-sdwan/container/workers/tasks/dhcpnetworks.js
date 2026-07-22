@@ -21,12 +21,12 @@ module.exports = async ({ routerOsApi, mongoSingle }) => {
                 timeFields: [],
             });
         });
-        logger.debug(`dhcpnetworks: found ${result.length} network(s) - saving to db`);
+        logger.debug(`Found ${result.length} network(s) - saving to db`);
         await mongoSingle.set("dhcpNetworks", result, 60);
         return true;
     } catch (error) {
         // log and re-throw so the worker loop handles the exit/restart
-        logger.error(`dhcpnetworks error: ${error.message}`);
+        logger.error(error.message);
         throw error;
     }
 };

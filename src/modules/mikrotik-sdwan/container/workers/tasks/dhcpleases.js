@@ -41,13 +41,13 @@ module.exports = async ({ routerOsApi, mongoSingle }) => {
                 id: lease.id
             };
         });
-        logger.debug(`dhcpleases: found ${result.length} lease(s) - saving to db`);
+        logger.debug(`Found ${result.length} lease(s) - saving to db`);
         await mongoSingle.set("dhcpLeases", result, 60);
         return true;
 
     } catch (error) {
         // log and re-throw so the worker loop catches the failure and exits
-        logger.error(`dhcpleases error: ${error.message}`);
+        logger.error(error.message);
         throw error;
     }
 

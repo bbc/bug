@@ -30,7 +30,7 @@ module.exports = async () => {
         }
 
     } catch (err) {
-        logger.error(`status-checksystem: ${err.stack || err.message}`);
+        logger.error(err.stack || err.message);
     }
 
     return [];

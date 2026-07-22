@@ -39,7 +39,7 @@ module.exports = async ({ routerOsApi, mongoSingle, pingCollection }) => {
                 const address = loopbackAddressGet(route, dbAddresses, dbRules);
                 if (!address) return null;
 
-                logger.debug(`ping: from ${address} via bridge ${route._bridgeName}`);
+                logger.debug(`Pinging from ${address} via bridge ${route._bridgeName}`);
 
                 // Do the ping check
                 const data = await routerOsApi.run("/tool/ping", [
@@ -78,7 +78,7 @@ module.exports = async ({ routerOsApi, mongoSingle, pingCollection }) => {
                 return true;
 
             } catch (err) {
-                logger.error(`ping: failed for route ${route._bridgeName}: ${err.stack || err.message}`);
+                logger.error(`Ping failed for route ${route._bridgeName}: ${err.stack || err.message}`);
                 return null; // continue even on failure
             }
         });
@@ -90,15 +90,15 @@ module.exports = async ({ routerOsApi, mongoSingle, pingCollection }) => {
             .filter(r => r.status === "fulfilled" && r.value).length
         const failedCount = results.length - successfulCount;
 
-        logger.debug(`ping: ${successfulCount} ping check(s) successful`);
+        logger.debug(`${successfulCount} ping check(s) successful`);
 
         if (failedCount) {
-            logger.warning(`ping: ${failedCount} ping check(s) failed`);
+            logger.warning(`${failedCount} ping check(s) failed`);
         }
         return true;
     } catch (error) {
         // log and re-throw so the worker loop handles the exit/restart
-        logger.error(`ping: ${error.message}`);
+        logger.error(error.message);
         throw error;
     }
 };

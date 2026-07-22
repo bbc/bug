@@ -19,13 +19,13 @@ module.exports = async ({ routerOsApi, mongoSingle }) => {
             })
         }).filter((address) => !address.invalid && !address.disabled && !address.slave);;
 
-        logger.debug(`addresses: found ${result.length} address(s) - saving to db`);
+        logger.debug(`Found ${result.length} address(s) - saving to db`);
         await mongoSingle.set("addresses", result, 60);
         return true;
 
     } catch (error) {
         // log and re-throw so the worker loop triggers a thread restart
-        logger.error(`addresses: ${error.message}`);
+        logger.error(error.message);
         throw error;
     }
 };

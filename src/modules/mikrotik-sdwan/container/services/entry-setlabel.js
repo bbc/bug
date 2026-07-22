@@ -35,7 +35,7 @@ module.exports = async (address, label) => {
         const entry = dbListItems[existingIndex];
 
         // update existing
-        logger.info(`entry-setlabel: renaming ${address} to '${label}'`);
+        logger.info(`Renaming ${address} to '${label}'`);
         const newEntry = { ...entry, label: label }
         const newComment = commentParser.stringify(newEntry);
 
@@ -53,7 +53,7 @@ module.exports = async (address, label) => {
         return true;
 
     } catch (err) {
-        err.message = `entry-setlabel: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }

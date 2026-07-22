@@ -34,7 +34,7 @@ module.exports = async (routeId) => {
         }
         else {
             // we update the route
-            logger.info(`route-enable: enabling route id ${dbRoutes[routeIndex].id}`);
+            logger.info(`Enabling route id ${dbRoutes[routeIndex].id}`);
 
             await routerOsApi.run(`/ip/route/enable`, [`=numbers=${dbRoutes[routeIndex].id}`]);
 
@@ -47,7 +47,7 @@ module.exports = async (routeId) => {
         return true;
 
     } catch (error) {
-        error.message = `route-enable: ${error.stack || error.message}`;
+        error.message = error.stack || error.message;
         logger.error(error.message);
         throw error;
     }

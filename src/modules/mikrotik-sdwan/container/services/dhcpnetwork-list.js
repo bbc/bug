@@ -31,7 +31,7 @@ module.exports = async () => {
         });
 
     } catch (err) {
-        err.message = `dhcpnetwork-list: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }

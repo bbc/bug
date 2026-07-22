@@ -19,12 +19,12 @@ module.exports = async (address) => {
         // exit early if there are no locked entries to process
         if (!config.lockedEntries || !config.lockedEntries.includes(address)) {
             // we return true here because the desired state (unlocked) is already met
-            logger.info(`entry-unlock: entry ${address} is not currently locked`);
+            logger.info(`Entry ${address} is not currently locked`);
             return true;
         }
 
         // remove the specific address from the array
-        logger.info(`entry-unlock: unlocking address ${address}`);
+        logger.info(`Unlocking address ${address}`);
         config.lockedEntries = config.lockedEntries.filter((entry) => entry !== address);
 
         // save the updated configuration
@@ -37,7 +37,7 @@ module.exports = async (address) => {
         return true;
 
     } catch (err) {
-        err.message = `entry-unlock: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }

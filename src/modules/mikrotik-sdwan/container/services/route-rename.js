@@ -39,8 +39,8 @@ module.exports = async (routeId, routeName) => {
             const bridgeIndex = dbBridges.findIndex((b) => b.name === dbRoutes[routeIndex]._bridgeName);
             if (!bridgeIndex === -1) throw new Error(`bridge name ${dbRoutes[routeIndex]._bridgeName} not found in db`);
 
-            logger.info(`route-rename: route id ${routeId} is dynamic`);
-            logger.info(`route-rename: changing bridge id ${dbBridges[bridgeIndex].id} comment to ${routeName}`);
+            logger.info(`Route id ${routeId} is dynamic`);
+            logger.info(`Changing bridge id ${dbBridges[bridgeIndex].id} comment to ${routeName}`);
 
             await routerOsApi.run(`/interface/bridge/set`, [`=numbers=${dbBridges[bridgeIndex].id}`, "=comment=" + routeName]);
 
@@ -50,8 +50,8 @@ module.exports = async (routeId, routeName) => {
         }
         else {
             // we update the route comment
-            logger.info(`route-rename: route id ${routeId} is static`);
-            logger.info(`route-rename: changing route id ${dbRoutes[routeIndex].id} comment to ${routeName}`);
+            logger.info(`Route id ${routeId} is static`);
+            logger.info(`Changing route id ${dbRoutes[routeIndex].id} comment to ${routeName}`);
 
             await routerOsApi.run(`/ip/route/set`, [`=numbers=${dbRoutes[routeIndex].id}`, "=comment=" + routeName]);
 
@@ -62,7 +62,7 @@ module.exports = async (routeId, routeName) => {
 
         return true;
     } catch (error) {
-        error.message = `route-rename: ${error.stack || error.message}`;
+        error.message = error.stack || error.message;
         logger.error(error.message);
         throw error;
     }

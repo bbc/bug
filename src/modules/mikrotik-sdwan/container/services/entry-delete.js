@@ -44,7 +44,7 @@ module.exports = async (address) => {
         return true;
 
     } catch (err) {
-        err.message = `entry-delete: ${err.stack || err.message}`;
+        err.message = err.stack || err.message;
         logger.error(err.message);
         throw err;
     }

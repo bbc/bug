@@ -37,13 +37,13 @@ module.exports = async ({ routerOsApi, mongoSingle }) => {
                 id: parsed.id
             };
         });
-        logger.debug(`listitems: found ${result.length} sdwan item(s) - saving to db`);
+        logger.debug(`Found ${result.length} SD-WAN item(s) - saving to db`);
         await mongoSingle.set("listItems", result, 60);
         return true;
 
     } catch (error) {
         // log and re-throw so the worker loop triggers a thread restart
-        logger.error(`listitems error: ${error.message}`);
+        logger.error(error.message);
         throw error;
     }
 };

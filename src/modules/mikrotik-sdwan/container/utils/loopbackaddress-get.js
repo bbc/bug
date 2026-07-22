@@ -13,16 +13,16 @@ module.exports = function getSrcAddress(route, dbAddresses, dbRules) {
         );
 
         if (!addressObj || addressObj.length === 0) {
-            logger.warning(`loopbackaddress-get: no matching address found for dynamic route ${route._bridgeName}`);
+            logger.warning(`No matching address found for dynamic route ${route._bridgeName}`);
             return null;
         }
         if (addressObj.length > 1) {
-            logger.warning(`loopbackaddress-get: multiple addresses found for dynamic route ${route._bridgeName}`);
+            logger.warning(`Multiple addresses found for dynamic route ${route._bridgeName}`);
             return null;
         }
 
         address = addressObj[0].address;
-        logger.debug(`loopbackaddress-get: found address ${address} for dynamic route ${route._bridgeName}`);
+        logger.debug(`Found address ${address} for dynamic route ${route._bridgeName}`);
 
     } else {
         // static route: find a rule that matches an address on the bridge

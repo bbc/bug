@@ -23,12 +23,12 @@ module.exports = async ({ routerOsApi, mongoSingle }) => {
                 timeFields: [],
             })
         );
-        logger.debug(`firewall: found ${result.length} firewall rule(s) - saving to db`);
+        logger.debug(`Found ${result.length} firewall rule(s) - saving to db`);
         await mongoSingle.set("firewall", result, 60);
         return true;
     } catch (error) {
         // log and re-throw so the worker loop handles the exit/restart
-        logger.error(`firewall error: ${error.message}`);
+        logger.error(error.message);
         throw error;
     }
 };
