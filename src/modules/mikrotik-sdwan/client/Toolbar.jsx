@@ -13,7 +13,7 @@ export default function Toolbar(props) {
     }
 
     const buttons = () => {
-        if (location.pathname.indexOf("add") > -1) {
+        if (location.pathname.indexOf("routes") > -1) {
             return null;
         }
 
