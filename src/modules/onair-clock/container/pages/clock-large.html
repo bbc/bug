@@ -35,7 +35,7 @@
         <h2 id="date"></h2>
     </div>
 
-    <img id="logo" />
+    <img id="logo" hidden />
 
     <script src="./../js/axios.min.js"></script>
 
@@ -90,20 +90,30 @@
         const getConfig = async () => {
             try {
                 const response = await axios.get("./../config");
+                const config = response?.data?.data;
                 const nextTimezone = response?.data?.data?.timezone;
                 const nextTimeZoneName = nextTimezone?.utc?.[0];
+                const logoElement = document.getElementById("logo");
 
-                if (response?.data?.data?.backgroundColor) {
-                    document.body.style.backgroundColor = response?.data?.data?.backgroundColor;
+                if (config?.backgroundColor) {
+                    document.body.style.backgroundColor = config.backgroundColor;
                 }
-                if (response?.data?.data?.textColor) {
-                    document.body.style.color = response?.data?.data?.textColor;
+                if (config?.textColor) {
+                    document.body.style.color = config.textColor;
                 }
-                if (response?.data?.data?.header) {
-                    document.getElementById("headertag").innerHTML = response?.data?.data?.header;
+                if (config?.header) {
+                    document.getElementById("headertag").innerHTML = config.header;
                 }
-                if (response?.data?.data?.logo?.image) {
-                    document.getElementById("logo").src = response?.data?.data?.logo?.image;
+                for (const textElementId of ["headertag", "time", "date"]) {
+                    const textElement = document.getElementById(textElementId);
+                    textElement.style.fontWeight = config?.fontWeight || "400";
+                }
+                if (config?.showLogo !== false && config?.logo?.image) {
+                    logoElement.src = config.logo.image;
+                    logoElement.style.display = "block";
+                } else {
+                    logoElement.removeAttribute("src");
+                    logoElement.style.display = "none";
                 }
                 if (nextTimezone && nextTimeZoneName !== getTimeZoneName()) {
                     timezone = nextTimezone;
@@ -113,8 +123,8 @@
                     scheduleClockTick();
                 }
 
-                document.getElementById("date").hidden = !response?.data?.data?.showDate;
-                document.getElementById("time").hidden = !response?.data?.data?.showTime;
+                document.getElementById("date").hidden = !config?.showDate;
+                document.getElementById("time").hidden = !config?.showTime;
             } catch (error) {
                 console.error(error);
             }

@@ -1,6 +1,6 @@
 .clock {
     border-radius: 50%;
-    background-image: url("./../images/clock-face.webp");
+    background-image: url("./../images/clock-face.svg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: 95%;

@@ -23,6 +23,12 @@ h2 {
     font-weight: normal;
     text-align: center;
 }
+
+#time {
+    font-size: 3em;
+    font-family: "Fira Code", "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
 h3 {
     font-size: 3em;
     padding: 0.5em;

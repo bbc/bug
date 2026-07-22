@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Analog 24-hour clock face">
+  <defs>
+    <radialGradient id="faceGlow" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#f4f1e8" />
+    </radialGradient>
+    <line id="minuteTick" x1="256" y1="14" x2="256" y2="23" stroke="#111111" stroke-width="4" stroke-linecap="round" />
+    <line id="hourTick" x1="256" y1="12" x2="256" y2="27" stroke="#111111" stroke-width="8" stroke-linecap="round" />
+    <style>
+      .outer-hour {
+        fill: #111111;
+        font-family: Inter, Arial, sans-serif;
+        font-size: 40px;
+        font-weight: 500;
+        text-anchor: middle;
+        dominant-baseline: middle;
+      }
+      .inner-hour {
+        fill: #c91313;
+        font-family: Inter, Arial, sans-serif;
+        font-size: 28px;
+        font-weight: 500;
+        text-anchor: middle;
+        dominant-baseline: middle;
+      }
+    </style>
+  </defs>
+
+  <circle cx="256" cy="256" r="244" fill="url(#faceGlow)" stroke="#111111" stroke-width="8" />
+
+  <g>
+    <use href="#hourTick" transform="rotate(0 256 256)" />
+    <use href="#minuteTick" transform="rotate(6 256 256)" />
+    <use href="#minuteTick" transform="rotate(12 256 256)" />
+    <use href="#minuteTick" transform="rotate(18 256 256)" />
+    <use href="#minuteTick" transform="rotate(24 256 256)" />
+    <use href="#hourTick" transform="rotate(30 256 256)" />
+    <use href="#minuteTick" transform="rotate(36 256 256)" />
+    <use href="#minuteTick" transform="rotate(42 256 256)" />
+    <use href="#minuteTick" transform="rotate(48 256 256)" />
+    <use href="#minuteTick" transform="rotate(54 256 256)" />
+    <use href="#hourTick" transform="rotate(60 256 256)" />
+    <use href="#minuteTick" transform="rotate(66 256 256)" />
+    <use href="#minuteTick" transform="rotate(72 256 256)" />
+    <use href="#minuteTick" transform="rotate(78 256 256)" />
+    <use href="#minuteTick" transform="rotate(84 256 256)" />
+    <use href="#hourTick" transform="rotate(90 256 256)" />
+    <use href="#minuteTick" transform="rotate(96 256 256)" />
+    <use href="#minuteTick" transform="rotate(102 256 256)" />
+    <use href="#minuteTick" transform="rotate(108 256 256)" />
+    <use href="#minuteTick" transform="rotate(114 256 256)" />
+    <use href="#hourTick" transform="rotate(120 256 256)" />
+    <use href="#minuteTick" transform="rotate(126 256 256)" />
+    <use href="#minuteTick" transform="rotate(132 256 256)" />
+    <use href="#minuteTick" transform="rotate(138 256 256)" />
+    <use href="#minuteTick" transform="rotate(144 256 256)" />
+    <use href="#hourTick" transform="rotate(150 256 256)" />
+    <use href="#minuteTick" transform="rotate(156 256 256)" />
+    <use href="#minuteTick" transform="rotate(162 256 256)" />
+    <use href="#minuteTick" transform="rotate(168 256 256)" />
+    <use href="#minuteTick" transform="rotate(174 256 256)" />
+    <use href="#hourTick" transform="rotate(180 256 256)" />
+    <use href="#minuteTick" transform="rotate(186 256 256)" />
+    <use href="#minuteTick" transform="rotate(192 256 256)" />
+    <use href="#minuteTick" transform="rotate(198 256 256)" />
+    <use href="#minuteTick" transform="rotate(204 256 256)" />
+    <use href="#hourTick" transform="rotate(210 256 256)" />
+    <use href="#minuteTick" transform="rotate(216 256 256)" />
+    <use href="#minuteTick" transform="rotate(222 256 256)" />
+    <use href="#minuteTick" transform="rotate(228 256 256)" />
+    <use href="#minuteTick" transform="rotate(234 256 256)" />
+    <use href="#hourTick" transform="rotate(240 256 256)" />
+    <use href="#minuteTick" transform="rotate(246 256 256)" />
+    <use href="#minuteTick" transform="rotate(252 256 256)" />
+    <use href="#minuteTick" transform="rotate(258 256 256)" />
+    <use href="#minuteTick" transform="rotate(264 256 256)" />
+    <use href="#hourTick" transform="rotate(270 256 256)" />
+    <use href="#minuteTick" transform="rotate(276 256 256)" />
+    <use href="#minuteTick" transform="rotate(282 256 256)" />
+    <use href="#minuteTick" transform="rotate(288 256 256)" />
+    <use href="#minuteTick" transform="rotate(294 256 256)" />
+    <use href="#hourTick" transform="rotate(300 256 256)" />
+    <use href="#minuteTick" transform="rotate(306 256 256)" />
+    <use href="#minuteTick" transform="rotate(312 256 256)" />
+    <use href="#minuteTick" transform="rotate(318 256 256)" />
+    <use href="#minuteTick" transform="rotate(324 256 256)" />
+    <use href="#hourTick" transform="rotate(330 256 256)" />
+    <use href="#minuteTick" transform="rotate(336 256 256)" />
+    <use href="#minuteTick" transform="rotate(342 256 256)" />
+    <use href="#minuteTick" transform="rotate(348 256 256)" />
+    <use href="#minuteTick" transform="rotate(354 256 256)" />
+  </g>
+
+  <g>
+    <text class="outer-hour" x="256" y="60">12</text>
+    <text class="outer-hour" x="354" y="86">1</text>
+    <text class="outer-hour" x="426" y="158">2</text>
+    <text class="outer-hour" x="452" y="256">3</text>
+    <text class="outer-hour" x="426" y="354">4</text>
+    <text class="outer-hour" x="354" y="426">5</text>
+    <text class="outer-hour" x="256" y="452">6</text>
+    <text class="outer-hour" x="158" y="426">7</text>
+    <text class="outer-hour" x="86" y="354">8</text>
+    <text class="outer-hour" x="60" y="256">9</text>
+    <text class="outer-hour" x="86" y="158">10</text>
+    <text class="outer-hour" x="158" y="86">11</text>
+  </g>
+
+  <g>
+    <text class="inner-hour" x="256" y="102">24</text>
+    <text class="inner-hour" x="333" y="123">13</text>
+    <text class="inner-hour" x="389" y="179">14</text>
+    <text class="inner-hour" x="410" y="256">15</text>
+    <text class="inner-hour" x="389" y="333">16</text>
+    <text class="inner-hour" x="333" y="389">17</text>
+    <text class="inner-hour" x="256" y="410">18</text>
+    <text class="inner-hour" x="179" y="389">19</text>
+    <text class="inner-hour" x="123" y="333">20</text>
+    <text class="inner-hour" x="102" y="256">21</text>
+    <text class="inner-hour" x="123" y="179">22</text>
+    <text class="inner-hour" x="179" y="123">23</text>
+  </g>
+
+  <circle cx="256" cy="256" r="8" fill="#111111" />
+</svg>

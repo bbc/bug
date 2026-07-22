@@ -5,12 +5,13 @@ import BugNoData from "@core/BugNoData";
 import { useBugRenameDialog } from "@core/BugRenameDialog";
 import BugTableLinkButton from "@core/BugTableLinkButton";
 import BugTimeZonePicker from "@core/BugTimeZonePicker";
-import { Box, Button, Grid, Input, Switch } from "@mui/material";
+import { Box, Button, Grid, Input, MenuItem, Switch, TextField } from "@mui/material";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import moduleDefinition from "../../module.json";
 
 const toBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -25,6 +26,7 @@ export default function MainPanel() {
     const panelId = params?.panelId;
     const panelConfig = useSelector((state) => state.panelConfig);
     const panelData = panelConfig.data;
+    const defaultLogo = moduleDefinition.defaultconfig.logo;
     const [filename, setFilename] = useState(panelData?.logo?.name);
 
     const sendAlert = useAlert();
@@ -81,6 +83,24 @@ export default function MainPanel() {
         await updatePanelConfig({ showTime: event.target.checked }, "Now showing the time", "Failed to show time.");
     };
 
+    const handleShowLogoChange = async (event) => {
+        await updatePanelConfig(
+            { showLogo: event.target.checked },
+            "Updated logo visibility",
+            "Failed to update logo visibility."
+        );
+    };
+
+    const handleFontWeightChange = async (event) => {
+        const nextFontWeight = event.target.value;
+
+        await updatePanelConfig(
+            { fontWeight: nextFontWeight },
+            "Updated text weight",
+            "Failed to update text weight."
+        );
+    };
+
     const handleRenameClicked = async (event, currentHeader) => {
         const result = await renameDialog({
             title: "Main Title",
@@ -113,6 +133,12 @@ export default function MainPanel() {
         );
     };
 
+    const handleResetLogo = async () => {
+        if (await updatePanelConfig({ logo: defaultLogo }, "Successfully reset logo", "Failed to reset logo.")) {
+            setFilename(defaultLogo?.name || "");
+        }
+    };
+
     const detailsItems = [
         {
             name: "Name",
@@ -143,48 +169,87 @@ export default function MainPanel() {
             value: <Switch color="primary" onChange={handleShowTimeChange} checked={panelData.showTime} />,
         },
         {
+            name: "Show Logo",
+            value: <Switch color="primary" onChange={handleShowLogoChange} checked={panelData.showLogo !== false} />,
+        },
+        {
+            name: "Text Weight",
+            value: (
+                <TextField
+                    select
+                    size="small"
+                    value={panelData.fontWeight || "400"}
+                    onChange={handleFontWeightChange}
+                    sx={{ minWidth: 160 }}
+                >
+                    <MenuItem value="300">Light</MenuItem>
+                    <MenuItem value="400">Normal</MenuItem>
+                    <MenuItem value="500">Medium</MenuItem>
+                    <MenuItem value="700">Bold</MenuItem>
+                </TextField>
+            ),
+        },
+        {
             name: "Logo",
             value: (
                 <Box
                     sx={{
                         display: "flex",
-                        flexDirection: "rows",
+                        flexDirection: "column",
+                        gap: 1,
                     }}
                 >
-                    <label htmlFor="contained-button-file">
-                        <Input
-                            sx={{ display: "none" }}
-                            id="contained-button-file"
-                            multiple
-                            onChange={(event) => {
-                                const nextFilename = event.target.value.replace(/^.*\\/, "");
-                                setFilename(nextFilename);
-                                handleLogoChange(event);
-                            }}
-                            type="file"
-                            inputProps={{
-                                ...{ accept: "image/*" },
-                            }}
-                        />
+                    <TextField
+                        variant="outlined"
+                        sx={{
+                            flexGrow: 1,
+                            "& .MuiOutlinedInput-root": {
+                                borderRadius: 0,
+                            },
+                            "& .MuiOutlinedInput-notchedOutline": {
+                                borderRadius: 0,
+                            },
+                        }}
+                        value={filename || "No file selected"}
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                    />
+                    <Box>
+                        <label htmlFor="contained-button-file">
+                            <Input
+                                sx={{ display: "none" }}
+                                id="contained-button-file"
+                                onChange={(event) => {
+                                    const nextFilename = event.target.value.replace(/^.*\\/, "");
+                                    setFilename(nextFilename);
+                                    handleLogoChange(event);
+                                }}
+                                type="file"
+                                inputProps={{
+                                    ...{ accept: "image/*" },
+                                }}
+                            />
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                sx={{
+                                    width: "6rem",
+                                    height: "36px",
+                                }}
+                                component="span"
+                            >
+                                Select
+                            </Button>
+                        </label>
                         <Button
                             variant="contained"
-                            color="primary"
-                            sx={{
-                                width: "6rem",
-                                height: "36px",
-                            }}
-                            component="span"
+                            color="secondary"
+                            sx={{ ml: 1, minWidth: "auto" }}
+                            onClick={handleResetLogo}
                         >
-                            Select
+                            Reset
                         </Button>
-                    </label>
-                    <Box
-                        sx={{
-                            padding: "8px",
-                            flexGrow: 1,
-                        }}
-                    >
-                        {filename || "No file selected"}
                     </Box>
                 </Box>
             ),

@@ -18,7 +18,7 @@
         "/js/axios.min.js",
         "/css/style.css",
         "/css/clock.css",
-        "/images/clock-face.webp"
+        "/images/clock-face.svg"
     ],
     "defaultconfig": {
         "id": "",
@@ -32,8 +32,10 @@
         "header": "BUG Clock",
         "backgroundColor": "#000000",
         "textColor": "#ffffff",
+        "fontWeight": "400",
         "showTime": true,
         "showDate": true,
+        "showLogo": true,
         "timezone": {
             "value": "GMT Standard Time",
             "abbr": "GMT",
