@@ -8,10 +8,9 @@ import BugTableLinkButton from "@core/BugTableLinkButton";
 import CommentIcon from "@mui/icons-material/Comment";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
-import GpsFixedIcon from "@mui/icons-material/GpsFixed";
-import GpsNotFixedIcon from "@mui/icons-material/GpsNotFixed";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
@@ -166,7 +165,7 @@ export default function LeaseList({ panelId }) {
                         content: (item) => {
                             return item.dynamic ? (
                                 <Tooltip title={item.status === "bound" ? "Dynamic - active" : "Dynamic - waiting"}>
-                                    <LockIconOpenIcon
+                                    <LockOpenIcon
                                         sx={{
                                             color: item.status === "bound" ? "primary.main" : "inherit",
                                             opacity: item.status === "bound" ? 1 : 0.1,
