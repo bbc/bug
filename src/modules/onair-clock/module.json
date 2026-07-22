@@ -4,14 +4,21 @@
     "description": "HTML Based On Air clock for rendering with OBS or CasparCG",
     "capabilities": [],
     "notes": "",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "icon": "Schedule",
     "author": "Ryan McCartney",
     "license": "Apache-2.0",
     "status": "stable",
     "needsContainer": true,
-    "devmounts": ["api", "services", "pages", "public"],
-    "protectedRoutes": ["config"],
+    "devmounts": [
+        "api",
+        "services",
+        "pages",
+        "public"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
     "publicRoutes": [
         "/clock/large",
         "/config",
@@ -42,7 +49,12 @@
             "offset": 0,
             "isdst": false,
             "label": "(UTC) Edinburgh, London",
-            "utc": ["Europe/Isle_of_Man", "Europe/Guernsey", "Europe/Jersey", "Europe/London"]
+            "utc": [
+                "Europe/Isle_of_Man",
+                "Europe/Guernsey",
+                "Europe/Jersey",
+                "Europe/London"
+            ]
         },
         "logo": {
             "name": "bug.png",

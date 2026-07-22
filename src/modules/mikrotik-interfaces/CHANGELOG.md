@@ -1,5 +1,9 @@
 ## Changelog
 
+### version 1.0.32
+
+- 2026-07-21: add heartbeat status check and worker task [copilot] ([b52f6d8](https://github.com/bbc/bug/commit/b52f6d824c578b5525b7c4a27b884bc52ebcb22b))
+
 ### version 1.0.31
 
 - 2026-07-09: fix routeros timeout ([52cd5e4](https://github.com/bbc/bug/commit/52cd5e4bb126748fb8daeff44beb0541cee0d565))

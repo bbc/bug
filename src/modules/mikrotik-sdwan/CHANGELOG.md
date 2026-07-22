@@ -1,5 +1,10 @@
 ## Changelog
 
+### version 1.0.27
+
+- 2026-07-22: add heartbeat status check and worker task ([ed7edf0](https://github.com/bbc/bug/commit/ed7edf059ca2bb072520f28220fb2fa895a2d910))
+- 2026-07-22: remove filename from all log actions ([4e8f77f](https://github.com/bbc/bug/commit/4e8f77fc2f7271ac98e3f1fe2063b35f88a22198))
+
 ### version 1.0.26
 
 - 2026-07-13: fix default status ([556b4c9](https://github.com/bbc/bug/commit/556b4c94e1e6b01207e63c3baf12785c03e5e40c))
