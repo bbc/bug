@@ -64,7 +64,20 @@ const BugApiTableRow = React.memo(function BugApiTableRow({
             {filterable && !menuItems && !showNavArrow && <TableCell key="placeholder">&nbsp;</TableCell>}
 
             {menuItems && (
-                <TableCell key="menu-cell" sx={{ width: "2rem", paddingLeft: "0px", paddingRight: "4px" }}>
+                <TableCell
+                    key="menu-cell"
+                    sx={{
+                        width: "2.5rem",
+                        minWidth: "2.5rem",
+                        paddingLeft: "0px",
+                        paddingRight: "4px",
+                        position: "sticky",
+                        right: 0,
+                        zIndex: 2,
+                        backgroundColor: highlightThisRow ? "success.light" : "background.paper",
+                        textAlign: "center",
+                    }}
+                >
                     <BugItemMenu item={item} menuItems={menuItems} />
                 </TableCell>
             )}
@@ -258,7 +271,19 @@ export default function BugApiTable({
                                     </IconButton>
                                 </TableCell>
                             )}
-                            {menuItems && !filterable && <TableCell key="menu-spacer" />}
+                            {menuItems && !filterable && (
+                                <TableCell
+                                    key="menu-spacer"
+                                    sx={{
+                                        width: "2.5rem",
+                                        minWidth: "2.5rem",
+                                        position: "sticky",
+                                        right: 0,
+                                        zIndex: 3,
+                                        backgroundColor: "background.paper",
+                                    }}
+                                />
+                            )}
                         </TableRow>
                         {showFilters && filterable && (
                             <BugApiTableFilters
