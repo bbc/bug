@@ -1,7 +1,8 @@
 import PanelGroupDropdownMenu from "@components/panels/PanelGroupDropdownMenu";
 import { TableCell, TableRow } from "@mui/material";
 
-export default function PanelTableGroupRow({ title }) {
+export default function PanelTableGroupRow({ title, showModule, showDescription, showVersion }) {
+    const colSpan = 3 + (showModule ? 1 : 0) + (showDescription ? 1 : 0) + (showVersion ? 1 : 0);
     return (
         <TableRow
             sx={{
@@ -17,7 +18,7 @@ export default function PanelTableGroupRow({ title }) {
                     textTransform: "uppercase",
                     color: "primary.main",
                 }}
-                colSpan={6}
+                colSpan={colSpan}
             >
                 {title}
             </TableCell>

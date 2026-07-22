@@ -9,7 +9,7 @@ import { useAlert } from "@utils/Snackbar";
 import React from "react";
 import { Navigate } from "react-router";
 
-export default function PanelTableRow({ panel, showGroups }) {
+export default function PanelTableRow({ panel, showGroups, showModule, showDescription, showVersion }) {
     const sendAlert = useAlert();
     const [redirectUrl, setRedirectUrl] = React.useState(null);
 
@@ -82,49 +82,20 @@ export default function PanelTableRow({ panel, showGroups }) {
                 {panel.title}
                 <PanelRowState panel={panel} />
             </TableCell>
-            <TableCell
-                sx={{
-                    "@media (max-width:512px)": {
-                        display: "none",
-                    },
-                    opacity: rowOpacity,
-                }}
-            >
-                {panel._module.longname}
-            </TableCell>
-            <TableCell
-                sx={{
-                    "@media (max-width:1024px)": {
-                        display: "none",
-                    },
-                    opacity: rowOpacity,
-                }}
-            >
-                {panel.description}
-            </TableCell>
-            <TableCell
-                sx={{
-                    "@media (max-width:250px)": {
-                        display: "none",
-                    },
-                    opacity: rowOpacity,
-                }}
-            >
-                <Box
-                    sx={{
-                        flexDirection: "row",
-                        display: "flex",
-                        alignItems: "center",
-                    }}
-                >
-                    {panel?.upgradeable && (
-                        <Box>
-                            <NewReleasesIcon />
-                        </Box>
-                    )}
-                    <Box sx={{ padding: "0.5rem" }}>{panel._module.version}</Box>
-                </Box>
-            </TableCell>
+            {showModule && <TableCell sx={{ opacity: rowOpacity }}>{panel._module.longname}</TableCell>}
+            {showDescription && <TableCell sx={{ opacity: rowOpacity }}>{panel.description}</TableCell>}
+            {showVersion && (
+                <TableCell sx={{ width: "4rem", opacity: rowOpacity }}>
+                    <Box sx={{ flexDirection: "row", display: "flex", alignItems: "center" }}>
+                        {panel?.upgradeable && (
+                            <Box>
+                                <NewReleasesIcon />
+                            </Box>
+                        )}
+                        <Box sx={{ padding: "0.5rem" }}>{panel._module.version}</Box>
+                    </Box>
+                </TableCell>
+            )}
             <TableCell sx={{ width: "2rem" }}>
                 <PanelDropdownMenu panel={panel} />
             </TableCell>
