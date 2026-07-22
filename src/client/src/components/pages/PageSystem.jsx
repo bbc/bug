@@ -13,7 +13,7 @@ const StyledList = styled(List)(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
     maxWidth: "550px",
     padding: "0px",
-    margin: "8px auto",
+    margin: "0px auto 8px auto",
     "& .MuiListItemButton-root": {
         borderBottom: `1px solid ${theme.palette.background.default}`,
     },

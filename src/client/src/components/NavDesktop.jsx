@@ -1,14 +1,14 @@
 import Menu from "@components/Menu";
 import Toolbar from "@components/toolbars/ToolbarRouter";
+import BugDynamicIcon from "@core/BugDynamicIcon";
 import BugScrollbars from "@core/BugScrollbars";
-import MenuIcon from "@mui/icons-material/Menu";
-import MenuOpenIcon from "@mui/icons-material/MenuOpen";
-import { AppBar, Box, Drawer, IconButton } from "@mui/material";
+import { faBug } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { AppBar, Box, Drawer, IconButton, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import MuiToolbar from "@mui/material/Toolbar";
-import { useEffect, useState } from "react";
-
-const fullMenuWidth = 1024;
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
     display: "flex",
@@ -22,18 +22,20 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 const NavDesktop = (props) => {
-    const [open, setOpen] = useState(false);
+    const location = useLocation();
+    const panel = useSelector((state) => state.panel);
+    const settings = useSelector((state) => state.settings);
 
-    const handleDrawerToggle = () => {
-        setOpen(!open);
-    };
+    const isHomePage = location.pathname === "/";
+    const isModulePage = location.pathname.startsWith("/panel/");
+    const isSystemPage = location.pathname.startsWith("/system");
+    const isPanelsPage = location.pathname.startsWith("/panels");
 
-    useEffect(() => {
-        if (window.innerWidth > fullMenuWidth) {
-            // window is wide - open the menu by default
-            setOpen(true);
-        }
-    }, []);
+    const moduleIconName = panel?.data?._module?.icon;
+    const navIconName = isModulePage ? moduleIconName : isSystemPage ? "Settings" : isPanelsPage ? "Dashboard" : "Home";
+    const showNavIcon = !isModulePage || Boolean(moduleIconName);
+    const navIconLabel = isModulePage ? "module" : isSystemPage ? "system" : isPanelsPage ? "panels" : "home";
+    const systemTitle = settings?.data?.title || "BUG";
 
     return (
         <Box
@@ -61,18 +63,57 @@ const NavDesktop = (props) => {
                         },
                     }}
                 >
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerToggle}
-                        edge="start"
-                        sx={{
-                            marginRight: "20px",
-                            marginLeft: "8px",
-                        }}
-                    >
-                        {open ? <MenuOpenIcon /> : <MenuIcon />}
-                    </IconButton>
+                    {isHomePage ? (
+                        <Box
+                            sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                marginLeft: "12px",
+                                marginRight: "12px",
+                                gap: "10px",
+                                minWidth: 0,
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    color: "text.primary",
+                                    fontSize: "1.4rem",
+                                    padding: "2px",
+                                    marginRight: "4px",
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faBug} />
+                            </Box>
+                            <Typography
+                                variant="h6"
+                                noWrap
+                                sx={{
+                                    color: "text.primary",
+                                    lineHeight: 1,
+                                }}
+                            >
+                                {systemTitle}
+                            </Typography>
+                        </Box>
+                    ) : (
+                        <IconButton
+                            color="inherit"
+                            aria-label={navIconLabel}
+                            edge="start"
+                            sx={{
+                                marginRight: "10px",
+                                marginLeft: "8px",
+                            }}
+                        >
+                            {showNavIcon ? (
+                                <BugDynamicIcon iconName={navIconName} />
+                            ) : (
+                                <Box sx={{ width: "24px", height: "24px" }} />
+                            )}
+                        </IconButton>
+                    )}
                     <Toolbar></Toolbar>
                 </MuiToolbar>
             </AppBar>
@@ -82,22 +123,22 @@ const NavDesktop = (props) => {
                     "& .MuiDrawer-paper": { overflowY: "visible" },
                     "& .MuiGrid-container": {
                         flexWrap: "nowrap",
-                        width: open ? "auto" : "56px",
-                        overflowX: open ? "visible" : "hidden",
+                        width: "auto",
+                        overflowX: "visible",
                     },
                     flexShrink: 0,
                     whiteSpace: "nowrap",
                     "& .MuiPaper-root": {
                         borderRightWidth: 0,
-                        width: open ? "275px" : "56px",
-                        overflowX: open ? "visible" : "hidden",
+                        width: "275px",
+                        overflowX: "visible",
                     },
-                    width: open ? "275px" : "56px",
+                    width: "275px",
                 }}
             >
                 <DrawerHeader />
                 <BugScrollbars>
-                    <Menu showGroups={open} />
+                    <Menu showGroups />
                 </BugScrollbars>
             </Drawer>
             <Box

@@ -40,6 +40,7 @@ const ToolbarRouter = (props) => {
     const panelConfig = useSelector((state) => state.panelConfig);
     const pathParts = location.pathname.split("/");
     const systemLogsPanelId = pathParts[1] === "system" && pathParts[2] === "logs" ? pathParts[3] : "";
+    const isHomePage = location.pathname === "/";
 
     if (panelConfig.status === "loading") {
         return null;
@@ -70,6 +71,10 @@ const ToolbarRouter = (props) => {
                 <SystemLogsToolbar panelId={systemLogsPanelId} />
             </>
         );
+    }
+
+    if (isHomePage) {
+        return <></>;
     }
 
     switch (location.pathname) {
