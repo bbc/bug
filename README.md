@@ -29,7 +29,7 @@ Run BUG on any server in your network. From one page, operators can add **panels
 
 ## Features
 
-- **45+ ready-made modules** covering switches, codecs, matrices, clocks, and more
+- **41+ ready-made modules** covering switches, codecs, matrices, clocks, and more
 - **Panel-based UI** — add, arrange, and configure devices without writing code
 - **Docker-native** — each module runs in its own isolated container
 - **Swagger API** — every action and status is accessible via a documented REST API
@@ -52,51 +52,49 @@ For full installation options (Linux, macOS, production hardening) see the [Inst
 ## Supported Modules
 
 <!-- MODULES_START -->
-
-| Module                 | Description                                                                |
-| ---------------------- | -------------------------------------------------------------------------- |
-| `arista-switch`        | Monitoring and control of Arista switches                                  |
-| `audio-player`         | Audio Player                                                               |
-| `bmd-multiview16`      | Configure Blackmagic multiviewers with auto labelling                      |
-| `bmd-videohub`         | Control and monitor Blackmagic videohub devices                            |
-| `cisco-c1300`          | Monitoring and control of Cisco C1300 series switches                      |
-| `cisco-cbs`            | Monitoring and control of Cisco CBS-series small business switches         |
-| `cisco-iosxe`          | Monitoring and control of Cisco IOS-XE based switches                      |
-| `cisco-sg`             | Monitoring and control of Cisco SG-series switches                         |
-| `clock`                | Digital and Analogue Clocks                                                |
-| `codec-apipoller`      | Polls API endpoint to retrieve codec information                           |
-| `comrex-briclink`      | Control of Comrex BRIC-Link and BRIC-Link II devices                       |
-| `dish-pointer`         | Get the Azimuth and Elevation to point a Satellite Dish                    |
-| `dtc-prorx`            | Control DTC radio camera receivers                                         |
-| `exterity`             | Channel list server and device manager for exterity STBs                   |
-| `hitomi-matchbox`      | Control of the Hitomi Matchbox ident generator                             |
-| `links`                | Link to other services                                                     |
-| `magewell-encode-sdi`  | Control and monitoring of Magewell SRT encoders                            |
-| `magewell-ndi-decoder` | Control NDI Sources on Magewell Devices                                    |
-| `mikrotik-dhcp`        | View and manage DHCP leases on Mikrotik routers                            |
-| `mikrotik-interfaces`  | Monitoring and control of mikrotik interfaces                              |
-| `mikrotik-sdwan`       | Multiple WAN manager for Mikrotik routers                                  |
-| `mikrotik-traceroute`  | Run a Traceroute from your MikroTik Router                                 |
-| `ndi-discovery`        | Get a list of NDI sources on a network from your nearest discovery server  |
-| `netgear-avline`       | Control and monitoring of Netgear AV Line ethernet switches                |
-| `notes`                | A scribble pad - write your thoughts or a novel                            |
-| `ntt-mve5000`          | Control of NTT MVE5000 encoders                                            |
-| `obe-c100`             | Control of Open Broadcast Systems' C-100 Encoders                          |
-| `onair-clock`          | HTML Based On Air clock for rendering with OBS or CasparCG                 |
-| `pinger`               | Monitor network devices                                                    |
-| `prodigy-mx`           | Control of the Prodigy MX audio router                                     |
-| `rss-feed`             | Show the latest posts from an RSS feed                                     |
-| `speedtest-net`        | Speedtest.net test from your server to determine upload and download speed |
-| `tieline-gateway`      | Control and monitor Tieline Gateway codecs                                 |
-| `tsl-mdu`              | Monitoring and control of TSL MDUs                                         |
-| `turtle-chazy`         | Turtle Chazy Dante Controller                                              |
-| `unifi-controller`     | Interact with a Unifi Controller                                           |
-| `video-player`         | HLS, DASH and Web Video Player                                             |
-| `vislink-lynx`         | Control VisLink radio camera receivers                                     |
-| `weather`              | Get the Weather on Location                                                |
-| `webpage-embed`        | Embed a web page within the BUG UI                                         |
-| `xcp-ng`               | Basic control of VMs running on an XCP-ng hypervisor                       |
-
+| Module | Description |
+|---|---|
+| `arista-switch` | Monitoring and control of Arista switches |
+| `audio-player` | Audio Player |
+| `bmd-multiview16` | Configure Blackmagic multiviewers with auto labelling |
+| `bmd-videohub` | Control and monitor Blackmagic videohub devices |
+| `cisco-c1300` | Monitoring and control of Cisco C1300 series switches |
+| `cisco-cbs` | Monitoring and control of Cisco CBS-series small business switches |
+| `cisco-iosxe` | Monitoring and control of Cisco IOS-XE based switches |
+| `cisco-sg` | Monitoring and control of Cisco SG-series switches |
+| `clock` | Digital and Analogue Clocks |
+| `codec-apipoller` | Polls API endpoint to retrieve codec information |
+| `comrex-briclink` | Control of Comrex BRIC-Link and BRIC-Link II devices |
+| `dish-pointer` | Get the Azimuth and Elevation to point a Satellite Dish |
+| `dtc-prorx` | Control DTC radio camera receivers |
+| `exterity` | Channel list server and device manager for exterity STBs |
+| `hitomi-matchbox` | Control of the Hitomi Matchbox ident generator |
+| `links` | Link to other services |
+| `magewell-encode-sdi` | Control and monitoring of Magewell SRT encoders |
+| `magewell-ndi-decoder` | Control NDI Sources on Magewell Devices |
+| `mikrotik-dhcp` | View and manage DHCP leases on Mikrotik routers |
+| `mikrotik-interfaces` | Monitoring and control of mikrotik interfaces |
+| `mikrotik-sdwan` | Multiple WAN manager for Mikrotik routers |
+| `mikrotik-traceroute` | Run a Traceroute from your MikroTik Router |
+| `ndi-discovery` | Get a list of NDI sources on a network from your nearest discovery server |
+| `netgear-avline` | Control and monitoring of Netgear AV Line ethernet switches |
+| `notes` | A scribble pad - write your thoughts or a novel |
+| `ntt-mve5000` | Control of NTT MVE5000 encoders |
+| `obe-c100` | Control of Open Broadcast Systems' C-100 Encoders |
+| `onair-clock` | HTML Based On Air clock for rendering with OBS or CasparCG |
+| `pinger` | Monitor network devices |
+| `prodigy-mx` | Control of the Prodigy MX audio router |
+| `rss-feed` | Show the latest posts from an RSS feed |
+| `speedtest-net` | Speedtest.net test from your server to determine upload and download speed |
+| `tieline-gateway` | Control and monitor Tieline Gateway codecs |
+| `tsl-mdu` | Monitoring and control of TSL MDUs |
+| `turtle-chazy` | Turtle Chazy Dante Controller |
+| `unifi-controller` | Interact with a Unifi Controller |
+| `video-player` | HLS, DASH and Web Video Player |
+| `vislink-lynx` | Control VisLink radio camera receivers |
+| `weather` | Get the Weather on Location |
+| `webpage-embed` | Embed a web page within the BUG UI |
+| `xcp-ng` | Basic control of VMs running on an XCP-ng hypervisor |
 <!-- MODULES_END -->
 
 ## Documentation

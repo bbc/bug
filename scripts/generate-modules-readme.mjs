@@ -43,7 +43,7 @@ const table = [
 ].join("\n");
 
 // Splice into README between sentinels
-const readme = readFileSync(README_PATH, "utf8");
+let readme = readFileSync(README_PATH, "utf8");
 const startIdx = readme.indexOf(START_SENTINEL);
 const endIdx = readme.indexOf(END_SENTINEL);
 
@@ -52,7 +52,8 @@ if (startIdx === -1 || endIdx === -1) {
     process.exit(1);
 }
 
-const updated =
+// Update the modules table
+readme =
     readme.slice(0, startIdx) +
     START_SENTINEL +
     "\n" +
@@ -60,5 +61,8 @@ const updated =
     "\n" +
     readme.slice(endIdx);
 
-writeFileSync(README_PATH, updated, "utf8");
+// Update the module count in the features list (e.g. "45+ ready-made modules")
+readme = readme.replace(/\*\*\d+\+ ready-made modules\*\*/, `**${modules.length}+ ready-made modules**`);
+
+writeFileSync(README_PATH, readme, "utf8");
 console.log(`Updated README.md with ${modules.length} stable modules.`);
