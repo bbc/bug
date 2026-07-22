@@ -17,6 +17,7 @@ on:
             - "src/client/src/hooks/**"
             - "src/client/src/utils/**"
             - "src/modules/**/*.md"
+            - "src/modules/**/module.json"
             - ".github/workflows/documentation.yml"
     workflow_dispatch:
 

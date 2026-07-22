@@ -11,11 +11,9 @@ BUG provides a single, central interface for monitoring and controlling equipmen
 
 BUG can be run on any supported operating system and deployed either locally or in a virtualised environment, depending on your scale and availability requirements.
 
-A full list of supported modules is available on the Modules page:
-{DOCS_BASEURL}bug/pages/modules
+A full list of supported modules is available on the [Modules]({{ site.baseurl }}/pages/modules/) page.
 
-If you are installing BUG in order to develop or test a new module, refer to the Development documentation instead:
-{DOCS_BASEURL}bug/pages/development
+If you are installing BUG in order to develop or test a new module, refer to the [Development]({{ site.baseurl }}/pages/development/) documentation instead.
 
 ---
 
@@ -29,9 +27,9 @@ BUG can be installed on the following platforms:
 
 Detailed installation steps for each platform are available in the pages below:
 
-- {DOCS_BASEURL}bug/pages/installation/windows.html
-- {DOCS_BASEURL}bug/pages/installation/mac.html
-- {DOCS_BASEURL}bug/pages/installation/linux.html
+- [Windows]({{ site.baseurl }}/pages/installation/windows.html)
+- [macOS]({{ site.baseurl }}/pages/installation/mac.html)
+- [Linux]({{ site.baseurl }}/pages/installation/linux.html)
 
 ---
 
@@ -70,4 +68,4 @@ Once created, the panel will appear in the toolbar and become available in the U
 
 If you encounter problems during installation or startup, see:
 
-- {DOCS_BASEURL}bug/pages/installation/troubleshooting.html
+- [Troubleshooting]({{ site.baseurl }}/pages/installation/troubleshooting.html)
