@@ -77,6 +77,12 @@ module.exports = async (moduleName, updateProgressCallback) => {
         logger.info(`rebuilding image for ${moduleName}...`);
         const result = await dockerBuildModule(moduleName, updateProgress);
 
+        // clear upgrade status before restarting panels - panelStart guards against starting during an upgrade
+        if (upgradeStatusCreated) {
+            await moduleUpgradeStatusModel.delete(moduleName);
+            upgradeStatusCreated = false;
+        }
+
         // restart affected panels after successful rebuild
         if (affectedPanelIds.length > 0) {
             updateProgress("Restarting panels");
