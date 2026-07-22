@@ -154,7 +154,7 @@ const HomeTile = ({ panel }) => {
                             </BugRestrictTo>
                         }
                         title={panel.title}
-                        subheader={panel.description ? panel.description : panel._module.description}
+                        subheader={panel.description}
                     />
                     <StyledCardContent>
                         <BugTileStatus statusItems={sortedItems} />
