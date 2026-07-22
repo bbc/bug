@@ -1,0 +1,33 @@
+name: Update README Module List
+
+on:
+    push:
+        branches:
+            - main
+        paths:
+            - "src/modules/**/module.json"
+    workflow_dispatch:
+
+permissions:
+    contents: write
+
+jobs:
+    update-modules:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+
+            - name: Generate modules table
+              run: node scripts/generate-modules-readme.mjs
+
+            - name: Commit changes
+              uses: stefanzweifel/git-auto-commit-action@v5
+              with:
+                  commit_message: "docs: auto-update supported modules table [skip ci]"
+                  file_pattern: README.md
