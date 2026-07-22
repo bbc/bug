@@ -8,7 +8,7 @@ import BugTimeZonePicker from "@core/BugTimeZonePicker";
 import { Box, Button, Grid, Input, Switch } from "@mui/material";
 import AxiosPut from "@utils/AxiosPut";
 import { useAlert } from "@utils/Snackbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -22,59 +22,63 @@ const toBase64 = (file) =>
 
 export default function MainPanel() {
     const params = useParams();
+    const panelId = params?.panelId;
     const panelConfig = useSelector((state) => state.panelConfig);
-    const [filename, setFilename] = useState(panelConfig?.data?.logo?.name);
+    const panelData = panelConfig.data;
+    const [filename, setFilename] = useState(panelData?.logo?.name);
 
     const sendAlert = useAlert();
     const { renameDialog } = useBugRenameDialog();
 
+    useEffect(() => {
+        setFilename(panelData?.logo?.name);
+    }, [panelData?.logo?.name]);
+
     if (panelConfig.status === "idle" || panelConfig.status === "loading") {
         return <BugLoading height="30vh" />;
     }
-    if (panelConfig.status !== "success" || !panelConfig.data || !panelConfig.data) {
+    if (panelConfig.status !== "success" || !panelData) {
         return <BugNoData panelId={panelId} title="No device information found" showConfigButton={false} />;
     }
 
-    const handleBackgroundColorChange = async (color) => {
-        if (await AxiosPut(`/api/panelconfig/${params?.panelId}`, { backgroundColor: color.hex })) {
-            sendAlert(`Successfully changed background color`, { broadcast: "true", variant: "success" });
-        } else {
-            sendAlert(`Failed to change background color.`, { variant: "error" });
+    const updatePanelConfig = async (payload, successMessage, errorMessage) => {
+        const updated = await AxiosPut(`/api/panelconfig/${panelId}`, payload);
+
+        if (updated) {
+            sendAlert(successMessage, { broadcast: "true", variant: "success" });
+            return true;
         }
+
+        sendAlert(errorMessage, { variant: "error" });
+        return false;
+    };
+
+    const handleBackgroundColorChange = async (color) => {
+        await updatePanelConfig(
+            { backgroundColor: color.hex },
+            "Successfully changed background color",
+            "Failed to change background color."
+        );
     };
 
     const handleTextColorChange = async (color) => {
-        if (await AxiosPut(`/api/panelconfig/${params?.panelId}`, { textColor: color.hex })) {
-            sendAlert(`Successfully changed text color`, { broadcast: "true", variant: "success" });
-        } else {
-            sendAlert(`Failed to change text color.`, { variant: "error" });
-        }
+        await updatePanelConfig(
+            { textColor: color.hex },
+            "Successfully changed text color",
+            "Failed to change text color."
+        );
     };
 
     const handleTimeZoneChange = async (event, timezone) => {
-        if (await AxiosPut(`/api/panelconfig/${params?.panelId}`, { timezone: timezone })) {
-            sendAlert(`Successfully changed timezone`, { broadcast: "true", variant: "success" });
-        } else {
-            sendAlert(`Failed to change timezone.`, { variant: "error" });
-        }
+        await updatePanelConfig({ timezone }, "Successfully changed timezone", "Failed to change timezone.");
     };
 
     const handleShowDateChange = async (event) => {
-        console.log(event.target.checked);
-        if (await AxiosPut(`/api/panelconfig/${params?.panelId}`, { showDate: event.target.checked })) {
-            sendAlert(`Now showing the date`, { broadcast: "true", variant: "success" });
-        } else {
-            sendAlert(`Failed to show date.`, { variant: "error" });
-        }
+        await updatePanelConfig({ showDate: event.target.checked }, "Now showing the date", "Failed to show date.");
     };
 
     const handleShowTimeChange = async (event) => {
-        console.log(event.target.checked);
-        if (await AxiosPut(`/api/panelconfig/${params?.panelId}`, { showTime: event.target.checked })) {
-            sendAlert(`Now showing the time`, { broadcast: "true", variant: "success" });
-        } else {
-            sendAlert(`Failed to show time.`, { variant: "error" });
-        }
+        await updatePanelConfig({ showTime: event.target.checked }, "Now showing the time", "Failed to show time.");
     };
 
     const handleRenameClicked = async (event, currentHeader) => {
@@ -87,11 +91,7 @@ export default function MainPanel() {
             return false;
         }
 
-        if (await AxiosPut(`/api/panelconfig/${params?.panelId}`, { header: result })) {
-            sendAlert(`Successfully renamed device`, { broadcast: "true", variant: "success" });
-        } else {
-            sendAlert(`Failed to change clock title.`, { variant: "error" });
-        }
+        await updatePanelConfig({ header: result }, "Successfully renamed device", "Failed to change clock title.");
 
         event.stopPropagation();
         event.preventDefault();
@@ -99,129 +99,102 @@ export default function MainPanel() {
 
     const handleLogoChange = async (event) => {
         const logo = event.target.files[0];
-        const data = await toBase64(logo);
-        if (
-            await AxiosPut(`/api/panelconfig/${params?.panelId}`, {
-                logo: { name: logo.name, image: data },
-            })
-        ) {
-            sendAlert(`Successfully upadted logo`, { broadcast: "true", variant: "success" });
-        } else {
-            sendAlert(`Failed to change logo.`, { variant: "error" });
+
+        if (!logo) {
+            return;
         }
+
+        const data = await toBase64(logo);
+
+        await updatePanelConfig(
+            { logo: { name: logo.name, image: data } },
+            "Successfully updated logo",
+            "Failed to change logo."
+        );
     };
+
+    const detailsItems = [
+        {
+            name: "Name",
+            value: (
+                <BugTableLinkButton onClick={(event) => handleRenameClicked(event, panelData.header)}>
+                    {panelData.header}
+                </BugTableLinkButton>
+            ),
+        },
+        {
+            name: "Background Color",
+            value: <BugColorPicker color={panelData.backgroundColor} onColorChange={handleBackgroundColorChange} />,
+        },
+        {
+            name: "Text Color",
+            value: <BugColorPicker color={panelData.textColor} onColorChange={handleTextColorChange} />,
+        },
+        {
+            name: "Time Zone",
+            value: <BugTimeZonePicker value={panelData.timezone} onChange={handleTimeZoneChange} />,
+        },
+        {
+            name: "Show Date",
+            value: <Switch color="primary" onChange={handleShowDateChange} checked={panelData.showDate} />,
+        },
+        {
+            name: "Show Time",
+            value: <Switch color="primary" onChange={handleShowTimeChange} checked={panelData.showTime} />,
+        },
+        {
+            name: "Logo",
+            value: (
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "rows",
+                    }}
+                >
+                    <label htmlFor="contained-button-file">
+                        <Input
+                            sx={{ display: "none" }}
+                            id="contained-button-file"
+                            multiple
+                            onChange={(event) => {
+                                const nextFilename = event.target.value.replace(/^.*\\/, "");
+                                setFilename(nextFilename);
+                                handleLogoChange(event);
+                            }}
+                            type="file"
+                            inputProps={{
+                                ...{ accept: "image/*" },
+                            }}
+                        />
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            sx={{
+                                width: "6rem",
+                                height: "36px",
+                            }}
+                            component="span"
+                        >
+                            Select
+                        </Button>
+                    </label>
+                    <Box
+                        sx={{
+                            padding: "8px",
+                            flexGrow: 1,
+                        }}
+                    >
+                        {filename || "No file selected"}
+                    </Box>
+                </Box>
+            ),
+        },
+    ];
 
     return (
         <>
             <Grid size={{ xs: 12 }}>
-                <BugDetailsTable
-                    items={[
-                        {
-                            name: "Name",
-                            value: (
-                                <BugTableLinkButton
-                                    onClick={(event) => handleRenameClicked(event, panelConfig.data?.header)}
-                                >
-                                    {panelConfig.data?.header}
-                                </BugTableLinkButton>
-                            ),
-                        },
-                        {
-                            name: "Background Color",
-                            value: (
-                                <BugColorPicker
-                                    color={panelConfig?.data?.backgroundColor}
-                                    onColorChange={handleBackgroundColorChange}
-                                />
-                            ),
-                        },
-                        {
-                            name: "Text Color",
-                            value: (
-                                <BugColorPicker
-                                    color={panelConfig?.data?.textColor}
-                                    onColorChange={handleTextColorChange}
-                                />
-                            ),
-                        },
-                        {
-                            name: "Time Zone",
-                            value: (
-                                <BugTimeZonePicker
-                                    value={panelConfig?.data?.timezone}
-                                    onChange={handleTimeZoneChange}
-                                />
-                            ),
-                        },
-                        {
-                            name: "Show Date",
-                            value: (
-                                <Switch
-                                    color="primary"
-                                    onChange={handleShowDateChange}
-                                    checked={panelConfig?.data?.showDate}
-                                />
-                            ),
-                        },
-                        {
-                            name: "Show Time",
-                            value: (
-                                <Switch
-                                    color="primary"
-                                    onChange={handleShowTimeChange}
-                                    checked={panelConfig?.data?.showTime}
-                                />
-                            ),
-                        },
-                        {
-                            name: "Logo",
-                            value: (
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        flexDirection: "rows",
-                                    }}
-                                >
-                                    <label htmlFor="contained-button-file">
-                                        <Input
-                                            sx={{ display: "none" }}
-                                            id="contained-button-file"
-                                            multiple
-                                            onChange={(event) => {
-                                                const filename = event.target.value.replace(/^.*\\/, "");
-                                                setFilename(filename);
-                                                handleLogoChange(event);
-                                            }}
-                                            type="file"
-                                            inputProps={{
-                                                ...{ accept: "image/*" },
-                                            }}
-                                        />
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            sx={{
-                                                width: "6rem",
-                                                height: "36px",
-                                            }}
-                                            component="span"
-                                        >
-                                            Select
-                                        </Button>
-                                    </label>
-                                    <Box
-                                        sx={{
-                                            padding: "8px",
-                                            flexGrow: 1,
-                                        }}
-                                    >
-                                        {filename ? filename : "No file selected"}
-                                    </Box>
-                                </Box>
-                            ),
-                        },
-                    ]}
-                />
+                <BugDetailsTable items={detailsItems} />
             </Grid>
         </>
     );

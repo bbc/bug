@@ -36,7 +36,6 @@
 }
 
 .minutes-container {
-    animation: rotate 3600s infinite steps(60);
     position: absolute;
     top: 0;
     right: 0;
@@ -44,7 +43,6 @@
     left: 0;
 }
 .seconds-container {
-    animation: rotate 60s infinite steps(60);
     position: absolute;
     top: 0;
     right: 0;
@@ -78,9 +76,4 @@
     transform-origin: 50% 80%;
     width: 1%;
     z-index: 8;
-}
-@keyframes rotate {
-    100% {
-        transform: rotateZ(360deg);
-    }
 }
