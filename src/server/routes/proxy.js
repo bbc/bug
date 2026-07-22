@@ -78,6 +78,11 @@ router.use(
                 logger.info(req.body?.action);
             }
 
+            const contentType = axiosResponse?.headers?.["content-type"];
+            if (contentType) {
+                res.set("Content-Type", contentType);
+            }
+
             res.status(axiosResponse.status);
             axiosResponse.data.pipe(res);
         } catch (error) {
@@ -88,6 +93,11 @@ router.use(
                 // Since responseType is "stream", we have to handle the error data carefully
                 // If it's a stream, we can't easily read it like a JSON object without buffering
                 res.status(remoteStatus);
+
+                const contentType = error.response?.headers?.["content-type"];
+                if (contentType) {
+                    res.set("Content-Type", contentType);
+                }
 
                 // If the remote sent a stream back, pipe it. 
                 // Otherwise, send the axios error message.
