@@ -2,6 +2,7 @@ import PageTitle from "@components/PageTitle";
 import PanelsToolbar from "@components/toolbars/PanelsToolbar";
 import SecurityEditToolbar from "@components/toolbars/SecurityEditToolbar";
 import SecurityToolbar from "@components/toolbars/SecurityToolbar";
+import SystemLogsToolbar from "@components/toolbars/SystemLogsToolbar";
 import SystemToolbar from "@components/toolbars/SystemToolbar";
 import UsersToolbar from "@components/toolbars/UsersToolbar";
 import { Box } from "@mui/material";
@@ -37,6 +38,8 @@ const Title = ({ children }) => (
 const ToolbarRouter = (props) => {
     const location = useLocation();
     const panelConfig = useSelector((state) => state.panelConfig);
+    const pathParts = location.pathname.split("/");
+    const systemLogsPanelId = pathParts[1] === "system" && pathParts[2] === "logs" ? pathParts[3] : "";
 
     if (panelConfig.status === "loading") {
         return null;
@@ -57,6 +60,17 @@ const ToolbarRouter = (props) => {
 
         return <></>;
     };
+
+    if (systemLogsPanelId) {
+        return (
+            <>
+                <Title>
+                    <PageTitle />
+                </Title>
+                <SystemLogsToolbar panelId={systemLogsPanelId} />
+            </>
+        );
+    }
 
     switch (location.pathname) {
         case "/panels":

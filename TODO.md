@@ -9,7 +9,6 @@
 - add tests for groups
 - when enabling security strategy it should warn if you're cutting off your branch
 - need to use UTC for all panel dates
-- add panel toolbar menu to logs page
 - update mikrotik modules using new core class
 - explain admin/user
 - disable UI for actions for users
