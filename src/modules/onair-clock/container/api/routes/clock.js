@@ -1,4 +1,5 @@
 const express = require("express");
+const logger = require("@core/logger")(module);
 const route = express.Router();
 const path = require("path");
 
@@ -7,7 +8,7 @@ route.all("/large", async function (req, res) {
         res.set("Content-Type", "text/html");
         res.sendFile(path.join(__dirname, "..", "..", "pages", "clock-large.html"));
     } catch (error) {
-        console.log(error);
+        logger.error("Failed to fetch the clock page", error);
         res.json({
             status: "error",
             message: "Failed to fetch the clock",
