@@ -43,6 +43,6 @@
         "@storybook/theming": "^8.6.15",
         "storybook": "^8.6.15",
         "jsdom": "^26.1.0",
-        "vitest": "^3.2.4"
+        "vitest": "^3.2.7"
     }
 }
