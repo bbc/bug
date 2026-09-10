@@ -12,3 +12,5 @@
 - upgrade all modules?
 - do I need a way to view some basic info on a device? Maybe a details view expandable from the home screen with device name, model, IP, contact details etc
 - do I remove the menu on the home page tiles and just have an expand icon?
+- move notifications popup to left
+- homne page tiles are different heights with and without description

@@ -108,6 +108,8 @@ services:
 
 The values provided here are sensible defaults. You should review and adjust them to suit your environment.
 
+> ARM64 users: The stable `latest` image currently targets amd64. To try BUG on an ARM64 host, change the app image to `ghcr.io/bbc/bug:nightly`. The `nightly` image is rebuilt daily for amd64 and arm64 and may contain unreleased changes.
+
 ---
 
 ## Start BUG

@@ -49,6 +49,27 @@ docker-compose up -d
 
 Docker will recreate only the containers that need updating, minimizing downtime (usually around 10 seconds). Panel configurations and module data are preserved.
 
+## ARM64 and Nightly Builds
+
+The `nightly` image is rebuilt daily for `linux/amd64` and `linux/arm64`. It is intended for testing ARM64 support and may contain changes that are not in a stable release.
+
+To use it, update the `app` service image in your `docker-compose.yml`:
+
+```
+services:
+    app:
+        image: ghcr.io/bbc/bug:nightly
+```
+
+Then pull and restart the app:
+
+```
+docker-compose pull app
+docker-compose up -d
+```
+
+Use `ghcr.io/bbc/bug:latest` for the stable release channel.
+
 ---
 
 ## Upgrade docker-compose
