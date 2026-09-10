@@ -1,13 +1,12 @@
 "use strict";
 
-const statusCheckMongoSingle = require("@core/status-checkmongosingle");
 const { statusCheckHeartbeat } = require("@core/heartbeat");
 const statusCheckEntries = require("./status-checkentries");
-const logger = require("@core/logger")(module);
+const statusCheckCollection = require("@core/status-checkcollection");
 
 module.exports = async () => {
     return [].concat(
-        await statusCheckMongoSingle({
+        await statusCheckCollection({
             collectionName: "wanAddresses",
             message: ["There are no WAN addresses defined in the router"],
             itemType: "warning",
