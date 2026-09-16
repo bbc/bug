@@ -95,7 +95,7 @@ jobs:
               run: node docs/scripts/generateModules.js
 
             - name: Setup Pages
-              uses: actions/configure-pages@v5
+              uses: actions/configure-pages@v6
 
             - name: Build Jekyll Site
               uses: actions/jekyll-build-pages@v1
