@@ -23,7 +23,7 @@ jobs:
         steps:
             # checkout the repository at the latest commit
             - name: checkout repository
-              uses: actions/checkout@v6
+              uses: actions/checkout@v7
 
             # setup node
             - name: setup node
