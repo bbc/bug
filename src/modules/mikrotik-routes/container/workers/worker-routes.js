@@ -56,8 +56,12 @@ const main = async () => {
                 );
             }
 
-            // filter out only static and default routes, in the main route table
-            const filteredRoutes = routes.filter((route) => (route?.["dst-address"] === "0.0.0.0/0" || route.static) && route?.["routing-table"] === "main");
+            // RouterOS 6 identifies non-main tables with routing-mark instead of routing-table.
+            const filteredRoutes = routes.filter((route) => {
+                const isMainTable = route?.["routing-table"] === "main" ||
+                    (!route?.["routing-table"] && !route?.["routing-mark"]);
+                return (route?.["dst-address"] === "0.0.0.0/0" || route.static) && isMainTable;
+            });
 
             // save to db
             await mongoSingle.set("routes", filteredRoutes, 60);
