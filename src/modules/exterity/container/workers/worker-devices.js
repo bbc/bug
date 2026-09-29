@@ -4,7 +4,6 @@ const { parentPort, workerData } = require("worker_threads");
 const delay = require("delay");
 const register = require("module-alias/register");
 const mongoDb = require("@core/mongo-db");
-const modulePort = process.env.PORT;
 const mongoCollection = require("@core/mongo-collection");
 const getChannelListUrl = require("@utils/getChannelListUrl");
 const setChannelListUrl = require("@services/channel-list-set");
@@ -62,7 +61,7 @@ const filteredResponse = (response) => {
 
 //Exterity boxes return LFCR invalid chars in responses so commands always throw expections. Manually parse the repsonse using HTTP
 const getExterityData = (device) => {
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
         const options = {
             insecureHTTPParser: true,
             timeout: 3000,
@@ -95,13 +94,22 @@ const getExterityData = (device) => {
         const callback = (response) => {
             let str = "";
 
-            response.on("data", function (chunk) {
+            response.on("data", (chunk) => {
                 str += chunk;
             });
-            response.on("end", function () {
-                const jsonData = JSON.parse(str.trim());
-                resolve(jsonData);
+            response.on("end", () => {
+                if (response.statusCode < 200 || response.statusCode >= 300) {
+                    reject(new Error(`Exterity request returned HTTP ${response.statusCode}`));
+                    return;
+                }
+
+                try {
+                    resolve(JSON.parse(str.trim()));
+                } catch (error) {
+                    reject(new Error(`Exterity request returned invalid JSON: ${error.message}`));
+                }
             });
+            response.on("error", reject);
         };
 
         try {
@@ -111,7 +119,7 @@ const getExterityData = (device) => {
                 reject(err);
             });
 
-            request.on("error", function (err) {
+            request.on("error", (err) => {
                 reject(err);
             });
 
