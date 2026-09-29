@@ -4,15 +4,24 @@
     "description": "Channel list server and device manager for exterity STBs",
     "capabilities": [],
     "notes": "",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "icon": "mdi-set-top-box",
     "author": "Ryan McCartney",
     "license": "Apache-2.0",
     "status": "stable",
     "needsContainer": true,
-    "devmounts": ["api", "services", "utils", "workers"],
-    "protectedRoutes": ["config"],
-    "publicRoutes": ["/channel-list/*"],
+    "devmounts": [
+        "api",
+        "services",
+        "utils",
+        "workers"
+    ],
+    "protectedRoutes": [
+        "config"
+    ],
+    "publicRoutes": [
+        "/channel-list/*"
+    ],
     "defaultconfig": {
         "id": "",
         "order": 0,
