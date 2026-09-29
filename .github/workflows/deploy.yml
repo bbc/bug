@@ -19,6 +19,7 @@ permissions:
     actions: read
     contents: read
     packages: write
+    pull-requests: read
 
 jobs:
     verify-version-job:
@@ -40,6 +41,21 @@ jobs:
                       const runId = context.payload.workflow_run?.id;
                       if (!runId) {
                         core.info("No upstream workflow run id found. Skipping deploy.");
+                        core.setOutput("should_deploy", "false");
+                        return;
+                      }
+
+                      const changelogPullRequests = await github.paginate(github.rest.pulls.list, {
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        state: "open",
+                        base: "main",
+                        head: `${context.repo.owner}:ci/update-changelogs`,
+                        per_page: 100,
+                      });
+
+                      if (changelogPullRequests.length > 0) {
+                        core.info("A changelog pull request is open; skipping deploy until it is merged.");
                         core.setOutput("should_deploy", "false");
                         return;
                       }
