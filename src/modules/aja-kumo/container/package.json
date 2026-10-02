@@ -1,0 +1,32 @@
+{
+    "name": "aja-kumo",
+    "private": true,
+    "scripts": {
+        "production": "node ./api/server",
+        "development": "nodemon ./api/server",
+        "test": "docker build -f ./Dockerfile.test -t bug-module-test ../../../.. && docker run --rm --name bug-module-test-run bug-module-test sh -lc 'if find ./api ./services -type f -name \"*.test.js\" -print | grep -q . || find ./api ./services -type f -name \"*.spec.js\" -print | grep -q .; then if [ -f ./jest.config.cjs ]; then npx jest --runInBand --config ./jest.config.cjs; else npx jest --runInBand; fi; else echo \"No module tests found, skipping.\"; fi'"
+    },
+    "author": "BBC",
+    "license": "Apache-2.0",
+    "dependencies": {
+        "axios": "^1.15.0",
+        "express": "^4.18.2",
+        "express-async-handler": "^1.1.4",
+        "http-errors": "^1.8.0",
+        "module-alias": "^2.2.2",
+        "mongodb": "^3.6.8",
+        "winston": "^3.19.0"
+    },
+    "devDependencies": {
+        "jest": "^30.2.0",
+        "nodemon": "^3.1.11"
+    },
+    "_moduleAliases": {
+        "@root": ".",
+        "@core": "./core/",
+        "@routes": "./api/routes/",
+        "@api": "./api/",
+        "@services": "./services/",
+        "@utils": "./utils/"
+    }
+}

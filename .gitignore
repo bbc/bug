@@ -66,3 +66,4 @@ docs/.jekyll-cache/**
 
 # script outputs
 /src/client/src/utils/muiIconMap.js
+.github/copilot-instructions.md

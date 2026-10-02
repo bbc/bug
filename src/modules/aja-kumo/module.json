@@ -1,0 +1,29 @@
+{
+    "name": "aja-kumo",
+    "longname": "AJA KUMO Router",
+    "description": "Control an AJA KUMO video router of any matrix size",
+    "capabilities": ["video-router"],
+    "memory": 200,
+    "notes": "",
+    "version": "0.1.0",
+    "icon": "mdi-matrix",
+    "author": "BBC",
+    "license": "Apache-2.0",
+    "status": "development",
+    "needsContainer": true,
+    "devmounts": ["api", "services"],
+    "protectedRoutes": ["config"],
+    "defaultconfig": {
+        "id": "",
+        "order": 0,
+        "needsConfigured": true,
+        "title": "",
+        "module": "aja-kumo",
+        "description": "",
+        "notes": "",
+        "enabled": false,
+        "address": "",
+        "port": "80",
+        "password": ""
+    }
+}
