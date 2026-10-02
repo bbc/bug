@@ -7,6 +7,9 @@ const configRouter = require("./routes/config");
 const statusRouter = require("./routes/status");
 const routerRouter = require("./routes/router");
 const routeRouter = require("./routes/route");
+const labelsRouter = require("./routes/labels");
+const locksRouter = require("./routes/locks");
+const groupsRouter = require("./routes/groups");
 const capabilitiesRouter = require("./routes/capabilities");
 const defaultRouter = require("@routes/default");
 
@@ -23,6 +26,9 @@ app.use("/api/config", configRouter);
 app.use("/api/status", statusRouter);
 app.use("/api/router", routerRouter);
 app.use("/api/route", routeRouter);
+app.use("/api/labels", labelsRouter);
+app.use("/api/locks", locksRouter);
+app.use("/api/groups", groupsRouter);
 app.use("/api/capabilities", capabilitiesRouter);
 app.use("*", defaultRouter);
 

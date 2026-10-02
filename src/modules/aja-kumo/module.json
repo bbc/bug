@@ -7,11 +7,11 @@
     "notes": "",
     "version": "0.1.0",
     "icon": "mdi-matrix",
-    "author": "BBC",
+    "author": "Daniel George",
     "license": "Apache-2.0",
     "status": "development",
     "needsContainer": true,
-    "devmounts": ["api", "services"],
+    "devmounts": ["api", "services", "workers"],
     "protectedRoutes": ["config"],
     "defaultconfig": {
         "id": "",
@@ -22,6 +22,8 @@
         "description": "",
         "notes": "",
         "enabled": false,
+        "sourceGroups": [],
+        "destinationGroups": [],
         "address": "",
         "port": "80",
         "password": ""

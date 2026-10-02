@@ -10,8 +10,8 @@ const SESSION_CACHE_MS = 600000;
 let sessionCache = null;
 let labelCache = null;
 
-const getConfig = async () => {
-    const config = await configGet();
+const getConfig = async (configOverride) => {
+    const config = configOverride || (await configGet());
     if (!config?.address) {
         throw new Error("Set the AJA KUMO router address in the panel configuration");
     }
@@ -136,9 +136,9 @@ const mapLimit = async (items, limit, callback) => {
     return results;
 };
 
-const getLabels = async (device, cookie, matrixSize) => {
+const getLabels = async (device, cookie, matrixSize, forceRefresh = false) => {
     const key = `${device.baseUrl}:${matrixSize.sources}x${matrixSize.destinations}`;
-    if (labelCache?.key === key && labelCache.expiresAt > Date.now()) {
+    if (!forceRefresh && labelCache?.key === key && labelCache.expiresAt > Date.now()) {
         return labelCache.labels;
     }
 
@@ -158,59 +158,67 @@ const getLabels = async (device, cookie, matrixSize) => {
             getParameter(device, cookie, `eParamID_XPT_${paramPrefix}${index}_Line_2`),
         ]);
         const prefix = type === "source" ? "Source" : "Destination";
+        const portLabelLines = [line1, line2].map((value) => String(value).trim());
+        const label = portLabelLines.filter(Boolean).join(" ") || `${prefix} ${index}`;
         return {
             type,
             index: index - 1,
-            label:
-                [line1, line2]
-                    .map(String)
-                    .map((value) => value.trim())
-                    .filter(Boolean)
-                    .join(" ") || `${prefix} ${index}`,
+            label,
+            line1: portLabelLines[0],
+            line2: portLabelLines[1],
         };
     });
 
-    const sourceLabels = [];
-    const destinationLabels = [];
+    const sourcePorts = [];
+    const destinationPorts = [];
     for (const label of labels) {
-        (label.type === "source" ? sourceLabels : destinationLabels)[label.index] = label.label;
+        const ports = label.type === "source" ? sourcePorts : destinationPorts;
+        ports[label.index] = { label: label.label, line1: label.line1, line2: label.line2 };
     }
 
-    const result = { sourceLabels, destinationLabels };
+    const result = {
+        sourcePorts,
+        destinationPorts,
+        sourceLabels: sourcePorts.map((port) => port.label),
+        destinationLabels: destinationPorts.map((port) => port.label),
+    };
     labelCache = { key, labels: result, expiresAt: Date.now() + LABEL_CACHE_MS };
     return result;
 };
 
-const getRouter = async () => {
-    const device = await getConfig();
+const getRouter = async (configOverride, { refreshLabels = false } = {}) => {
+    const device = await getConfig(configOverride);
     const cookie = await getSession(device);
     const matrixSize = await getMatrixSize(device, cookie);
-    const { sourceLabels, destinationLabels } = await getLabels(device, cookie, matrixSize);
+    const { sourceLabels, sourcePorts, destinationPorts } = await getLabels(device, cookie, matrixSize, refreshLabels);
     const destinations = await mapLimit(
         Array.from({ length: matrixSize.destinations }, (_, index) => index),
         8,
         async (index) => {
             const input = Number(await getParameter(device, cookie, `eParamID_XPT_Destination${index + 1}_Status`));
+            const isLocked =
+                Number(await getParameter(device, cookie, `eParamID_XPT_Destination${index + 1}_Locked`)) === 1;
             if (!Number.isInteger(input) || input < 1 || input > matrixSize.sources) {
                 throw new Error(`AJA KUMO returned an invalid source for destination ${index + 1}`);
             }
             return {
+                ...destinationPorts[index],
                 index,
-                label: destinationLabels[index],
                 inputIndex: input - 1,
                 inputLabel: sourceLabels[input - 1],
+                isLocked,
             };
         }
     );
 
     return {
         matrixSize,
-        sources: sourceLabels.map((label, index) => ({ index, label })),
+        sources: sourcePorts.map((port, index) => ({ index, ...port })),
         destinations,
     };
 };
 
-const route = async (destination, source) => {
+const route = async (destination, source, matrixSize) => {
     const destinationIndex = Number(destination);
     const sourceIndex = Number(source);
     if (
@@ -222,17 +230,73 @@ const route = async (destination, source) => {
         throw new Error("Source and destination must be non-negative 0-based port indexes");
     }
 
-    const device = await getConfig();
-    const cookie = await getSession(device);
-    const matrixSize = await getMatrixSize(device, cookie);
-    if (destinationIndex >= matrixSize.destinations || sourceIndex >= matrixSize.sources) {
+    if (!matrixSize || destinationIndex >= matrixSize.destinations || sourceIndex >= matrixSize.sources) {
         throw new Error(
-            `Port index out of range for this AJA KUMO (${matrixSize.sources} inputs, ${matrixSize.destinations} outputs)`
+            matrixSize
+                ? `Port index out of range for this AJA KUMO (${matrixSize.sources} inputs, ${matrixSize.destinations} outputs)`
+                : "AJA KUMO has not reported its matrix dimensions yet"
         );
     }
 
+    const device = await getConfig();
+    const cookie = await getSession(device);
     await setParameter(device, cookie, `eParamID_XPT_Destination${destinationIndex + 1}_Status`, sourceIndex + 1);
     return true;
 };
 
-module.exports = { getRouter, route };
+const setLabel = async (type, index, line1, line2, matrixSize) => {
+    if (!["source", "destination"].includes(type)) {
+        throw new Error("Label type must be source or destination");
+    }
+
+    const portIndex = Number(index);
+    if (!Number.isInteger(portIndex) || portIndex < 0) {
+        throw new Error("Label index must be a non-negative 0-based port index");
+    }
+    if (typeof line1 !== "string" || typeof line2 !== "string") {
+        throw new Error("Both KUMO label lines must be strings");
+    }
+
+    const portCount = type === "source" ? matrixSize?.sources : matrixSize?.destinations;
+    if (!portCount) {
+        throw new Error("AJA KUMO has not reported its matrix dimensions yet");
+    }
+    if (portIndex >= portCount) {
+        throw new Error(`Label index out of range for this AJA KUMO (${portCount} ${type} ports)`);
+    }
+
+    const device = await getConfig();
+    const cookie = await getSession(device);
+    const paramPrefix = type === "source" ? "Source" : "Destination";
+    await setParameter(device, cookie, `eParamID_XPT_${paramPrefix}${portIndex + 1}_Line_1`, line1);
+    await setParameter(device, cookie, `eParamID_XPT_${paramPrefix}${portIndex + 1}_Line_2`, line2);
+    labelCache = null;
+    return true;
+};
+
+const setDestinationLock = async (index, locked, matrixSize) => {
+    const destinationIndex = Number(index);
+    if (
+        !Number.isInteger(destinationIndex) ||
+        destinationIndex < 0 ||
+        !matrixSize ||
+        destinationIndex >= matrixSize.destinations
+    ) {
+        throw new Error("Destination index is out of range for this AJA KUMO");
+    }
+    if (typeof locked !== "boolean") {
+        throw new Error("Destination lock state must be a boolean");
+    }
+
+    const device = await getConfig();
+    const cookie = await getSession(device);
+    const paramid = `eParamID_XPT_Destination${destinationIndex + 1}_Locked`;
+    await setParameter(device, cookie, paramid, locked ? 1 : 0);
+    const actualLock = Number(await getParameter(device, cookie, paramid)) === 1;
+    if (actualLock !== locked) {
+        throw new Error(`Failed to verify AJA KUMO lock state for destination ${destinationIndex + 1}`);
+    }
+    return true;
+};
+
+module.exports = { getRouter, route, setLabel, setDestinationLock };

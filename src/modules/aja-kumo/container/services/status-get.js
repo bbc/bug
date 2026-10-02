@@ -2,14 +2,14 @@
 
 const logger = require("@core/logger")(module);
 const StatusItem = require("@core/StatusItem");
-const { getRouter } = require("@services/kumo-api");
+const routerCache = require("@services/router-cache");
 
 module.exports = async () => {
     try {
-        const { sources, destinations } = await getRouter();
+        const { sources, destinations } = await routerCache.get();
         return [
             new StatusItem({
-                message: `Connected to AJA KUMO 1616 (${sources.length} inputs, ${destinations.length} outputs)`,
+                message: `Connected to AJA KUMO (${sources.length} inputs, ${destinations.length} outputs)`,
                 key: "deviceactive",
                 type: "default",
                 flags: [],
