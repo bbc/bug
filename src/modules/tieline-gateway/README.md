@@ -31,7 +31,7 @@ It also provides per-connection and overall statistics, as well as device alarms
 
 ## Capabilities
 
-This module follows BUG’s standard capabilities model. For more information, see [BUG Capabilities Documentation]({DOCS_BASEURL}bug/pages/development/capabilities.html).
+This module follows BUG’s standard capabilities model. For more information, see [BUG Capabilities Documentation]({DOCS_BASEURL}pages/development/capabilities.html).
 
 | Type         | List     |
 | ------------ | -------- |
