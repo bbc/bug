@@ -2,6 +2,7 @@
 
 const mongoCollection = require("@core/mongo-collection");
 const logger = require("@core/logger")(module);
+const formatDuration = require("@utils/format-duration");
 
 module.exports = async (groupId) => {
     try {
@@ -16,7 +17,7 @@ module.exports = async (groupId) => {
         if (stats) {
             stats["_time"] = "";
             if (stats["seconds"]) {
-                stats["_time"] = new Date(stats["seconds"] * 1000).toISOString().substring(11, 19);
+                stats["_time"] = formatDuration(stats["seconds"]);
             }
         }
 
