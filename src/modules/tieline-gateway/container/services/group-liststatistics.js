@@ -3,6 +3,7 @@
 const mongoCollection = require("@core/mongo-collection");
 const mongoSingle = require("@core/mongo-single");
 const logger = require("@core/logger")(module);
+const formatDuration = require("@utils/format-duration");
 
 module.exports = async (data) => {
     try {
@@ -29,7 +30,7 @@ module.exports = async (data) => {
                 groupStats["rx-bitrate"] = fullStats["rx-bitrate"];
                 groupStats["tx-bitrate"] = fullStats["tx-bitrate"];
                 groupStats["seconds"] = fullStats["seconds"];
-                groupStats["_time"] = new Date(fullStats["seconds"] * 1000).toISOString().substring(11, 19);
+                groupStats["_time"] = formatDuration(fullStats["seconds"]);
             }
 
             statisticsArray.push(groupStats);
