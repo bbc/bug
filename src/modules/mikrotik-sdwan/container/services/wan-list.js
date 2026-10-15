@@ -56,12 +56,12 @@ module.exports = async () => {
                 return {
                     ...t,
                     pingOk: matchingPing?.latest?.["avg-rtt"] != null ? true : matchingPing ? false : null,
-                }
+                };
             })
             .sort((a, b) => {
-                const commentA = a.comment || '';
-                const commentB = b.comment || '';
-                return commentA.localeCompare(commentB);
+                const nameA = a.name || '';
+                const nameB = b.name || '';
+                return nameA.localeCompare(nameB);
             });
 
     } catch (err) {
