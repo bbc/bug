@@ -52,7 +52,7 @@ module.exports = async () => {
                 return {
                     id: route.id,
                     comment: route.dynamic ? bridge?.comment : route?.comment,
-                    name: route._bridgeName,
+                    name: route.dynamic ? route.comment || route._bridgeName : route._bridgeName,
                     interface: route.interface,
                     distance: route.distance,
                     disabled: route.disabled ?? false,

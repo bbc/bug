@@ -51,7 +51,6 @@ module.exports = async ({ routerOsApi, mongoSingle, wanAddressesCollection }) =>
 
                 const dbWanAddressResult = {
                     bridge: route._bridgeName,
-                    address,
                     "address": data[1]?.["data"],
                     timestamp: Date.now()
                 };

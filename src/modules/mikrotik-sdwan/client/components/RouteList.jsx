@@ -23,6 +23,10 @@ export default function RouteList({ panelId }) {
     const handleNameClicked = async (event, item) => {
         event.stopPropagation();
 
+        if (item.dynamic) {
+            return;
+        }
+
         let result = await renameDialog({
             title: "Rename route",
             defaultValue: item.comment,
@@ -142,11 +146,12 @@ export default function RouteList({ panelId }) {
                         title: "Name",
                         content: (item) => {
                             return (
-                                <>
-                                    <BugTableLinkButton onClick={(event) => handleNameClicked(event, item)}>
-                                        {item.comment ? item.comment : item.name}
-                                    </BugTableLinkButton>
-                                </>
+                                <BugTableLinkButton
+                                    disabled={item.dynamic}
+                                    onClick={(event) => handleNameClicked(event, item)}
+                                >
+                                    {item.comment ? item.comment : item.name}
+                                </BugTableLinkButton>
                             );
                         },
                     },
@@ -231,6 +236,7 @@ export default function RouteList({ panelId }) {
                     },
                     {
                         title: "Rename",
+                        disabled: (item) => item.dynamic,
                         icon: <EditIcon fontSize="small" />,
                         onClick: handleNameClicked,
                     },

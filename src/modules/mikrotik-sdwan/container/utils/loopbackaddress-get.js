@@ -7,10 +7,16 @@ module.exports = function getSrcAddress(route, dbAddresses, dbRules) {
     const ruleAddresses = dbRules.map((r) => r["src-address"]) || [];
 
     if (!route.static) {
-        // dynamic route: usually just one address on the bridge
-        const addressObj = dbAddresses.filter(
-            a => a.interface === route._bridgeName && !a.comment?.includes("loopback")
+        // dynamic route: prefer the loopback address when one is configured
+        const interfaceAddresses = dbAddresses.filter(
+            a => a.interface === route._bridgeName
         );
+        const loopbackAddresses = interfaceAddresses.filter(
+            a => a.comment?.includes("loopback")
+        );
+        const addressObj = loopbackAddresses.length > 0
+            ? loopbackAddresses
+            : interfaceAddresses;
 
         if (!addressObj || addressObj.length === 0) {
             logger.warning(`No matching address found for dynamic route ${route._bridgeName}`);

@@ -9,5 +9,11 @@
     },
     "todo-tree.filtering.includeGlobs": ["**/TODO.md"],
     "todo-tree.regex.regex": "^(\\s*[-*]\\s+.*)$",
-    "todo-tree.tree.showCountsInTree": true
+    "todo-tree.tree.showCountsInTree": true,
+    "chat.tools.terminal.autoApprove": {
+        "/^node --check src/modules/mikrotik-sdwan/container/utils/loopbackaddress-get\\.js$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
 }
