@@ -56,7 +56,7 @@ Also checks the device to see if the password has expired - this is a common cau
 
 ## Capabilities
 
-This module follows BUG’s standard capabilities model. For more information, see [BUG Capabilities Documentation]({DOCS_BASEURL}bug/pages/development/capabilities.html).
+This module follows BUG’s standard capabilities model. For more information, see [BUG Capabilities Documentation]({DOCS_BASEURL}pages/development/capabilities.html).
 
 | Type         | List        |
 | ------------ | ----------- |

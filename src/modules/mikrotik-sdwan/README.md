@@ -40,7 +40,7 @@ Lastly, the available (and active) default routes of the main routing table are 
 
 ## Capabilities
 
-This module follows BUG’s standard capabilities model. For more information, see [BUG Capabilities Documentation]({DOCS_BASEURL}bug/pages/development/capabilities.html).
+This module follows BUG’s standard capabilities model. For more information, see [BUG Capabilities Documentation]({DOCS_BASEURL}pages/development/capabilities.html).
 
 | Type         | List |
 | ------------ | ---- |

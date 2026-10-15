@@ -34,7 +34,7 @@ The mikrotik-interfaces module provides a simple list of available ethernet inte
 
 ## Capabilities
 
-This module follows BUG’s standard capabilities model. For more information, see [BUG Capabilities Documentation]({DOCS_BASEURL}bug/pages/development/capabilities.html).
+This module follows BUG’s standard capabilities model. For more information, see [BUG Capabilities Documentation]({DOCS_BASEURL}pages/development/capabilities.html).
 
 | Type         | List |
 | ------------ | ---- |
