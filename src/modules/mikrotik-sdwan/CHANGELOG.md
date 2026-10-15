@@ -1,5 +1,12 @@
 ## Changelog
 
+### version 1.0.28
+
+- 2026-10-15: sort by rtab-number ([9ebfbbe](https://github.com/bbc/bug/commit/9ebfbbe88a3911ac5541c92a3458614b606fc721))
+- 2026-10-15: fix dynamic routes for new ROS7 firmware ([22ef164](https://github.com/bbc/bug/commit/22ef164945bcf70a0d0e8ce40f415313919c60b6))
+- 2026-09-10: fix tests ([88d12bc](https://github.com/bbc/bug/commit/88d12bc8b8633d5d8cc61bb30642deb7135fcf7e))
+- 2026-09-10: replace mongo single check with collection check [copilot] ([f085d21](https://github.com/bbc/bug/commit/f085d218aef0aa2033a06f85067caf97a6ea49a5))
+
 ### version 1.0.27
 
 - 2026-07-22: add heartbeat status check and worker task ([ed7edf0](https://github.com/bbc/bug/commit/ed7edf059ca2bb072520f28220fb2fa895a2d910))
