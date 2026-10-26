@@ -2,3 +2,5 @@
 - Using comments for bridges maybe isn't the best idea - what about internet routes with client IPs?
 - Am I providing functionality to store static IPs and routes?
 - when bug adds an address list entry there imght already be one (Down 3 audio) - this fails if there is
+- should buttons be red if the route is selected and offline?
+- or a 'show/hide offline' setting?

@@ -34,6 +34,8 @@ All users are stored as JSON files in `./config/global/user.json`. You can edit 
 
 > Note: Password hashes are stored in the file, and pin numbers are stored in plain text. You should change the default user details before enabling security.
 
+User list and individual-user API responses omit password hashes. PINs remain available to the user-management interface for the lightweight PIN login feature.
+
 Example default user JSON:
 
 ```

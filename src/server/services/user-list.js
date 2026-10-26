@@ -27,7 +27,11 @@ module.exports = async (sortField = null, sortDirection = "asc", filters = {}) =
             }
         }
 
-        return users;
+        return users.map((user) => {
+            const result = { ...user };
+            delete result.password;
+            return result;
+        });
     } catch (error) {
         logger.error(`${error.stack}`);
         throw new Error(`Failed to retrieve users`);
