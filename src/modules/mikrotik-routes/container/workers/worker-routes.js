@@ -56,11 +56,8 @@ const main = async () => {
                 );
             }
 
-            // RouterOS 6 identifies non-main tables with routing-mark instead of routing-table.
             const filteredRoutes = routes.filter((route) => {
-                const isMainTable = route?.["routing-table"] === "main" ||
-                    (!route?.["routing-table"] && !route?.["routing-mark"]);
-                return (route?.["dst-address"] === "0.0.0.0/0" || route.static) && isMainTable;
+                return (route?.["dst-address"] === "0.0.0.0/0" || route.static);
             });
 
             // save to db
