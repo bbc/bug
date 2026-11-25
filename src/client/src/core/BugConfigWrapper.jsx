@@ -103,16 +103,20 @@ export default function BugConfigWrapper({ children, config, handleSubmit = () =
     };
 
     const onSubmit = async (form) => {
-        const response = await AxiosPut(`/api/panelconfig/${config?.id}`, form);
-        if (!response?.error) {
+        const response = await AxiosPut(`/api/panelconfig/${config?.id}`, form, { includeResponse: true });
+        if (!response?.data) {
+            sendAlert(`${config?.title} could not be updated.`, { variant: "warning" });
+            return;
+        }
+        if (response.delivery === "pending") {
+            sendAlert(`${config?.title} was saved, but delivery to the panel is pending.`, { variant: "warning" });
+        } else {
             sendAlert(`${config?.title} has been updated.`, {
                 broadcast: "true",
                 variant: "success",
             });
-            navigate(-1);
-        } else {
-            sendAlert(`${config?.title} could not be updated.`, { variant: "warning" });
         }
+        navigate(-1);
     };
 
     return (

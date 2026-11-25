@@ -1,6 +1,16 @@
 "use strict";
 
-module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, thisStatus, panelUpgradeStatus, builtModules) => {
+const configDelivery = require("@services/panelconfig-delivery");
+
+module.exports = (
+    panelConfig,
+    moduleConfig,
+    containerInfo,
+    panelBuildStatus,
+    thisStatus,
+    panelUpgradeStatus,
+    builtModules
+) => {
     // we don't need the defaultconfig bit in the panelModule - we'll just remove it - every byte counts!
     delete moduleConfig.defaultconfig;
 
@@ -15,6 +25,15 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
         if (eachStatusItem?.timestamp) {
             delete eachStatusItem.timestamp;
         }
+    }
+    const delivery = configDelivery.get(panelConfig, moduleConfig.needsContainer);
+    if (panelConfig.enabled && delivery === "pending") {
+        statusItems = statusItems.concat({
+            key: "config-delivery-pending",
+            message: ["Configuration is saved but not yet accepted by the panel container."],
+            type: "warning",
+            flags: [],
+        });
     }
 
     // check container states
@@ -32,7 +51,7 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
     if (isUpgrading) {
         status = "upgrading";
     } else if (!moduleConfig.needsContainer && panelConfig["enabled"]) {
-        status = "active"
+        status = "active";
     } else if (isRestarting) {
         status = "restarting";
     } else if (isStarting) {
@@ -72,7 +91,8 @@ module.exports = (panelConfig, moduleConfig, containerInfo, panelBuildStatus, th
         _dockerContainer: containerInfo,
         _buildStatus: panelBuildStatus,
         _upgradeStatus: panelUpgradeStatus,
-        _status: thisStatus ? thisStatus?.statusItems : [],
+        _status: statusItems,
+        _configDelivery: delivery,
         upgradeable: upgradeable,
         _active: moduleConfig.needsContainer
             ? panelConfig["enabled"] && (isRunning || isBuilding || isUpgrading)

@@ -38,8 +38,15 @@ Each panel's configuration is stored in a text file hosted on the server. These 
 
 Each panel stores its configuration by calling the BUG core API. Containers receive their configuration when started or updated.
 
+Saving and delivery are separate: BUG saves the configuration first and reports whether the container has accepted it.
+If delivery is pending, BUG retries the latest saved configuration while the panel is enabled. Disabled panels retain
+their saved configuration for the next start. BUG periodically rechecks delivery and container restarts, so the status
+can briefly lag. Acceptance means the container acknowledged the update, not that its workers or connected device are
+healthy.
+
 - Each module should provide a base config page accessible at `/config`.
-- The API route `/api/panel/config/${panelId}` accepts a PUT request with a config object.
+- The API route `/api/panelconfig/${panelId}` accepts a PUT request with a config object. Its successful response
+  includes `delivery`, which is `accepted`, `pending`, or `not-required`.
 - Valid fields are merged with existing configuration; invalid fields are ignored.
 - Field validation is the responsibility of the module developer.
 

@@ -1,6 +1,9 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { vi } from "vitest";
+import AxiosPut from "@utils/AxiosPut";
 import BugConfigWrapper from "./BugConfigWrapper";
+
+const { sendAlert, navigate } = vi.hoisted(() => ({ sendAlert: vi.fn(), navigate: vi.fn() }));
 
 vi.mock("@core/BugConfirmDialog", () => ({
     useBugConfirmDialog: () => ({ confirmDialog: vi.fn() }),
@@ -19,13 +22,15 @@ vi.mock("@monaco-editor/react", () => ({
 }));
 vi.mock("@utils/AxiosPut");
 vi.mock("@utils/Snackbar", () => ({
-    useAlert: () => vi.fn(),
+    useAlert: () => sendAlert,
 }));
 vi.mock("react-router-dom", () => ({
-    useNavigate: () => vi.fn(),
+    useNavigate: () => navigate,
 }));
 
 describe("BugConfigWrapper", () => {
+    beforeEach(() => vi.clearAllMocks());
+
     it("renders with children", () => {
         render(
             <BugConfigWrapper config={{ id: "test", name: "Test Config" }}>
@@ -50,5 +55,28 @@ describe("BugConfigWrapper", () => {
                 <div>Content</div>
             </BugConfigWrapper>
         );
+    });
+
+    it.each([
+        [{ status: "success", data: true, delivery: "pending" }, "saved, but delivery", "warning", true],
+        [{ status: "success", data: true, delivery: "accepted" }, "has been updated", "success", true],
+        [false, "could not be updated", "warning", false],
+    ])("reports the saved and delivery result", async (response, message, variant, navigates) => {
+        vi.mocked(AxiosPut).mockResolvedValue(response);
+        const handleSubmit = (submit) => (event) => {
+            event.preventDefault();
+            return submit({ address: "example" });
+        };
+        render(<BugConfigWrapper config={{ id: "panel", title: "Panel" }} handleSubmit={handleSubmit} />);
+
+        fireEvent.click(screen.getByRole("button", { name: "Save Changes" }));
+
+        await waitFor(() => {
+            expect(sendAlert).toHaveBeenCalledWith(
+                expect.stringContaining(message),
+                expect.objectContaining({ variant })
+            );
+        });
+        expect(navigate).toHaveBeenCalledTimes(navigates ? 1 : 0);
     });
 });

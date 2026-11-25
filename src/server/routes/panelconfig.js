@@ -40,7 +40,7 @@ const hashResponse = require("@core/hash-response");
  *         description: Properties to store in the panelconfig
  *     responses:
  *       200:
- *         description: Successfully set the config of the panel.
+ *         description: Configuration saved; delivery indicates accepted, pending, or not-required.
  *         schema:
  *           type: object
  *       500:
@@ -57,8 +57,9 @@ router.put(
             ...{ id: req.params.panelId },
         });
         hashResponse(res, req, {
-            status: result ? "success" : "failure",
-            data: result ? true : false,
+            status: "success",
+            data: true,
+            delivery: result.delivery,
         });
     })
 );
@@ -87,14 +88,18 @@ router.put(
  *         description: Error, could not push config to the module.
  *         schema:
  *           type: object
+ *       409:
+ *         description: The panel container is not running.
  */
 router.get(
     "/push/:panelId",
     restrict.to(["admin"]),
     asyncHandler(async (req, res) => {
+        const pushed = await panelConfigPush(req.params.panelId);
+        if (!pushed) res.status(409);
         hashResponse(res, req, {
-            status: "success",
-            data: await panelConfigPush(req.params.panelId),
+            status: pushed ? "success" : "failure",
+            data: pushed,
         });
     })
 );

@@ -14,7 +14,9 @@ module.exports = async (workers, config) => {
     try {
         logger.info(`received config update`);
         const filename = path.join(__dirname, "..", "config", "panel.json");
-        await writeJson(filename, config);
+        if (!(await writeJson(filename, config))) {
+            throw new Error(`Failed to save config file to ${filename}`);
+        }
         logger.info(`saved config file to ${filename}`);
 
         //Tell the worker manager that a new config is avalible

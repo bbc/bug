@@ -100,6 +100,17 @@ describe("WorkerManager", () => {
         expect(Worker).toHaveBeenCalledTimes(1);
     });
 
+    test("retries relevant worker restarts after a configuration update fails", async () => {
+        manager.workers[0].restartKeys = ["host"];
+        const restart = jest.spyOn(manager, "restartWorker").mockRejectedValueOnce(new Error("restart failed"));
+
+        await expect(manager.pushConfig({ host: "new" })).rejects.toThrow("restart failed");
+        expect(manager.config.host).toBe("old");
+        await manager.pushConfig({ host: "new" });
+
+        expect(restart).toHaveBeenCalledTimes(2);
+    });
+
     test("starts an unconfigured module's worker only after configuration", async () => {
         configGet.mockResolvedValue({ needsConfigured: true });
         const setup = jest.spyOn(WorkerManager.prototype, "setup").mockImplementation(() => {});

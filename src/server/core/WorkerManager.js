@@ -168,17 +168,22 @@ class WorkerManager {
             return;
         }
 
-        for (let i = 0; i < this.workers.length; i++) {
-            const worker = this.workers[i];
+        try {
+            for (let i = 0; i < this.workers.length; i++) {
+                const worker = this.workers[i];
 
-            // restart if worker never started OR its restartKeys indicate a relevant config change
-            const shouldRestart =
-                !worker.worker || this.needsUpdated(oldConfig, newConfig, worker.restartKeys || ["*"]);
+                // restart if worker never started OR its restartKeys indicate a relevant config change
+                const shouldRestart =
+                    !worker.worker || this.needsUpdated(oldConfig, newConfig, worker.restartKeys || ["*"]);
 
-            if (shouldRestart) {
-                logger.info(`WorkerManager->pushConfig: restarting worker ${worker.filename}`);
-                await this.restartWorker(i, true);
+                if (shouldRestart) {
+                    logger.info(`WorkerManager->pushConfig: restarting worker ${worker.filename}`);
+                    await this.restartWorker(i, true);
+                }
             }
+        } catch (error) {
+            this.config = oldConfig;
+            throw error;
         }
     }
 

@@ -9,6 +9,7 @@ const mongoDb = require("@core/mongo-db");
 const WorkerManager = require("@core/WorkerManager");
 const heapInfo = require("@core/heap-info");
 const cleanup = require("@utils/cleanup");
+const panelConfigReconcile = require("@services/panelconfig-reconcile");
 
 // print the heap size
 heapInfo(logger);
@@ -25,6 +26,7 @@ const dbName = process.env.BUG_CONTAINER || "bug";
 const serve = async () => {
     try {
         await mongoDb.connect(dbName);
+        panelConfigReconcile.start();
 
         server.on("error", onError);
         server.on("listening", onListening);

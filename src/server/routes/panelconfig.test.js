@@ -57,11 +57,33 @@ describe("Test the '/api/panelconfig/' endpoint", () => {
             .send({ description: "new-test-description" });
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
+        expect(response.body.delivery).toBe("not-required");
 
         const updated = await request(system).get(`/api/panelconfig/${panel.id}`);
         expect(updated.body.data).toEqual(
             expect.objectContaining({ ...panel, needsConfigured: false, description: "new-test-description" })
         );
+    });
+
+    test("reports a saved configuration as pending when delivery fails", async () => {
+        const module = await moduleGet("pinger");
+        await panelConfigModel.set({
+            ...module.defaultconfig,
+            ...panel,
+            module: "pinger",
+            enabled: true,
+            key: "test-key",
+        });
+        panelConfigPush.mockRejectedValueOnce(new Error("container unavailable"));
+
+        const response = await request(system).put(`/api/panelconfig/${panel.id}`).send({ description: "saved" });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body.status).toBe("success");
+        expect(response.body.data).toBe(true);
+        expect(response.body.delivery).toBe("pending");
+        const saved = await panelConfigModel.get(panel.id);
+        expect(saved.description).toBe("saved");
     });
 
     test("pushes a panel configuration", async () => {
@@ -70,5 +92,15 @@ describe("Test the '/api/panelconfig/' endpoint", () => {
         expect(response.body.status).toBe("success");
         expect(response.body.data).toBe(true);
         expect(panelConfigPush).toHaveBeenCalledWith(panel.id);
+    });
+
+    test("reports an unavailable container when explicitly pushing", async () => {
+        panelConfigPush.mockResolvedValueOnce(false);
+
+        const response = await request(system).get(`/api/panelconfig/push/${panel.id}`);
+
+        expect(response.statusCode).toBe(409);
+        expect(response.body.status).toBe("failure");
+        expect(response.body.data).toBe(false);
     });
 });

@@ -1,12 +1,12 @@
 import axios from "axios";
 
-export default async function AxiosPut(url, data) {
+export default async function AxiosPut(url, data, { includeResponse = false } = {}) {
     try {
         let response = await axios.put(url, data);
 
         switch (response?.data?.status) {
             case "success":
-                response = response?.data?.data;
+                response = includeResponse ? response.data : response?.data?.data;
                 break;
             case "failure":
                 console.error("failed to PUT " + url);
