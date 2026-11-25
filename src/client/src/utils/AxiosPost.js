@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export default async function AxiosPost(url, data) {
+export default async function AxiosPost(url, data, { throwOnError = false } = {}) {
     try {
         let response = await axios.post(url, data);
         switch (response.data.status) {
@@ -20,7 +20,7 @@ export default async function AxiosPost(url, data) {
         }
         return response;
     } catch (error) {
-        if (error?.response?.status === 404) {
+        if (throwOnError) {
             throw error;
         }
         console.log("ERROR", error);

@@ -52,3 +52,5 @@ The client treats each completed validation response as the latest state for the
 - A validation result with `state: true` is shown as a green success message in the form.
 - A validation result with `state: false` is shown as an error for that field.
 - If a field is still being checked, the UI may show a temporary `Checking...` message while the request is in flight.
+- A 404 from the validation endpoint means validation is not implemented. A missing panel or another request failure is shown as a validation error.
+- The container proxy returns 404 with `code: "PANEL_NOT_FOUND"` if the panel does not exist, 502 if its container cannot be reached, and 504 for a request timeout. Responses from the container retain their original status and body.

@@ -86,4 +86,51 @@ describe("Test the '/container/' endpoint", () => {
         expect(response.statusCode).toBe(502);
         expect(response.body).toEqual({ status: "error", message: "upstream unavailable" });
     });
+
+    test.each(["missing file", "empty result"])("returns 404 for a missing panel: %s", async (scenario) => {
+        if (scenario === "missing file") {
+            panelConfig.get.mockRejectedValue(Object.assign(new Error("file missing"), { code: "ENOENT" }));
+        } else {
+            panelConfig.get.mockResolvedValue(null);
+        }
+
+        const response = await request(system).get("/container/missing/status");
+
+        expect(response.statusCode).toBe(404);
+        expect(response.body).toEqual({ status: "error", code: "PANEL_NOT_FOUND", message: "Panel not found" });
+        expect(axios).not.toHaveBeenCalled();
+    });
+
+    test.each([
+        ["ECONNREFUSED", 502, "Panel container unavailable"],
+        ["ENOTFOUND", 502, "Panel container unavailable"],
+        ["ECONNABORTED", 504, "Panel container request timed out"],
+        ["ETIMEDOUT", 504, "Panel container request timed out"],
+    ])("returns an error for upstream %s", async (code, status, message) => {
+        axios.mockRejectedValue(Object.assign(new Error(code), { code, request: {} }));
+
+        const response = await request(system).get("/container/test-panel/status");
+
+        expect(response.statusCode).toBe(status);
+        expect(response.body).toEqual({ status: "error", message });
+    });
+
+    test("forwards unexpected panel lookup errors to the error handler", async () => {
+        panelConfig.get.mockRejectedValue(new Error("panel read failed"));
+
+        const response = await request(system).get("/container/test-panel/status");
+
+        expect(response.statusCode).toBe(500);
+        expect(response.body).toEqual({ status: "error", message: "panel read failed" });
+        expect(axios).not.toHaveBeenCalled();
+    });
+
+    test("forwards unexpected proxy errors to the error handler", async () => {
+        axios.mockRejectedValue(new Error("invalid request"));
+
+        const response = await request(system).get("/container/test-panel/status");
+
+        expect(response.statusCode).toBe(500);
+        expect(response.body).toEqual({ status: "error", message: "invalid request" });
+    });
 });

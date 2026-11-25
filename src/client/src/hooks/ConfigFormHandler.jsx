@@ -13,47 +13,52 @@ export function useConfigFormHandler({ panelId = null }) {
 
     const fetch = async (url, fieldData) => {
         try {
-            const result = await AxiosPost(url, fieldData);
-            if (result.validationResults) {
-                if (!isCurrentValidationRequest(fieldData)) {
-                    return;
+            const result = await AxiosPost(url, fieldData, { throwOnError: true });
+            if (!result || !Array.isArray(result.validationResults)) {
+                throw new Error("Invalid validation response");
+            }
+            if (!isCurrentValidationRequest(fieldData)) {
+                return;
+            }
+
+            setValidatedFields(() => {
+                const nextValidatedFields = {};
+
+                for (const eachResult of result.validationResults) {
+                    if (eachResult["state"]) {
+                        // validated
+                        clearErrors(eachResult["field"]);
+                        nextValidatedFields[eachResult["field"]] = eachResult["message"];
+                    } else {
+                        // failed
+                        delete nextValidatedFields[eachResult["field"]];
+                        setError(eachResult["field"], {
+                            type: "server",
+                            message: eachResult["message"],
+                        });
+                    }
                 }
 
-                setValidatedFields((currentValidatedFields) => {
-                    let nextValidatedFields = {};
-
-                    for (let eachResult of result.validationResults) {
-                        if (eachResult["state"]) {
-                            // validated
-                            clearErrors(eachResult["field"]);
-                            nextValidatedFields[eachResult["field"]] = eachResult["message"];
-                        } else {
-                            // failed
-                            delete nextValidatedFields[eachResult["field"]];
-                            setError(eachResult["field"], {
-                                type: "server",
-                                message: eachResult["message"],
-                            });
-                        }
-                    }
-
-                    return nextValidatedFields;
-                });
-            }
+                return nextValidatedFields;
+            });
         } catch (error) {
-            console.log(error?.response?.status);
-            if (error?.response?.status === 404) {
-                setValidatedFields((currentValidatedFields) => {
-                    const nextValidatedFields = { ...currentValidatedFields };
-                    for (const key of Object.keys(fieldData)) {
-                        if (nextValidatedFields[key] === "Checking...") {
-                            delete nextValidatedFields[key];
-                        }
+            if (!isCurrentValidationRequest(fieldData)) return;
+
+            setValidatedFields((currentValidatedFields) => {
+                const nextValidatedFields = { ...currentValidatedFields };
+                for (const key of Object.keys(fieldData)) {
+                    if (nextValidatedFields[key] === "Checking...") {
+                        delete nextValidatedFields[key];
                     }
-                    return nextValidatedFields;
-                });
+                }
+                return nextValidatedFields;
+            });
+            if (error?.response?.status !== 404 || error?.response?.data?.code === "PANEL_NOT_FOUND") {
+                console.error("Validation request failed", error);
+                for (const field of Object.keys(fieldData)) {
+                    setError(field, { type: "server", message: "Unable to validate this field." });
+                }
             }
-            return;
         }
     };
 
