@@ -32,7 +32,7 @@ module.exports = async (collection, indexName, options = {}) => {
     }
 
     // we only get here if it already exists (and has been through the try/catch) - update index ttl instead
-    MongoDb.db.command({
+    await MongoDb.db.command({
         collMod: collection.collectionName,
         index: options,
     });

@@ -11,6 +11,10 @@ module.exports = ({ tasks, context, baseDir }) => {
     scheduler = new ToadScheduler();
 
     for (const task of tasks) {
+        if (task.retry !== undefined && typeof task.retry !== "boolean") {
+            throw new Error(`invalid retry option for task ${task.name}`);
+        }
+
         const taskPath = path.join(baseDir, "tasks", task.name);
 
         let handler;
@@ -27,7 +31,12 @@ module.exports = ({ tasks, context, baseDir }) => {
                 new SimpleIntervalJob(
                     { seconds: task.seconds, runImmediately: true },
                     new AsyncTask(task.name, async () => {
-                        await handler(context);
+                        let result = await handler(context);
+                        // A task can request a retry when its prerequisites are not ready.
+                        while (result === false && task.retry === true) {
+                            await new Promise((resolve) => setTimeout(resolve, 5000));
+                            result = await handler(context);
+                        }
                     }),
                     {
                         preventOverrun: true,

@@ -37,7 +37,11 @@ module.exports = class SnmpAwait {
         return errorText.includes("Request timed out") || errorText.includes("Socket forcibly closed");
     }
 
-    async recreateSessionSerial() {
+    async recreateSessionSerial(failedSession) {
+        if (this.session !== failedSession) {
+            return;
+        }
+
         if (this.reconnectPromise) {
             await this.reconnectPromise;
             return;
@@ -45,7 +49,9 @@ module.exports = class SnmpAwait {
 
         this.reconnectPromise = Promise.resolve()
             .then(() => {
-                this.createSession();
+                if (this.session === failedSession) {
+                    this.createSession();
+                }
             })
             .finally(() => {
                 this.reconnectPromise = null;
@@ -55,16 +61,22 @@ module.exports = class SnmpAwait {
     }
 
     async withReconnectRetry(executor) {
+        const session = this.session;
         try {
-            return await executor();
+            return await executor(session);
         } catch (error) {
             if (!this.shouldReconnect(error)) {
                 throw error;
             }
 
-            logger.warning("SNMP request failed, recreating session and retrying once");
-            await this.recreateSessionSerial();
-            return await executor();
+            const errorText = (error?.message || error || "").toString();
+            if (errorText.includes("Socket forcibly closed")) {
+                logger.warning("SNMP socket closed, recreating session and retrying once");
+                await this.recreateSessionSerial(session);
+            } else {
+                logger.warning("SNMP request timed out, retrying once");
+            }
+            return await executor(this.session);
         }
     }
 
@@ -117,8 +129,8 @@ module.exports = class SnmpAwait {
     get({ oid, raw = false, ignoreMissing = false }) {
         const self = this;
         return self.withReconnectRetry(
-            () => new Promise((resolve, reject) => {
-                self.session.get([self.trimOid(oid)], (error, varbinds) => {
+            (session) => new Promise((resolve, reject) => {
+                session.get([self.trimOid(oid)], (error, varbinds) => {
                     if (error) return reject(error);
 
                     const vb = varbinds[0];
@@ -135,8 +147,8 @@ module.exports = class SnmpAwait {
     getNext({ oid, raw = false, ignoreMissing = false }) {
         const self = this;
         return self.withReconnectRetry(
-            () => new Promise((resolve, reject) => {
-                self.session.getNext([self.trimOid(oid)], (error, varbinds) => {
+            (session) => new Promise((resolve, reject) => {
+                session.getNext([self.trimOid(oid)], (error, varbinds) => {
                     if (error) return reject(error);
 
                     const vb = varbinds[0];
@@ -153,7 +165,7 @@ module.exports = class SnmpAwait {
     walk({ oid, maxRepetitions = 10, raw = false, ignoreMissing = false }) {
         const self = this;
         return self.withReconnectRetry(
-            () => new Promise((resolve, reject) => {
+            (session) => new Promise((resolve, reject) => {
                 const result = {};
 
                 const feedVarbinds = (varbinds) => {
@@ -171,7 +183,7 @@ module.exports = class SnmpAwait {
                     }
                 };
 
-                self.session.walk(self.trimOid(oid), maxRepetitions, feedVarbinds, (err) => {
+                session.walk(self.trimOid(oid), maxRepetitions, feedVarbinds, (err) => {
                     if (err) {
                         return reject(new Error(`walk session error: ${err.message || err}`));
                     }
@@ -184,7 +196,7 @@ module.exports = class SnmpAwait {
     subtree({ oid, maxRepetitions = 5, raw = false, ignoreMissing = false }) {
         const self = this;
         return self.withReconnectRetry(
-            () => new Promise((resolve, reject) => {
+            (session) => new Promise((resolve, reject) => {
                 const result = {};
 
                 const feedVarbinds = (varbinds) => {
@@ -199,7 +211,7 @@ module.exports = class SnmpAwait {
                     }
                 };
 
-                self.session.subtree(self.trimOid(oid), maxRepetitions, feedVarbinds, (err) => {
+                session.subtree(self.trimOid(oid), maxRepetitions, feedVarbinds, (err) => {
                     if (err) {
                         return reject(new Error(`subtree session error: ${err.message || err}`));
                     }
@@ -212,9 +224,9 @@ module.exports = class SnmpAwait {
     checkExists({ oids }) {
         const self = this;
         return self.withReconnectRetry(
-            () => new Promise((resolve, reject) => {
+            (session) => new Promise((resolve, reject) => {
                 const results = [];
-                self.session.get(self.trimOids(oids), (err, varbinds) => {
+                session.get(self.trimOids(oids), (err, varbinds) => {
                     if (err) return reject(err);
 
                     for (const vb of varbinds) {
@@ -238,9 +250,9 @@ module.exports = class SnmpAwait {
 
         const normalizedChunkSize = Number.isInteger(chunkSize) && chunkSize > 0 ? chunkSize : 0;
 
-        const fetchChunk = (chunkOids) => new Promise((resolve, reject) => {
+        const fetchChunk = (session, chunkOids) => new Promise((resolve, reject) => {
             const chunkResults = {};
-            self.session.get(self.trimOids(chunkOids), (err, varbinds) => {
+            session.get(self.trimOids(chunkOids), (err, varbinds) => {
                 if (err) return reject(err);
 
                 for (const vb of varbinds) {
@@ -254,14 +266,14 @@ module.exports = class SnmpAwait {
         });
 
         if (normalizedChunkSize === 0) {
-            return self.withReconnectRetry(() => fetchChunk(oids));
+            return self.withReconnectRetry((session) => fetchChunk(session, oids));
         }
 
-        return self.withReconnectRetry(async () => {
+        return self.withReconnectRetry(async (session) => {
             const results = {};
             for (let i = 0; i < oids.length; i += normalizedChunkSize) {
                 const chunkOids = oids.slice(i, i + normalizedChunkSize);
-                const chunkResults = await fetchChunk(chunkOids);
+                const chunkResults = await fetchChunk(session, chunkOids);
                 Object.assign(results, chunkResults);
             }
             return results;
