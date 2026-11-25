@@ -43,6 +43,8 @@ const passportStrategies = require("@utils/passportStrategies");
  *         description: Successfully logged in user.
  *         schema:
  *           type: object
+ *       500:
+ *         description: Authentication or session processing failed.
  */
 
 const loginRateLimiter = rateLimit({
@@ -54,42 +56,50 @@ const loginRateLimiter = rateLimit({
     },
 });
 
-router.post("/", loginRateLimiter, async (req, res, next) => {
-    const strategies = await strategyList();
-    const configuredStrategies = [];
+router.post(
+    "/",
+    loginRateLimiter,
+    asyncHandler(async (req, res, next) => {
+        const strategies = await strategyList();
+        const configuredStrategies = [];
 
-    for (let strategy of strategies) {
-        if (strategy?.enabled) {
-            const configuredStrategy = await passportStrategies[strategy.type](strategy);
-            configuredStrategies.push(configuredStrategy);
-        }
-    }
-
-    passport.authenticate(configuredStrategies, async (err, id, info) => {
-        if (err) {
-            return next(err);
-        }
-        if (!id) {
-            return hashResponse(res, req, {
-                status: "failure",
-                message: "Login failed.",
-                data: id,
-            });
-        }
-
-        const user = await getUser(id);
-
-        req.logIn(id, function (err) {
-            if (err) {
-                return next(err);
+        for (let strategy of strategies) {
+            if (strategy?.enabled) {
+                const configuredStrategy = await passportStrategies[strategy.type](strategy);
+                configuredStrategies.push(configuredStrategy);
             }
-            return hashResponse(res, req, {
-                status: user ? "success" : "failure",
-                message: user ? `Sucessfully logged in ${user.username}` : "Login failed",
-                data: user,
-            });
-        });
-    })(req, res, next);
-});
+        }
+
+        passport.authenticate(configuredStrategies, async (err, id) => {
+            try {
+                if (err) {
+                    return next(err);
+                }
+                if (!id) {
+                    return hashResponse(res, req, {
+                        status: "failure",
+                        message: "Login failed.",
+                        data: id,
+                    });
+                }
+
+                const user = await getUser(id);
+
+                req.logIn(id, function (err) {
+                    if (err) {
+                        return next(err);
+                    }
+                    return hashResponse(res, req, {
+                        status: user ? "success" : "failure",
+                        message: user ? `Sucessfully logged in ${user.username}` : "Login failed",
+                        data: user,
+                    });
+                });
+            } catch (error) {
+                return next(error);
+            }
+        })(req, res, next);
+    })
+);
 
 module.exports = router;

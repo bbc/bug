@@ -89,4 +89,21 @@ describe("Test the '/api/system/' endpoint", () => {
         expect(containerHealth.body.data).toEqual([{ name: "panel-1" }]);
         expect(systemContainerHealth).toHaveBeenCalledWith("name", "asc", { type: "panel" });
     });
+
+    test.each([
+        ["post", "cleanup", dockerCleanup],
+        ["get", "containers", systemContainers],
+        ["get", "hosthealth", systemHostHealth],
+        ["post", "containerhealth", systemContainerHealth],
+        ["get", "info", systemInfo],
+        ["get", "settings", systemSettingsGet],
+        ["put", "settings", systemSettingsUpdate],
+    ])("passes %s /%s service failures to the error handler", async (method, route, service) => {
+        service.mockRejectedValueOnce(new Error("service unavailable"));
+
+        const response = await request(system)[method](`/api/system/${route}`).send({});
+
+        expect(response.statusCode).toBe(500);
+        expect(response.body).toEqual({ status: "error", message: "service unavailable" });
+    });
 });

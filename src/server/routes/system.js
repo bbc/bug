@@ -42,14 +42,20 @@ router.get("/hello", function (req, res, next) {
  *      responses:
  *        '200':
  *          description: Success
+ *        '500':
+ *          description: Cleanup failed.
  */
-router.post("/cleanup", restrict.to(["admin"]), async function (req, res, next) {
-    const data = await dockerCleanup();
-    hashResponse(res, req, {
-        status: data ? "success" : "failure",
-        data: data,
-    });
-});
+router.post(
+    "/cleanup",
+    restrict.to(["admin"]),
+    asyncHandler(async (req, res) => {
+        const data = await dockerCleanup();
+        hashResponse(res, req, {
+            status: data ? "success" : "failure",
+            data: data,
+        });
+    })
+);
 
 /**
  * @swagger
@@ -62,11 +68,17 @@ router.post("/cleanup", restrict.to(["admin"]), async function (req, res, next) 
  *      responses:
  *        '200':
  *          description: Success
+ *        '500':
+ *          description: Container lookup failed.
  */
-router.get("/containers", restrict.to(["admin", "user"]), async function (req, res, next) {
-    const containers = await systemContainers();
-    hashResponse(res, req, containers);
-});
+router.get(
+    "/containers",
+    restrict.to(["admin", "user"]),
+    asyncHandler(async (req, res) => {
+        const containers = await systemContainers();
+        hashResponse(res, req, containers);
+    })
+);
 
 /**
  * @swagger
@@ -79,10 +91,16 @@ router.get("/containers", restrict.to(["admin", "user"]), async function (req, r
  *     responses:
  *       '200':
  *         description: Success
+ *       '500':
+ *         description: Host health lookup failed.
  */
-router.get("/hosthealth", restrict.to(["admin", "user"]), async function (req, res, next) {
-    hashResponse(res, req, await systemHostHealth());
-});
+router.get(
+    "/hosthealth",
+    restrict.to(["admin", "user"]),
+    asyncHandler(async (req, res) => {
+        hashResponse(res, req, await systemHostHealth());
+    })
+);
 
 /**
  * @swagger
@@ -95,10 +113,20 @@ router.get("/hosthealth", restrict.to(["admin", "user"]), async function (req, r
  *     responses:
  *       '200':
  *         description: Success
+ *       '500':
+ *         description: Container health lookup failed.
  */
-router.all("/containerhealth", restrict.to(["admin", "user"]), async function (req, res, next) {
-    hashResponse(res, req, await systemContainerHealth(req.body.sortField, req.body.sortDirection, req.body.filters));
-});
+router.all(
+    "/containerhealth",
+    restrict.to(["admin", "user"]),
+    asyncHandler(async (req, res) => {
+        hashResponse(
+            res,
+            req,
+            await systemContainerHealth(req.body.sortField, req.body.sortDirection, req.body.filters)
+        );
+    })
+);
 
 /**
  * @swagger
@@ -111,14 +139,19 @@ router.all("/containerhealth", restrict.to(["admin", "user"]), async function (r
  *     responses:
  *       '200':
  *         description: Success
+ *       '500':
+ *         description: System information lookup failed.
  */
-router.get("/info", async function (req, res, next) {
-    const result = await systemInfo();
-    hashResponse(res, req, {
-        status: result ? "success" : "failure",
-        data: result?.data,
-    });
-});
+router.get(
+    "/info",
+    asyncHandler(async (req, res) => {
+        const result = await systemInfo();
+        hashResponse(res, req, {
+            status: result ? "success" : "failure",
+            data: result?.data,
+        });
+    })
+);
 
 /**
  * @swagger
@@ -131,14 +164,19 @@ router.get("/info", async function (req, res, next) {
  *     responses:
  *       '200':
  *         description: Success
+ *       '500':
+ *         description: Settings lookup failed.
  */
-router.get("/settings", async function (req, res, next) {
-    const result = await systemSettingsGet();
-    hashResponse(res, req, {
-        status: result ? "success" : "failure",
-        data: result?.data,
-    });
-});
+router.get(
+    "/settings",
+    asyncHandler(async (req, res) => {
+        const result = await systemSettingsGet();
+        hashResponse(res, req, {
+            status: result ? "success" : "failure",
+            data: result?.data,
+        });
+    })
+);
 
 /**
  * @swagger
@@ -164,14 +202,20 @@ router.get("/settings", async function (req, res, next) {
  *         description: Successfully set the settings for BUG.
  *         schema:
  *           type: object
+ *       500:
+ *         description: Settings update failed.
  */
-router.put("/settings", restrict.to(["admin"]), async function (req, res, next) {
-    const result = await systemSettingsUpdate(req.body);
-    hashResponse(res, req, {
-        status: result ? "success" : "failure",
-        data: result?.data,
-    });
-});
+router.put(
+    "/settings",
+    restrict.to(["admin"]),
+    asyncHandler(async (req, res) => {
+        const result = await systemSettingsUpdate(req.body);
+        hashResponse(res, req, {
+            status: result ? "success" : "failure",
+            data: result?.data,
+        });
+    })
+);
 
 /**
  * @swagger
