@@ -7,7 +7,7 @@ const mongoDb = require("@core/mongo-db");
 const logger = require("@core/logger")(module);
 const ciscoSGSSH = require("@utils/ciscosg-ssh");
 const mongoSingle = require("@core/mongo-single");
-const pollInterval = 60 * 1000; // 1 minute
+const pollInterval = 5 * 60 * 1000; // 5 minutes
 
 // Tell the manager the things you care about
 parentPort.postMessage({

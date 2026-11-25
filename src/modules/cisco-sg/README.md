@@ -29,6 +29,21 @@ Status checks include:
 - pending configuration detection
 - password-expired detection
 
+SNMP polling operations run one at a time. Each request has a 5-second timeout,
+and each polling operation has a 15-second deadline. Requests are not retried,
+except for one retry per timed-out GETNEXT request.
+Slow or failed reads can leave some values stale while other values continue to update.
+Heartbeat requests take priority in the polling queue.
+Interface discovery, details, and PoE polling use GETNEXT for their interface tables and stop at index 1000,
+matching the module's existing interface filter.
+PoE polling detects the legacy and newer Cisco PoE MIB layouts.
+VLAN discovery also uses GETNEXT and stops above VLAN ID 4100.
+System polling uses one GETNEXT probe to detect the VLAN control version.
+Interface aliases, admin states, PoE admin states, and VLAN memberships are
+reconciled every five minutes; changes made through BUG update the database immediately.
+Tasks that require discovered interfaces or VLANs retry every five seconds until
+those prerequisites are available.
+
 ![Screenshot](./assets/screenshot.png)
 
 ## Configuration

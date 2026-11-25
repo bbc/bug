@@ -23,21 +23,19 @@ describe("status-get exception handling", () => {
 
     test("rejects when a dependency throws", async () => {
         mockStatusCheckHeartbeat.mockResolvedValue([]);
-        mockStatusCheckCollection
-            .mockResolvedValueOnce([])
-            .mockRejectedValueOnce(new Error("collection exploded"));
+        mockStatusCheckCollection.mockRejectedValueOnce(new Error("collection exploded"));
 
         await expect(statusGet()).rejects.toThrow("collection exploded");
     });
 
     test("returns concatenated data when all dependencies succeed", async () => {
         mockStatusCheckHeartbeat.mockResolvedValue(["h"]);
-        mockStatusCheckCollection.mockResolvedValueOnce(["a"]).mockResolvedValueOnce(["b"]).mockResolvedValueOnce(["c"]);
+        mockStatusCheckCollection.mockResolvedValueOnce(["a"]);
         mockStatusCheckPending.mockResolvedValue(["d"]);
         mockStatusCheckPasswordExpired.mockResolvedValue(["e"]);
         mockStatusGetSystem.mockResolvedValue(["f"]);
 
-        await expect(statusGet()).resolves.toEqual(["h", "a", "b", "c", "d", "e", "f"]);
-        expect(mockStatusCheckHeartbeat).toHaveBeenCalledWith({ timeout: 10 });
+        await expect(statusGet()).resolves.toEqual(["h", "a", "d", "e", "f"]);
+        expect(mockStatusCheckHeartbeat).toHaveBeenCalledWith({ timeout: 30 });
     });
 });

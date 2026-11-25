@@ -8,7 +8,7 @@ const mongoCreateIndex = require("@core/mongo-createindex");
 const mongoSingle = require("@core/mongo-single");
 const logger = require("@core/logger")(module);
 const workerTaskManager = require("@core/worker-taskmanager");
-const SnmpAwait = require("@core/snmp-await");
+const SnmpAwait = require("@utils/ciscosg-snmp");
 
 parentPort.postMessage({
     restartDelay: 10000,
@@ -25,7 +25,7 @@ const main = async () => {
         const historyCollection = await mongoCollection("history");
 
         // and now create the index with ttl
-        await mongoCreateIndex(interfacesCollection, "timestamp", { expireAfterSeconds: 900 });
+        await mongoCreateIndex(interfacesCollection, "timestamp", { expireAfterSeconds: 2700 });
         await mongoCreateIndex(historyCollection, "timestamp", { expireAfterSeconds: 60 * 10 });
 
         // remove previous values
@@ -39,20 +39,21 @@ const main = async () => {
         const snmpAwait = new SnmpAwait({
             host: workerData.address,
             community: workerData.snmpCommunity,
-            timeout: 30000
         });
 
         workerTaskManager({
             tasks: [
                 { name: "heartbeat", seconds: 5 },
                 { name: "interfaces", seconds: 900 },
-                { name: "vlans", seconds: 60 },
+                { name: "vlans", seconds: 900, retry: true },
                 { name: "system", seconds: 30 },
-                { name: "pending", seconds: 60, delay: 10 },
-                { name: "interfacestate", seconds: 5, delay: 8 },
-                { name: "interfacevlans", seconds: 30, delay: 5 },
-                { name: "interfacedetails", seconds: 20, delay: 4 },
-                { name: "interfacestats", seconds: 10, delay: 5 },
+                { name: "pending", seconds: 120, delay: 10 },
+                { name: "interfacestate", seconds: 5, delay: 8, retry: true },
+                { name: "interfaceconfig", seconds: 300, delay: 10, retry: true },
+                { name: "interfacevlans", seconds: 300, delay: 5, retry: true },
+                { name: "interfacedetails", seconds: 20, delay: 4, retry: true },
+                { name: "interfacepoe", seconds: 20, delay: 4, retry: true },
+                { name: "interfacestats", seconds: 10, delay: 5, retry: true },
                 { name: "neighbour-fdb", seconds: 20, delay: 22 },
                 { name: "neighbour-lldp", seconds: 20, delay: 26 },
             ],

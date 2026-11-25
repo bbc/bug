@@ -11,7 +11,13 @@ module.exports = async ({ snmpAwait, interfacesCollection, mongoSingle }) => {
 
         if (!vlans?.length) {
             logger.debug("no vlans in db - skipping update of interface vlans");
-            return;
+            return false;
+        }
+
+        const interfaces = await interfacesCollection.find().toArray();
+        if (!interfaces?.length) {
+            logger.debug("no interfaces in db - skipping update of interface vlans");
+            return false;
         }
 
         const interfaceVlans = {};
@@ -54,7 +60,6 @@ module.exports = async ({ snmpAwait, interfacesCollection, mongoSingle }) => {
             }
         }
 
-        const interfaces = await interfacesCollection.find().toArray();
         const bulkOperations = [];
 
         for (const eachInterface of interfaces) {

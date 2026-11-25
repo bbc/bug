@@ -332,6 +332,7 @@ export default function InterfaceList({ panelId, stackId = null }) {
                             <BugApiVlanAutocomplete
                                 disabled={item._protected}
                                 options={vlans?.data}
+                                timeout={10000}
                                 taggedValue={item?.["tagged-vlans"]}
                                 untaggedValue={item?.["untagged-vlan"]}
                                 onChange={(event, value) => handleVlanChanged(event, value, item)}

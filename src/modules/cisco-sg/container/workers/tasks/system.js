@@ -15,8 +15,9 @@ module.exports = async ({ snmpAwait, mongoSingle }) => {
         });
 
         // If this subtree has values, the switch supports newer control behavior.
-        const newStyleResults = await snmpAwait.subtree({
+        const newStyleResults = await snmpAwait.subtreeNext({
             oid: "1.3.6.1.4.1.9.6.1.101.48.61.1.1",
+            firstOnly: true,
         });
 
         const controlVersion = Object.keys(newStyleResults).length === 0 ? 1 : 2;

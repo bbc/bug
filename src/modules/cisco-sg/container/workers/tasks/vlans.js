@@ -4,8 +4,9 @@ const logger = require("@core/logger")(module);
 
 module.exports = async ({ mongoSingle, snmpAwait }) => {
     try {
-        const vlanResults = await snmpAwait.subtree({
+        const vlanResults = await snmpAwait.subtreeNext({
             oid: ".1.3.6.1.2.1.17.7.1.4.3.1.1",
+            maxIndexExclusive: 4101,
         });
 
         if (vlanResults) {
@@ -29,7 +30,7 @@ module.exports = async ({ mongoSingle, snmpAwait }) => {
             }
 
             logger.debug(`updating db with ${vlans.length} vlan(s)`);
-            await mongoSingle.set("vlans", vlans, 60);
+            await mongoSingle.set("vlans", vlans, 1800);
         }
     } catch (err) {
         logger.warning(`vlans task failed: ${err.stack || err.message || err}`);

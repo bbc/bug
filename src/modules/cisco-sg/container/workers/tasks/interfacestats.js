@@ -14,7 +14,7 @@ module.exports = async ({ snmpAwait, interfacesCollection, historyCollection }) 
 
         if (!interfaces?.length) {
             logger.debug("no interfaces found in db - skipping update of interface stats");
-            return;
+            return false;
         }
 
         const interfaceIds = interfaces.map((iface) => iface.interfaceId);

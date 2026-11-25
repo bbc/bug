@@ -9,7 +9,7 @@ module.exports = async ({ snmpAwait, mongoSingle }) => {
         });
 
         const isPending = result === 2;
-        await mongoSingle.set("pending", isPending, 60);
+        await mongoSingle.set("pending", isPending, 360);
         logger.debug(`saved pending flag to db: result is ${isPending ? "ON" : "OFF"}`);
     } catch (err) {
         logger.warning(`pending task failed: ${err.stack || err.message || err}`);

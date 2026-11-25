@@ -7,6 +7,7 @@ module.exports = async ({ snmpAwait }) => {
     try {
         await snmpAwait.get({
             oid: ".1.3.6.1.2.1.1.3.0",
+            priority: true,
         });
 
         await heartbeat.set();

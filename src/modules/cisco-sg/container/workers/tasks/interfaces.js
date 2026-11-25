@@ -6,17 +6,11 @@ const logger = require("@core/logger")(module);
 const IF_STATUS_OID = "1.3.6.1.2.1.2.2.1.8";
 const IF_SHORT_ID_OID = "1.3.6.1.2.1.31.1.1.1.1";
 const IF_DESCRIPTION_OID = "1.3.6.1.2.1.2.2.1.2";
-const INTERFACE_SUBTREE_MAX_REPETITIONS = 20;
-const SNMP_CHUNK_SIZE = 25;
-
 module.exports = async ({ snmpAwait, interfacesCollection }) => {
     try {
-        const pollStartedAt = new Date();
-
-        const ifIDs = await snmpAwait.subtree({
-            maxRepetitions: INTERFACE_SUBTREE_MAX_REPETITIONS,
-            oid: IF_STATUS_OID,
-        });
+        const ifIDs = await snmpAwait.subtreeNext({ oid: IF_STATUS_OID, maxIndexExclusive: 1000 });
+        const ifShortIDs = await snmpAwait.subtreeNext({ oid: IF_SHORT_ID_OID, maxIndexExclusive: 1000 });
+        const ifDescriptions = await snmpAwait.subtreeNext({ oid: IF_DESCRIPTION_OID, maxIndexExclusive: 1000 });
 
         const candidateInterfaceIds = Object.entries(ifIDs)
             .map(([eachOid, eachResult]) => ({
@@ -25,27 +19,6 @@ module.exports = async ({ snmpAwait, interfacesCollection }) => {
             }))
             .filter(({ interfaceId, state }) => state < 3 && interfaceId < 1000)
             .map(({ interfaceId }) => interfaceId);
-
-        const shortIdOids = candidateInterfaceIds.map((interfaceId) => `${IF_SHORT_ID_OID}.${interfaceId}`);
-        const descriptionOids = candidateInterfaceIds.map((interfaceId) => `${IF_DESCRIPTION_OID}.${interfaceId}`);
-
-        // Fetch additional details only for interfaces we actually keep.
-        const [ifShortIDs, ifDescriptions] = await Promise.all([
-            shortIdOids.length
-                ? snmpAwait.getMultiple({
-                    oids: shortIdOids,
-                    ignoreMissing: true,
-                    chunkSize: SNMP_CHUNK_SIZE,
-                })
-                : {},
-            descriptionOids.length
-                ? snmpAwait.getMultiple({
-                    oids: descriptionOids,
-                    ignoreMissing: true,
-                    chunkSize: SNMP_CHUNK_SIZE,
-                })
-                : {},
-        ]);
 
         const bulkOperations = [];
 
@@ -68,13 +41,7 @@ module.exports = async ({ snmpAwait, interfacesCollection }) => {
 
                 bulkOperations.push({
                     updateOne: {
-                        filter: {
-                            interfaceId: dbDocument.interfaceId,
-                            $or: [
-                                { lastUpdated: { $exists: false } },
-                                { lastUpdated: { $lte: pollStartedAt } },
-                            ],
-                        },
+                        filter: { interfaceId: dbDocument.interfaceId },
                         update: { $set: dbDocument },
                         upsert: true,
                     },
