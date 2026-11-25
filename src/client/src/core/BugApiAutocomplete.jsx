@@ -98,7 +98,7 @@ export default React.memo(
                     event.preventDefault();
                     onClick(event);
                 }}
-                value={processValue(value)}
+                value={processValue(isActive ? localValue : value)}
                 PaperComponent={({ children, ...other }) => (
                     <Paper square elevation={8}>
                         {children}
