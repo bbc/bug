@@ -20,10 +20,6 @@ const systemContainerHealth = require("@services/system-containerhealth");
 const systemContainers = require("@services/system-containers");
 const system = require("@bin/api");
 
-afterAll(async () => {
-    await new Promise((resolve) => setTimeout(() => resolve(), 500));
-});
-
 describe("Test the '/api/system/' endpoint", () => {
     beforeEach(() => {
         jest.resetAllMocks();

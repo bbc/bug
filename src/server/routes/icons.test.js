@@ -1,10 +1,6 @@
 const request = require("supertest");
 const system = require("@bin/api");
 
-afterAll(async () => {
-    await new Promise((resolve) => setTimeout(() => resolve(), 500));
-});
-
 const testIcons = ["mdi-abacus", "AccessAlarm"];
 
 describe("Test the '/api/icons/' endpoint", () => {

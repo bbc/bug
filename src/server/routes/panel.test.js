@@ -1,5 +1,7 @@
 const request = require("supertest");
-const panelDelete = require("@services/panel-delete");
+const { randomUUID } = require("crypto");
+const { promises: fs } = require("fs");
+const path = require("path");
 
 jest.mock("@services/docker-listimages", () => jest.fn(async () => []));
 jest.mock("@models/docker-container", () => ({
@@ -8,137 +10,122 @@ jest.mock("@models/docker-container", () => ({
     set: jest.fn(async () => true),
     setMultiple: jest.fn(async () => true),
 }));
+jest.mock("@services/panel-start", () => jest.fn(jest.requireActual("@services/panel-start")));
 
+const panelStart = require("@services/panel-start");
+const panelConfigModel = require("@models/panel-config");
+const moduleGet = require("@services/module-get");
 const system = require("@bin/api");
-const testPanelId = `test-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
-const testPanel = {
-    module: "clock",
-    id: testPanelId,
-    title: "test-title",
-    group: "test-group",
-    description: "test-description",
-};
-
-afterAll(async () => {
-    try {
-        await panelDelete(testPanel.id);
-    } catch (error) { }
-    await new Promise((resolve) => setTimeout(() => resolve(), 500));
-});
-
-beforeAll(async () => {
-    // remove any previous tests
-    try {
-        await panelDelete(testPanel.id);
-    } catch (error) { }
-});
 
 describe("Test the '/api/panel/' endpoint", () => {
-    test(`Test the '/' POST route to create an example ${testPanel.module} panel`, async () => {
-        const response = await request(system)
-            .post("/api/panel/")
-            .send(testPanel)
-            .set("Content-Type", "application/json");
-        expect(response.statusCode).toBe(200);
+    let panel;
+    let createdPanelId;
 
+    beforeEach(async () => {
+        panelStart.mockClear();
+        panel = {
+            id: `test-${randomUUID()}`,
+            module: "clock",
+            title: "test-title",
+            group: "test-group",
+            description: "test-description",
+        };
+        createdPanelId = `test-${randomUUID()}`;
+        const module = await moduleGet(panel.module);
+        await panelConfigModel.set({ ...module.defaultconfig, ...panel, enabled: true, key: "test-key" });
     });
 
-    test("Test the '/' GET route", async () => {
+    afterEach(async () => {
+        try {
+            await Promise.all(panelStart.mock.results.map((result) => result.value));
+        } finally {
+            await fs.rm(path.join(__dirname, "../../../config/panels", `${panel.id}.json`), { force: true });
+            await fs.rm(path.join(__dirname, "../../../config/panels", `${createdPanelId}.json`), { force: true });
+        }
+    });
+
+    test("creates a panel", async () => {
+        const response = await request(system)
+            .post("/api/panel/")
+            .send({ ...panel, id: createdPanelId });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.body.status).toBe("success");
+        const config = await panelConfigModel.get(createdPanelId);
+        expect(config).toEqual(expect.objectContaining({ id: createdPanelId, module: "clock", title: panel.title }));
+    });
+
+    test("lists panels", async () => {
         const response = await request(system).get("/api/panel/");
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
-        expect(response.body.data).toBeArray();
-        expect(response.body.data.length).toBeGreaterThan(0);
-
+        expect(response.body.data).toEqual(expect.arrayContaining([expect.objectContaining({ id: panel.id })]));
     });
 
-    test("Test the '/{panelId}' GET route with the test panel", async () => {
-        const response = await request(system).get(`/api/panel/${testPanel.id}`);
+    test("gets a panel", async () => {
+        const response = await request(system).get(`/api/panel/${panel.id}`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
-        expect(response.body.data).toBeObject();
-        expect(response.body.data.id).toEqual(testPanel.id);
-        expect(response.body.data.module).toEqual(testPanel.module);
-        expect(response.body.data.title).toEqual(testPanel.title);
-        expect(response.body.data.group).toEqual(testPanel.group);
-        expect(response.body.data.description).toEqual(testPanel.description);
-        expect(response.body.data.enabled).toBeTrue();
-        expect(response.body.data._module).toBeObject();
-        expect(response.body.data._module.name).toEqual(testPanel.module);
-        expect(response.body.data._dockerContainer).toBeObject();
-        expect(response.body.data._dockerContainer._isRunning).toBeFalse();
-        expect(response.body.data._dockerContainer._isBuilding).toBeFalse();
-        expect(response.body.data._dockerContainer._isBuilt).toBeFalse();
-        expect(response.body.data._dockerContainer._status).toEqual("active");
+        expect(response.body.data).toEqual(
+            expect.objectContaining({
+                ...panel,
+                enabled: true,
+                _module: expect.objectContaining({ name: "clock" }),
+                _dockerContainer: expect.objectContaining({
+                    _isRunning: false,
+                    _isBuilding: false,
+                    _isBuilt: false,
+                    _status: "active",
+                }),
+            })
+        );
         expect(response.body.data._buildStatus).toBeNil();
-
     });
 
-    test("Test the '/start/{panelId}' GET route with the test panel", async () => {
-        const response = await request(system).get(`/api/panel/start/${testPanel.id}`);
+    test.each(["start", "stop"])("%ss a panel", async (action) => {
+        const response = await request(system).get(`/api/panel/${action}/${panel.id}`);
+        expect(response.statusCode).toBe(200);
+        expect(response.body.status).toBe("success");
+    });
+
+    test("updates a panel group", async () => {
+        const response = await request(system).get(`/api/panel/group/${panel.id}/newTestGroup`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
 
+        const updated = await request(system).get(`/api/panel/${panel.id}`);
+        expect(updated.body.data.group).toBe("newTestGroup");
     });
 
-    test("Test the '/stop/{panelId}' GET route with the test panel", async () => {
-        const response = await request(system).get(`/api/panel/stop/${testPanel.id}`);
+    test("disables a panel", async () => {
+        const response = await request(system).get(`/api/panel/disable/${panel.id}`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
 
+        const updated = await request(system).get(`/api/panel/${panel.id}`);
+        expect(updated.body.data.enabled).toBe(false);
     });
 
-    test("Test the '/group/{panelId}' GET route to set the group with the test panel", async () => {
-        const response = await request(system).get(`/api/panel/group/${testPanel.id}/newTestGroup`);
+    test("enables a disabled panel", async () => {
+        const config = await panelConfigModel.get(panel.id);
+        await panelConfigModel.set({ ...config, enabled: false });
+
+        const response = await request(system).get(`/api/panel/enable/${panel.id}`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
 
+        const updated = await request(system).get(`/api/panel/${panel.id}`);
+        expect(updated.body.data.enabled).toBe(true);
     });
 
-    test("Check the panel for the new group", async () => {
-        const response = await request(system).get(`/api/panel/${testPanel.id}`);
+    test("deletes a panel", async () => {
+        const response = await request(system).delete(`/api/panel/${panel.id}`);
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("success");
-        expect(response.body.data).toBeObject();
-        expect(response.body.data.group).toEqual("newTestGroup");
-
-    });
-
-    test("Test the '/disable/{panelId}' GET route with the test panel", async () => {
-        const response = await request(system).get(`/api/panel/disable/${testPanel.id}`);
-        expect(response.statusCode).toBe(200);
-        expect(response.body.status).toBe("success");
-
-    });
-
-    test("Check the panel is disabled", async () => {
-        const response = await request(system).get(`/api/panel/${testPanel.id}`);
-        expect(response.statusCode).toBe(200);
-        expect(response.body.status).toBe("success");
-        expect(response.body.data).toBeObject();
-        expect(response.body.data.enabled).toBeFalse();
-
-    });
-
-    test("Test the '/enable/{panelId}' GET route with the test panel", async () => {
-        const response = await request(system).get(`/api/panel/enable/${testPanel.id}`);
-        expect(response.statusCode).toBe(200);
-        expect(response.body.status).toBe("success");
-
-    });
-
-    test("Check the panel is enabled", async () => {
-        const response = await request(system).get(`/api/panel/${testPanel.id}`);
-        expect(response.statusCode).toBe(200);
-        expect(response.body.status).toBe("success");
-        expect(response.body.data).toBeObject();
-        expect(response.body.data.enabled).toBeTrue();
-
-    });
-
-    test("Test the '/{panelId}' DELETE route with the test panel", async () => {
-        const response = await request(system).delete(`/api/panel/${testPanel.id}`);
-        expect(response.statusCode).toBe(200);
-        expect(response.body.status).toBe("success");
+        await expect(fs.stat(path.join(__dirname, "../../../config/panels", `${panel.id}.json`))).rejects.toMatchObject(
+            {
+                code: "ENOENT",
+            }
+        );
     });
 });
