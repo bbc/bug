@@ -31,6 +31,16 @@ Before upgrading a production instance, it is recommended to:
 
 ---
 
+## Restore a BUG Backup
+
+The **Backup & Restore** page can download a compressed backup and restore its `panels` and `global` configuration. Restoring replaces the existing contents of both directories; it does not merge them. The archive must contain both directories, valid JSON configuration files, and no symbolic links.
+
+Keep a separate copy of the current configuration before restoring and avoid editing configuration during the operation. Restore validates the archive before changing live files and attempts to roll back if applying it fails, but it is not atomic. A process interruption or a failed rollback can leave a partial restore.
+
+If rollback fails, check the BUG logs for the recovery files' location and copy them out of the container before recreating it. These files contain configuration, including potentially sensitive credentials; protect them like any other backup.
+
+---
+
 ## Command Line Upgrade
 
 To upgrade your BUG instance:

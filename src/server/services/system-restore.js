@@ -2,39 +2,31 @@
 
 const path = require("path");
 const logger = require("@core/logger")(module);
-const untarFolder = require("@utils/untar-folder");
-const fs = require("fs-extra");
-const delay = require("delay").default;
+const restoreConfig = require("@utils/restore-config");
 
 module.exports = async (backup) => {
     try {
-        let status;
-        const absolutePath = path.join(__dirname, "..", "..", "..", backup?.tempFilePath);
-        const extractPath = path.join(__dirname, "..", "..", "..", "data");
-        const configFolder = path.join(__dirname, "..", "..", "..", "config");
-        const configFolders = ["panels", "global"];
-
-        logger.info(`backup file "${backup?.name}" with a size of ${backup?.size} bytes uploaded`);
-
-        if (backup?.mimetype === "application/gzip") {
-            status = await untarFolder(absolutePath, extractPath);
+        if (typeof backup?.tempFilePath !== "string" || !backup.tempFilePath) {
+            throw new Error("Backup upload is missing a temporary file");
         }
 
-        await delay(1000);
-
-        for (let folder of configFolders) {
-            status = await fs.move(path.join(extractPath, folder), path.join(configFolder, folder), {
-                overwrite: true,
-            });
-        }
-
+        const root = path.join(__dirname, "..", "..", "..");
+        logger.info(`backup file "${backup.name}" with a size of ${backup.size} bytes uploaded`);
+        await restoreConfig(
+            path.resolve(root, backup.tempFilePath),
+            path.join(root, "config"),
+            path.join(root, "data")
+        );
         return {
-            status: status ? "failure" : "success",
+            status: "success",
             message: "Restored settings from file",
             data: "Restored settings from file",
         };
     } catch (error) {
         logger.error(`${error.stack}`);
-        throw new Error(`Failed to complete system restore`);
+        if (error.code === "RESTORE_IN_PROGRESS" || error.code === "RESTORE_ROLLBACK_INCOMPLETE") {
+            throw error;
+        }
+        throw new Error("Failed to complete system restore", { cause: error });
     }
 };
